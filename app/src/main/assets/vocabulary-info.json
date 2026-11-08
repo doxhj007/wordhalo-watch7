@@ -1,0 +1,15 @@
+{
+  "source": "https://github.com/skywind3000/ECDICT",
+  "license": "MIT",
+  "source_sha256": "d1ecbdf9ee2b920afb6f430ca6b6bb9f559588cf0dff86e04bd255f9390843cc",
+  "total": 1945,
+  "cet4": 0,
+  "cet6": 1945,
+  "cet6_extension": 1945,
+  "illustrated": 55,
+  "hand_edited_meanings": 136,
+  "excluded_no_short_meaning": [],
+  "note": "考试标记来自 ECDICT，不声称为官方完整大纲；短释义用于快速记忆，省略例句和部分义项。",
+  "wordlist_status": "provisional_ecdict_cet6_extension_not_baicizhan_2551",
+  "v020_common_sense_corrections": 68
+}

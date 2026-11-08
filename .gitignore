@@ -1,0 +1,37 @@
+# Local tooling, build products and editor state
+.gradle/
+.idea/
+*.iml
+local.properties
+build/
+build-local/
+test-classes/
+work/
+__pycache__/
+*.pyc
+*.class
+*.log
+*.idsig
+Thumbs.db
+.DS_Store
+
+# Never commit signing keys, credentials or local learning data
+private-signing/
+watch-signing/
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.pem
+*.key
+password.txt
+*signing-private*
+.env
+.env.*
+*.db
+*.db-shm
+*.db-wal
+
+# Only the reviewed release APK belongs in this repository
+*.apk
+!dist/WordHalo-Watch7-v0.20.apk

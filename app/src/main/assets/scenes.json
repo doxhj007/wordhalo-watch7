@@ -1,0 +1,832 @@
+{
+  "forest": {
+    "title": "File:Forest.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/95/Gran_skog_%28%C3%85ngermanland%2C_Sverige%29_%2804-07-2009%29.jpg/960px-Gran_skog_%28%C3%85ngermanland%2C_Sverige%29_%2804-07-2009%29.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Gran_skog_(%C3%85ngermanland,_Sverige)_(04-07-2009).jpg",
+    "artist": "Edwardnr17",
+    "license": "Public domain",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia",
+    "caption": "森林、植被与生态环境",
+    "file": "photo-forest.webp"
+  },
+  "court": {
+    "title": "File:Beverley Guildhall Courtroom.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2a/Beverley_Guildhall_Courtroom.jpg/960px-Beverley_Guildhall_Courtroom.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Beverley_Guildhall_Courtroom.jpg",
+    "artist": "Michael D Beckwith",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "caption": "法庭里的诉讼、证言与裁决",
+    "file": "photo-court.webp"
+  },
+  "meeting": {
+    "title": "File:Meeting Table.png",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fc/Meeting_Table.png/960px-Meeting_Table.png",
+    "source": "https://commons.wikimedia.org/wiki/File:Meeting_Table.png",
+    "artist": "Alexas Fotos",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "caption": "围桌讨论、协商与合作的场景",
+    "file": "photo-meeting.webp"
+  },
+  "hospital": {
+    "title": "File:Hospital bed.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8a/Hospital_bed.jpg/960px-Hospital_bed.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Hospital_bed.jpg",
+    "artist": "Tiia Monto",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "caption": "用医院场景联想健康与诊疗",
+    "file": "photo-hospital.webp"
+  },
+  "chip": {
+    "title": "File:AMD Ryzen 7 1800X.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3f/AMD_Ryzen_7_1800X.jpg/960px-AMD_Ryzen_7_1800X.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:AMD_Ryzen_7_1800X.jpg",
+    "artist": "Brian Wong",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "caption": "芯片表面的微型电路",
+    "file": "photo-chip.webp"
+  },
+  "camera": {
+    "title": "File:Canon EOS 5D Mark II with 50mm 1.4 edit1.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/28/Canon_EOS_5D_Mark_II_with_50mm_1.4_edit1.jpg/960px-Canon_EOS_5D_Mark_II_with_50mm_1.4_edit1.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Canon_EOS_5D_Mark_II_with_50mm_1.4_edit1.jpg",
+    "artist": "Charles Lanteigne; edited by jjron (increased canvas size)",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "caption": "镜头记录影像",
+    "file": "photo-camera.webp"
+  },
+  "guitar": {
+    "title": "File:Acoustic guitar.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c2/Acoustic_guitar.jpg/960px-Acoustic_guitar.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Acoustic_guitar.jpg",
+    "artist": "Massimo Giuliani",
+    "license": "Public domain",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia",
+    "caption": "拨动琴弦，弹奏音乐",
+    "file": "photo-guitar.webp"
+  },
+  "galaxy": {
+    "title": "File:Andromeda Galaxy (with h-alpha).jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/Andromeda_Galaxy_%28with_h-alpha%29.jpg/960px-Andromeda_Galaxy_%28with_h-alpha%29.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Andromeda_Galaxy_(with_h-alpha).jpg",
+    "artist": "Adam Evans",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "caption": "浩瀚宇宙中的星系",
+    "file": "photo-galaxy.webp"
+  },
+  "money": {
+    "title": "File:Euro coins and banknotes (cropped).jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Euro_coins_and_banknotes_%28cropped%29.jpg/960px-Euro_coins_and_banknotes_%28cropped%29.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Euro_coins_and_banknotes_(cropped).jpg",
+    "artist": "Avij (talk · contribs)",
+    "license": "Public domain",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia",
+    "caption": "用货币场景联想金融与收支",
+    "file": "photo-money.webp"
+  },
+  "library": {
+    "title": "File:International books at Kent Library.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/50/International_books_at_Kent_Library.jpg/960px-International_books_at_Kent_Library.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:International_books_at_Kent_Library.jpg",
+    "artist": "Roc0ast3r",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "caption": "成排书架里的知识与文献",
+    "file": "photo-library.webp"
+  },
+  "lab": {
+    "title": "File:Microscope.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/c/c2/Microscope.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Microscope.jpg",
+    "artist": "Zephyris at English Wikipedia",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "caption": "用实验仪器联想观察与研究",
+    "file": "photo-lab.webp"
+  },
+  "mountain": {
+    "title": "File:Mount Everest as seen from Drukair2 PLW edit.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d1/Mount_Everest_as_seen_from_Drukair2_PLW_edit.jpg/960px-Mount_Everest_as_seen_from_Drukair2_PLW_edit.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Mount_Everest_as_seen_from_Drukair2_PLW_edit.jpg",
+    "artist": "Mount_Everest_as_seen_from_Drukair2.jpg: shrimpo1967\nderivative work: Papa Lima Whiskey 2 (talk)",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "caption": "崎岖地形与登山",
+    "file": "photo-mountain.webp"
+  },
+  "warehouse": {
+    "title": "File:Warehouse filled with stacked pallets showcasing efficient space usage during daytime operations.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c7/Warehouse_filled_with_stacked_pallets_showcasing_efficient_space_usage_during_daytime_operations.jpg/960px-Warehouse_filled_with_stacked_pallets_showcasing_efficient_space_usage_during_daytime_operations.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Warehouse_filled_with_stacked_pallets_showcasing_efficient_space_usage_during_daytime_operations.jpg",
+    "artist": "Shixart1985",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "caption": "货架上储存和流通的货物",
+    "file": "photo-warehouse.webp"
+  },
+  "city": {
+    "title": "File:Skyline Tower (New York City) jeh.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4b/Skyline_Tower_%28New_York_City%29_jeh.jpg/960px-Skyline_Tower_%28New_York_City%29_jeh.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Skyline_Tower_(New_York_City)_jeh.jpg",
+    "artist": "Jim.henderson",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "caption": "摩天楼组成的都市天际线",
+    "file": "photo-city.webp"
+  },
+  "church": {
+    "title": "File:St Marys Cathedral Nave Edinburgh.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f6/St_Marys_Cathedral_Nave_Edinburgh.jpg/960px-St_Marys_Cathedral_Nave_Edinburgh.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:St_Marys_Cathedral_Nave_Edinburgh.jpg",
+    "artist": "Michael D Beckwith",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "caption": "教堂的宗教仪式场景",
+    "file": "photo-church.webp"
+  },
+  "ship": {
+    "title": "File:MSC HARMONY III (container ship, 2006) in Port Koper (SIKOP, 2024).jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/62/MSC_HARMONY_III_%28container_ship%2C_2006%29_in_Port_Koper_%28SIKOP%2C_2024%29.jpg/960px-MSC_HARMONY_III_%28container_ship%2C_2006%29_in_Port_Koper_%28SIKOP%2C_2024%29.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:MSC_HARMONY_III_(container_ship,_2006)_in_Port_Koper_(SIKOP,_2024).jpg",
+    "artist": "Petar Milošević",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "caption": "海上航行与港口运输",
+    "file": "photo-ship.webp"
+  },
+  "bridge": {
+    "title": "File:South Portland Street Suspension Bridge, Glasgow, Scotland 03.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d3/South_Portland_Street_Suspension_Bridge%2C_Glasgow%2C_Scotland_03.jpg/960px-South_Portland_Street_Suspension_Bridge%2C_Glasgow%2C_Scotland_03.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:South_Portland_Street_Suspension_Bridge,_Glasgow,_Scotland_03.jpg",
+    "artist": "Michal Klajban",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "caption": "桥梁跨越两岸",
+    "file": "photo-bridge.webp"
+  },
+  "storm": {
+    "title": "File:Staring Down Hurricane Florence.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b5/Staring_Down_Hurricane_Florence.jpg/960px-Staring_Down_Hurricane_Florence.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Staring_Down_Hurricane_Florence.jpg",
+    "artist": "Alexander Gerst",
+    "license": "Public domain",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia",
+    "caption": "风暴的巨大旋涡",
+    "file": "photo-storm.webp"
+  },
+  "volcano": {
+    "title": "File:Stromboli Eruption.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/9/93/Stromboli_Eruption.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Stromboli_Eruption.jpg",
+    "artist": "Wolfgang Beyer",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "caption": "火山喷发的炽热熔岩",
+    "file": "photo-volcano.webp"
+  },
+  "desert": {
+    "title": "File:Dunes, Désert du Thar.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/Dunes%2C_D%C3%A9sert_du_Thar.jpg/960px-Dunes%2C_D%C3%A9sert_du_Thar.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Dunes,_D%C3%A9sert_du_Thar.jpg",
+    "artist": "Clément Bardot",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "caption": "干旱、荒凉的沙漠",
+    "file": "photo-desert.webp"
+  },
+  "ice": {
+    "title": "File:Iceberg in the Arctic with its underside exposed.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3d/Iceberg_in_the_Arctic_with_its_underside_exposed.jpg/960px-Iceberg_in_the_Arctic_with_its_underside_exposed.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Iceberg_in_the_Arctic_with_its_underside_exposed.jpg",
+    "artist": "AWeith",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "caption": "寒冷的极地冰雪",
+    "file": "photo-ice.webp"
+  },
+  "coral": {
+    "title": "File:Soft coral peach komodo.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Soft_coral_peach_komodo.jpg/960px-Soft_coral_peach_komodo.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Soft_coral_peach_komodo.jpg",
+    "artist": "Nhobgood Nick Hobgood",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "caption": "海底珊瑚礁与生态",
+    "file": "photo-coral.webp"
+  },
+  "light": {
+    "title": "File:Lamp with lit incandescent light bulb and black background.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c6/Lamp_with_lit_incandescent_light_bulb_and_black_background.jpg/960px-Lamp_with_lit_incandescent_light_bulb_and_black_background.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Lamp_with_lit_incandescent_light_bulb_and_black_background.jpg",
+    "artist": "Basile Morin",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "caption": "灯光照亮黑暗",
+    "file": "photo-light.webp"
+  },
+  "bamboo": {
+    "title": "File:Lush green landscape of Wugayan Bamboo Forest on 9 August 2008.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/de/Lush_green_landscape_of_Wugayan_Bamboo_Forest_on_9_August_2008.jpg/960px-Lush_green_landscape_of_Wugayan_Bamboo_Forest_on_9_August_2008.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Lush_green_landscape_of_Wugayan_Bamboo_Forest_on_9_August_2008.jpg",
+    "artist": "manginwu",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "caption": "一节一节生长的竹子",
+    "file": "photo-bamboo.webp"
+  },
+  "oak": {
+    "title": "File:Quercus robur.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/a/af/Quercus_robur.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Quercus_robur.jpg",
+    "artist": "Unknown",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "caption": "橡树的叶子与橡子",
+    "file": "photo-oak.webp"
+  },
+  "maple": {
+    "title": "File:Red Maple Leaves in Yahiko.JPG",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8a/Red_Maple_Leaves_in_Yahiko.JPG/960px-Red_Maple_Leaves_in_Yahiko.JPG",
+    "source": "https://commons.wikimedia.org/wiki/File:Red_Maple_Leaves_in_Yahiko.JPG",
+    "artist": "Aney",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "caption": "秋天的枫叶",
+    "file": "photo-maple.webp"
+  },
+  "flower": {
+    "title": "File:Tulipa gesneriana, 2026, Poland (18).jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/83/Tulipa_gesneriana%2C_2026%2C_Poland_%2818%29.jpg/960px-Tulipa_gesneriana%2C_2026%2C_Poland_%2818%29.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Tulipa_gesneriana,_2026,_Poland_(18).jpg",
+    "artist": "Igor123121",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "caption": "鲜艳的郁金香",
+    "file": "photo-flower.webp"
+  },
+  "orchard": {
+    "title": "File:The Greensand Way leads through Apple Orchard - geograph.org.uk - 1426387.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/9/91/The_Greensand_Way_leads_through_Apple_Orchard_-_geograph.org.uk_-_1426387.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The_Greensand_Way_leads_through_Apple_Orchard_-_geograph.org.uk_-_1426387.jpg",
+    "artist": "David Anstiss",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "caption": "果园里整齐排列的果树",
+    "file": "photo-orchard.webp"
+  },
+  "farm": {
+    "title": "File:Cultivated grass providing rich pasture for sheep - geograph.org.uk - 1248090.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/5/53/Cultivated_grass_providing_rich_pasture_for_sheep_-_geograph.org.uk_-_1248090.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Cultivated_grass_providing_rich_pasture_for_sheep_-_geograph.org.uk_-_1248090.jpg",
+    "artist": "Eric Jones",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "caption": "牧场上的放牧生活",
+    "file": "photo-farm.webp"
+  },
+  "bird": {
+    "title": "File:Peacock Plumage.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c5/Peacock_Plumage.jpg/960px-Peacock_Plumage.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Peacock_Plumage.jpg",
+    "artist": "Jatin Sindhu",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "caption": "孔雀展开华丽尾羽",
+    "file": "photo-bird.webp"
+  },
+  "snail": {
+    "title": "File:Snail shell on top of a tree stump, Lisbon, Portugal (approx. GPS location) julesvernex2.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/71/Snail_shell_on_top_of_a_tree_stump%2C_Lisbon%2C_Portugal_%28approx._GPS_location%29_julesvernex2.jpg/960px-Snail_shell_on_top_of_a_tree_stump%2C_Lisbon%2C_Portugal_%28approx._GPS_location%29_julesvernex2.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Snail_shell_on_top_of_a_tree_stump,_Lisbon,_Portugal_(approx._GPS_location)_julesvernex2.jpg",
+    "artist": "Jules Verne Times Two",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "caption": "蜗牛背着螺旋形外壳",
+    "file": "photo-snail.webp"
+  },
+  "beetle": {
+    "title": "File:Siebenpunkt-Marienkäfer (Coccinella septempunctata) auf Blüte im FFH-Gebiet \"Viernheimer Waldheide und angrenzende Flächen\".jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1f/Siebenpunkt-Marienk%C3%A4fer_%28Coccinella_septempunctata%29_auf_Bl%C3%BCte_im_FFH-Gebiet_%22Viernheimer_Waldheide_und_angrenzende_Fl%C3%A4chen%22.jpg/960px-Siebenpunkt-Marienk%C3%A4fer_%28Coccinella_septempunctata%29_auf_Bl%C3%BCte_im_FFH-Gebiet_%22Viernheimer_Waldheide_und_angrenzende_Fl%C3%A4chen%22.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Siebenpunkt-Marienk%C3%A4fer_(Coccinella_septempunctata)_auf_Bl%C3%BCte_im_FFH-Gebiet_%22Viernheimer_Waldheide_und_angrenzende_Fl%C3%A4chen%22.jpg",
+    "artist": "Stephan Sprinz",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "caption": "甲虫与昆虫的外形",
+    "file": "photo-beetle.webp"
+  },
+  "frog": {
+    "title": "File:Bufo bufo couple during migration(2005).jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f7/Bufo_bufo_couple_during_migration%282005%29.jpg/960px-Bufo_bufo_couple_during_migration%282005%29.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Bufo_bufo_couple_during_migration(2005).jpg",
+    "artist": "Janekpfeifer at de.wikipedia",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "caption": "蟾蜍粗糙的皮肤",
+    "file": "photo-frog.webp"
+  },
+  "turtle": {
+    "title": "File:A Sea Turtle in Hawaii.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/7/7d/A_Sea_Turtle_in_Hawaii.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:A_Sea_Turtle_in_Hawaii.jpg",
+    "artist": "Chloekwak",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "caption": "海龟在水中游动",
+    "file": "photo-turtle.webp"
+  },
+  "shark": {
+    "title": "File:Guadalupe Island Great White Shark Underwater.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6c/Guadalupe_Island_Great_White_Shark_Underwater.jpg/960px-Guadalupe_Island_Great_White_Shark_Underwater.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Guadalupe_Island_Great_White_Shark_Underwater.jpg",
+    "artist": "Sharkcrew",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "caption": "鲨鱼在海中捕食",
+    "file": "photo-shark.webp"
+  },
+  "gorilla": {
+    "title": "File:Mountain gorilla (Gorilla beringei beringei) female 2.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dc/Mountain_gorilla_%28Gorilla_beringei_beringei%29_female_2.jpg/960px-Mountain_gorilla_%28Gorilla_beringei_beringei%29_female_2.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Mountain_gorilla_(Gorilla_beringei_beringei)_female_2.jpg",
+    "artist": "Charles J. Sharp",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "caption": "大猩猩的面部与身体",
+    "file": "photo-gorilla.webp"
+  },
+  "leopard": {
+    "title": "File:Leopard Tree AdF.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/76/Leopard_Tree_AdF.jpg/960px-Leopard_Tree_AdF.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Leopard_Tree_AdF.jpg",
+    "artist": "Arturo de Frias Marques",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "caption": "有斑点的豹子",
+    "file": "photo-leopard.webp"
+  },
+  "puppy": {
+    "title": "File:Callie the golden retriever puppy.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/33/Callie_the_golden_retriever_puppy.jpg/960px-Callie_the_golden_retriever_puppy.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Callie_the_golden_retriever_puppy.jpg",
+    "artist": "MichaelMcPhee",
+    "license": "CC BY 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+    "caption": "幼犬与家养宠物",
+    "file": "photo-puppy.webp"
+  },
+  "salmon": {
+    "title": "File:Salmon sashimi slices.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1e/Salmon_sashimi_slices.jpg/960px-Salmon_sashimi_slices.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Salmon_sashimi_slices.jpg",
+    "artist": "CNEcija12345",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "caption": "三文鱼的橙红色鱼肉",
+    "file": "photo-salmon.webp"
+  },
+  "crab": {
+    "title": "File:Purple Shore Crab (Hemigrapsus nudus) Tofino.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/01/Purple_Shore_Crab_%28Hemigrapsus_nudus%29_Tofino.jpg/960px-Purple_Shore_Crab_%28Hemigrapsus_nudus%29_Tofino.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Purple_Shore_Crab_(Hemigrapsus_nudus)_Tofino.jpg",
+    "artist": "Charles J. Sharp",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "caption": "螃蟹的螯与甲壳",
+    "file": "photo-crab.webp"
+  },
+  "shrimp": {
+    "title": "File:Penaeus vannamei 01.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b9/Penaeus_vannamei_01.jpg/960px-Penaeus_vannamei_01.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Penaeus_vannamei_01.jpg",
+    "artist": "Unknown",
+    "license": "Public domain",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia",
+    "caption": "虾的弯曲外形",
+    "file": "photo-shrimp.webp"
+  },
+  "oyster": {
+    "title": "File:Pacific oyster from Brofjorden on a chopping board in Tuntorp.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Pacific_oyster_from_Brofjorden_on_a_chopping_board_in_Tuntorp.jpg/960px-Pacific_oyster_from_Brofjorden_on_a_chopping_board_in_Tuntorp.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Pacific_oyster_from_Brofjorden_on_a_chopping_board_in_Tuntorp.jpg",
+    "artist": "W.carter",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "caption": "牡蛎的贝壳与软体",
+    "file": "photo-oyster.webp"
+  },
+  "garlic": {
+    "title": "File:Garlic bulbs and cloves.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9a/Garlic_bulbs_and_cloves.jpg/960px-Garlic_bulbs_and_cloves.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Garlic_bulbs_and_cloves.jpg",
+    "artist": "Ivar Leidus",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "caption": "蒜头由一瓣瓣蒜组成",
+    "file": "photo-garlic.webp"
+  },
+  "ginger": {
+    "title": "File:Zingiber officinale fresh rhizome.JPG",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/db/Zingiber_officinale_fresh_rhizome.JPG/960px-Zingiber_officinale_fresh_rhizome.JPG",
+    "source": "https://commons.wikimedia.org/wiki/File:Zingiber_officinale_fresh_rhizome.JPG",
+    "artist": "Olli Salmela, (Dacnoh)",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "caption": "姜的根茎",
+    "file": "photo-ginger.webp"
+  },
+  "pumpkin": {
+    "title": "File:Cucurbita 2011 G1.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/69/Cucurbita_2011_G1.jpg/960px-Cucurbita_2011_G1.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Cucurbita_2011_G1.jpg",
+    "artist": "George Chernilevsky",
+    "license": "Public domain",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia",
+    "caption": "橙色南瓜",
+    "file": "photo-pumpkin.webp"
+  },
+  "pineapple": {
+    "title": "File:കൈതച്ചക്ക.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/%E0%B4%95%E0%B5%88%E0%B4%A4%E0%B4%9A%E0%B5%8D%E0%B4%9A%E0%B4%95%E0%B5%8D%E0%B4%95.jpg/960px-%E0%B4%95%E0%B5%88%E0%B4%A4%E0%B4%9A%E0%B5%8D%E0%B4%9A%E0%B4%95%E0%B5%8D%E0%B4%95.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:%E0%B4%95%E0%B5%88%E0%B4%A4%E0%B4%9A%E0%B5%8D%E0%B4%9A%E0%B4%95%E0%B5%8D%E0%B4%95.jpg",
+    "artist": "Suniltg at Malayalam Wikipedia",
+    "license": "CC BY 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+    "caption": "带刺外皮的菠萝",
+    "file": "photo-pineapple.webp"
+  },
+  "olive": {
+    "title": "File:Air Olive 1.JPG",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/86/Air_Olive_1.JPG/960px-Air_Olive_1.JPG",
+    "source": "https://commons.wikimedia.org/wiki/File:Air_Olive_1.JPG",
+    "artist": "Ввласенко",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "caption": "橄榄与枝叶",
+    "file": "photo-olive.webp"
+  },
+  "walnut": {
+    "title": "File:Juglans regia 2009 G2.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1b/Juglans_regia_2009_G2.jpg/960px-Juglans_regia_2009_G2.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Juglans_regia_2009_G2.jpg",
+    "artist": "George Chernilevsky",
+    "license": "Public domain",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia",
+    "caption": "坚硬外壳里的核桃",
+    "file": "photo-walnut.webp"
+  },
+  "bacon": {
+    "title": "File:And Bacon Strips (5859071628).jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f3/And_Bacon_Strips_%285859071628%29.jpg/960px-And_Bacon_Strips_%285859071628%29.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:And_Bacon_Strips_(5859071628).jpg",
+    "artist": "preston.rhea",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "caption": "煎过的培根肉片",
+    "file": "photo-bacon.webp"
+  },
+  "dessert": {
+    "title": "File:Piece of chocolate cake on a white plate decorated with chocolate sauce.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ef/Piece_of_chocolate_cake_on_a_white_plate_decorated_with_chocolate_sauce.jpg/960px-Piece_of_chocolate_cake_on_a_white_plate_decorated_with_chocolate_sauce.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Piece_of_chocolate_cake_on_a_white_plate_decorated_with_chocolate_sauce.jpg",
+    "artist": "Daria YakovlevaMinor edits made by Subsidiary account",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "caption": "餐后的甜点",
+    "file": "photo-dessert.webp"
+  },
+  "coffee": {
+    "title": "File:Cup of Coffee with foam cropped.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/65/Cup_of_Coffee_with_foam_cropped.jpg/960px-Cup_of_Coffee_with_foam_cropped.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Cup_of_Coffee_with_foam_cropped.jpg",
+    "artist": "Lotus Head from Johannesburg, Gauteng, South Africa",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "caption": "杯面上的泡沫",
+    "file": "photo-coffee.webp"
+  },
+  "ceramic": {
+    "title": "File:Meissen Porcelain Factory (German) - Bowl - 2009.107.a - Cleveland Museum of Art.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e5/Meissen_Porcelain_Factory_%28German%29_-_Bowl_-_2009.107.a_-_Cleveland_Museum_of_Art.jpg/960px-Meissen_Porcelain_Factory_%28German%29_-_Bowl_-_2009.107.a_-_Cleveland_Museum_of_Art.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Meissen_Porcelain_Factory_(German)_-_Bowl_-_2009.107.a_-_Cleveland_Museum_of_Art.jpg",
+    "artist": "Unknown",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "caption": "陶瓷器物与细腻釉面",
+    "file": "photo-ceramic.webp"
+  },
+  "weave": {
+    "title": "File:Lijiang Yunnan China-Woman-with-weaving-loom-01.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a0/Lijiang_Yunnan_China-Woman-with-weaving-loom-01.jpg/960px-Lijiang_Yunnan_China-Woman-with-weaving-loom-01.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Lijiang_Yunnan_China-Woman-with-weaving-loom-01.jpg",
+    "artist": "CEphoto, Uwe Aranas",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "caption": "织机把线织成布",
+    "file": "photo-weave.webp"
+  },
+  "sofa": {
+    "title": "File:Couch-furniture-living-room-sofa (24300293356).jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/Couch-furniture-living-room-sofa_%2824300293356%29.jpg/960px-Couch-furniture-living-room-sofa_%2824300293356%29.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Couch-furniture-living-room-sofa_(24300293356).jpg",
+    "artist": "www.Pixel.la Free Stock Photos",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "caption": "客厅里的沙发",
+    "file": "photo-sofa.webp"
+  },
+  "stairs": {
+    "title": "File:City Hall, London, Spiral Staircase - 1.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/64/City_Hall%2C_London%2C_Spiral_Staircase_-_1.jpg/960px-City_Hall%2C_London%2C_Spiral_Staircase_-_1.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:City_Hall,_London,_Spiral_Staircase_-_1.jpg",
+    "artist": "Colin",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "caption": "盘旋而上的楼梯",
+    "file": "photo-stairs.webp"
+  },
+  "train": {
+    "title": "File:ACE EMD F40PH Fremont - San Jose.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/60/ACE_EMD_F40PH_Fremont_-_San_Jose.jpg/960px-ACE_EMD_F40PH_Fremont_-_San_Jose.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:ACE_EMD_F40PH_Fremont_-_San_Jose.jpg",
+    "artist": "Kabelleger / David Gubler (http://www.bahnbilder.ch)",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "caption": "日常通勤与轨道交通",
+    "file": "photo-train.webp"
+  },
+  "boat": {
+    "title": "File:Sailing boat at sunset, Ionian Sea, Albania.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b5/Sailing_boat_at_sunset%2C_Ionian_Sea%2C_Albania.jpg/960px-Sailing_boat_at_sunset%2C_Ionian_Sea%2C_Albania.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Sailing_boat_at_sunset,_Ionian_Sea,_Albania.jpg",
+    "artist": "Liridon",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "caption": "帆船在海上航行",
+    "file": "photo-boat.webp"
+  },
+  "parachute": {
+    "title": "File:CH.VD.Bex 2007-09-02 Airshow 396 16x9-R 5120x2880 (cropped).jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f6/CH.VD.Bex_2007-09-02_Airshow_396_16x9-R_5120x2880_%28cropped%29.jpg/960px-CH.VD.Bex_2007-09-02_Airshow_396_16x9-R_5120x2880_%28cropped%29.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:CH.VD.Bex_2007-09-02_Airshow_396_16x9-R_5120x2880_(cropped).jpg",
+    "artist": "Roy Egloff",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "caption": "张开的降落伞",
+    "file": "photo-parachute.webp"
+  },
+  "windmill": {
+    "title": "File:Windmill De Viaan in Alkmaar - The Netherlands.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Windmill_De_Viaan_in_Alkmaar_-_The_Netherlands.jpg/960px-Windmill_De_Viaan_in_Alkmaar_-_The_Netherlands.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Windmill_De_Viaan_in_Alkmaar_-_The_Netherlands.jpg",
+    "artist": "René Cortin",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "caption": "风推动叶片转动",
+    "file": "photo-windmill.webp"
+  },
+  "gear": {
+    "title": "File:Heavily corroded cogwheels in abandoned sulphur factory on White Island.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/28/Heavily_corroded_cogwheels_in_abandoned_sulphur_factory_on_White_Island.jpg/960px-Heavily_corroded_cogwheels_in_abandoned_sulphur_factory_on_White_Island.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Heavily_corroded_cogwheels_in_abandoned_sulphur_factory_on_White_Island.jpg",
+    "artist": "Pseudopanax at English Wikipedia",
+    "license": "Public domain",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia",
+    "caption": "齿轮传递机械运动",
+    "file": "photo-gear.webp"
+  },
+  "magnet": {
+    "title": "File:Horseshoe Magnetic Filings (Flipped 180).jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6c/Horseshoe_Magnetic_Filings_%28Flipped_180%29.jpg/960px-Horseshoe_Magnetic_Filings_%28Flipped_180%29.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Horseshoe_Magnetic_Filings_(Flipped_180).jpg",
+    "artist": "Noguarde",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "caption": "铁屑呈现磁场形状",
+    "file": "photo-magnet.webp"
+  },
+  "prism": {
+    "title": "File:Prism flat rainbow.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/25/Prism_flat_rainbow.jpg/960px-Prism_flat_rainbow.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Prism_flat_rainbow.jpg",
+    "artist": "Kelvinsong",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "caption": "棱镜将光分解成光谱",
+    "file": "photo-prism.webp"
+  },
+  "water": {
+    "title": "File:2006-01-14 Surface waves.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/43/2006-01-14_Surface_waves.jpg/960px-2006-01-14_Surface_waves.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:2006-01-14_Surface_waves.jpg",
+    "artist": "Roger McLassus",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "caption": "涟漪一圈圈向外扩散",
+    "file": "photo-water.webp"
+  },
+  "fossil": {
+    "title": "File:Ammonite section.JPG",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/Ammonite_section.JPG/960px-Ammonite_section.JPG",
+    "source": "https://commons.wikimedia.org/wiki/File:Ammonite_section.JPG",
+    "artist": "Tomomarusan",
+    "license": "CC BY 2.5",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
+    "caption": "岩石保存古生物痕迹",
+    "file": "photo-fossil.webp"
+  },
+  "castle": {
+    "title": "File:Κάστρο Ιωαννίνων (photosiotas) (4).jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f6/%CE%9A%CE%AC%CF%83%CF%84%CF%81%CE%BF_%CE%99%CF%89%CE%B1%CE%BD%CE%BD%CE%AF%CE%BD%CF%89%CE%BD_%28photosiotas%29_%284%29.jpg/960px-%CE%9A%CE%AC%CF%83%CF%84%CF%81%CE%BF_%CE%99%CF%89%CE%B1%CE%BD%CE%BD%CE%AF%CE%BD%CF%89%CE%BD_%28photosiotas%29_%284%29.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:%CE%9A%CE%AC%CF%83%CF%84%CF%81%CE%BF_%CE%99%CF%89%CE%B1%CE%BD%CE%BD%CE%AF%CE%BD%CF%89%CE%BD_(photosiotas)_(4).jpg",
+    "artist": "photosiotas",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "caption": "中世纪城堡与防御工事",
+    "file": "photo-castle.webp"
+  },
+  "sculpture": {
+    "title": "File:Marble Statue of Pius VI.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/39/Marble_Statue_of_Pius_VI.jpg/960px-Marble_Statue_of_Pius_VI.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Marble_Statue_of_Pius_VI.jpg",
+    "artist": "Wilfredor",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "caption": "雕塑塑造出立体形象",
+    "file": "photo-sculpture.webp"
+  },
+  "ballot": {
+    "title": "File:Ballot box of czech legislative election 2010 in Třebíč, Třebíč District.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ce/Ballot_box_of_czech_legislative_election_2010_in_T%C5%99eb%C3%AD%C4%8D%2C_T%C5%99eb%C3%AD%C4%8D_District.jpg/960px-Ballot_box_of_czech_legislative_election_2010_in_T%C5%99eb%C3%AD%C4%8D%2C_T%C5%99eb%C3%AD%C4%8D_District.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Ballot_box_of_czech_legislative_election_2010_in_T%C5%99eb%C3%AD%C4%8D,_T%C5%99eb%C3%AD%C4%8D_District.jpg",
+    "artist": "Jiří Sedláček - Frettie",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "caption": "把选票投入票箱",
+    "file": "photo-ballot.webp"
+  },
+  "marathon": {
+    "title": "File:Marathon runners near the end of the race - geograph.org.uk - 6142899.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/Marathon_runners_near_the_end_of_the_race_-_geograph.org.uk_-_6142899.jpg/960px-Marathon_runners_near_the_end_of_the_race_-_geograph.org.uk_-_6142899.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Marathon_runners_near_the_end_of_the_race_-_geograph.org.uk_-_6142899.jpg",
+    "artist": "Stephen Craven",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "caption": "长距离奔跑考验耐力",
+    "file": "photo-marathon.webp"
+  },
+  "recycle": {
+    "title": "File:Singapore Recycling-bins-01.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/56/Singapore_Recycling-bins-01.jpg/960px-Singapore_Recycling-bins-01.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Singapore_Recycling-bins-01.jpg",
+    "artist": "CEphoto, Uwe Aranas",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "caption": "分类收集，循环利用",
+    "file": "photo-recycle.webp"
+  },
+  "traffic": {
+    "title": "File:High Street at the Ashley Road and Waterloo Road intersection, Epsom, 2024.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/af/High_Street_at_the_Ashley_Road_and_Waterloo_Road_intersection%2C_Epsom%2C_2024.jpg/960px-High_Street_at_the_Ashley_Road_and_Waterloo_Road_intersection%2C_Epsom%2C_2024.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:High_Street_at_the_Ashley_Road_and_Waterloo_Road_intersection,_Epsom,_2024.jpg",
+    "artist": "DimiTalen",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "caption": "道路交叉与车辆通行",
+    "file": "photo-traffic.webp"
+  },
+  "erosion": {
+    "title": "File:Soil erosion photo.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/da/Soil_erosion_photo.jpg/960px-Soil_erosion_photo.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Soil_erosion_photo.jpg",
+    "artist": "Idd ninga",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "caption": "水流侵蚀地表",
+    "file": "photo-erosion.webp"
+  },
+  "irrigation": {
+    "title": "File:Swaffham Bulbeck, Agricultural irrigation - geograph.org.uk - 881026.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/8/8f/Swaffham_Bulbeck%2C_Agricultural_irrigation_-_geograph.org.uk_-_881026.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Swaffham_Bulbeck,_Agricultural_irrigation_-_geograph.org.uk_-_881026.jpg",
+    "artist": "Nigel Cox",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "caption": "把水输送到农田",
+    "file": "photo-irrigation.webp"
+  },
+  "fire": {
+    "title": "File:Fireplace Burning.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d1/Fireplace_Burning.jpg/960px-Fireplace_Burning.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Fireplace_Burning.jpg",
+    "artist": "No machine-readable author provided. Belard~commonswiki assumed (based on copyright claims).",
+    "license": "Public domain",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia",
+    "caption": "壁炉里燃烧的木柴",
+    "file": "photo-fire.webp"
+  },
+  "compass": {
+    "title": "File:Aircraft Magnetic Compass.gif",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/e/e8/Aircraft_Magnetic_Compass.gif",
+    "source": "https://commons.wikimedia.org/wiki/File:Aircraft_Magnetic_Compass.gif",
+    "artist": "Yaronhad",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "caption": "辨别方位，确定方向",
+    "file": "photo-compass.webp"
+  },
+  "globe": {
+    "title": "File:The Earth seen from Apollo 17.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/960px-The_Earth_seen_from_Apollo_17.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The_Earth_seen_from_Apollo_17.jpg",
+    "artist": "NASA/Apollo 17 crew; taken by either Harrison Schmitt or Ron Evans",
+    "license": "Public domain",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia",
+    "caption": "地球：用经纬度确定位置",
+    "file": "photo-globe.webp"
+  },
+  "painting": {
+    "title": "File:Castle, towers and fortified towns - Detail af a Painting of unknown Neapolitan painter (2nf half 16th century) at Museum \"Quadreria dei Girolamini\" in Naples (30883596537).jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e5/Castle%2C_towers_and_fortified_towns_-_Detail_af_a_Painting_of_unknown_Neapolitan_painter_%282nf_half_16th_century%29_at_Museum_%22Quadreria_dei_Girolamini%22_in_Naples_%2830883596537%29.jpg/960px-thumbnail.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Castle,_towers_and_fortified_towns_-_Detail_af_a_Painting_of_unknown_Neapolitan_painter_(2nf_half_16th_century)_at_Museum_%22Quadreria_dei_Girolamini%22_in_Naples_(30883596537).jpg",
+    "artist": "Carlo Raso from Naples, Italy",
+    "license": "Public domain",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia",
+    "caption": "用画面描绘人物和场景",
+    "file": "photo-painting.webp"
+  },
+  "rocket": {
+    "title": "File:Apollo 11 Launch - GPN-2000-000630.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/16/Apollo_11_Launch_-_GPN-2000-000630.jpg/960px-Apollo_11_Launch_-_GPN-2000-000630.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Apollo_11_Launch_-_GPN-2000-000630.jpg",
+    "artist": "NASA",
+    "license": "Public domain",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia",
+    "caption": "推进力让火箭升空",
+    "file": "photo-rocket.webp"
+  },
+  "robot": {
+    "title": "File:KUKA Industrial Robot KR10 SCARA.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/2/2d/KUKA_Industrial_Robot_KR10_SCARA.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:KUKA_Industrial_Robot_KR10_SCARA.jpg",
+    "artist": "Jo Teichmann",
+    "license": "Public domain",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia",
+    "caption": "机械臂重复执行操作",
+    "file": "photo-robot.webp"
+  },
+  "chain": {
+    "title": "File:Metal chain (134253865).jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5f/Metal_chain_%28134253865%29.jpg/960px-Metal_chain_%28134253865%29.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Metal_chain_(134253865).jpg",
+    "artist": "Richard Leonard",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "caption": "链环彼此相连",
+    "file": "photo-chain.webp"
+  },
+  "butterfly": {
+    "title": "File:Orange flower orange butterfly wings - 6737319223.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cb/Orange_flower_orange_butterfly_wings_-_6737319223.jpg/960px-Orange_flower_orange_butterfly_wings_-_6737319223.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Orange_flower_orange_butterfly_wings_-_6737319223.jpg",
+    "artist": "Loving Jazz Photography",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "caption": "翅膀轻轻扇动",
+    "file": "photo-butterfly.webp"
+  },
+  "sunset": {
+    "title": "File:Don Puay river bank landscape at sunset.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cb/Don_Puay_river_bank_landscape_at_sunset.jpg/960px-Don_Puay_river_bank_landscape_at_sunset.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Don_Puay_river_bank_landscape_at_sunset.jpg",
+    "artist": "Basile Morin",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "caption": "太阳落下后的暮色",
+    "file": "photo-sunset.webp"
+  },
+  "snow": {
+    "title": "File:Snowflake macro photography 1.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d7/Snowflake_macro_photography_1.jpg/960px-Snowflake_macro_photography_1.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Snowflake_macro_photography_1.jpg",
+    "artist": "Alexey Kljatov",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "caption": "雪花的对称形状",
+    "file": "photo-snow.webp"
+  },
+  "crystal": {
+    "title": "File:Quartz, Tibet.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/14/Quartz%2C_Tibet.jpg/960px-Quartz%2C_Tibet.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Quartz,_Tibet.jpg",
+    "artist": "JJ Harrison (https://www.jjharrison.com.au/)",
+    "license": "CC BY-SA 2.5",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
+    "caption": "透明晶体的几何表面",
+    "file": "photo-crystal.webp"
+  }
+}

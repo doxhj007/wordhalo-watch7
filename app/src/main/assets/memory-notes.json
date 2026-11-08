@@ -1,0 +1,206 @@
+{
+  "environmental": {
+    "type": "构词",
+    "text": "environment 是“环境”；加 -al 变成“环境的”。"
+  },
+  "attorney": {
+    "type": "画面",
+    "text": "想象法庭里替当事人辩护的人：律师。"
+  },
+  "participant": {
+    "type": "词族",
+    "text": "participate 是“参与”；participant 指参与的人。"
+  },
+  "client": {
+    "type": "辨析",
+    "text": "client 常指接受专业服务的客户，如律师或咨询师的委托人。"
+  },
+  "context": {
+    "type": "画面",
+    "text": "把一句话放回前后文，才看清意思：上下文、背景。"
+  },
+  "category": {
+    "type": "画面",
+    "text": "给一堆物品分抽屉，每个抽屉就是一个类别。"
+  },
+  "assessment": {
+    "type": "词族",
+    "text": "assess 是“评估”；assessment 是评估这件事。"
+  },
+  "corporate": {
+    "type": "词族",
+    "text": "corporation 是“公司”；corporate 表示“公司的”。"
+  },
+  "analyst": {
+    "type": "词族",
+    "text": "把 analyst 和 analysis 一起记：分析者与分析。"
+  },
+  "criterion": {
+    "type": "辨析",
+    "text": "criterion 是单数“标准”；复数变成 criteria。"
+  },
+  "curriculum": {
+    "type": "画面",
+    "text": "把一整套课程排成学习路线：课程体系。"
+  },
+  "asset": {
+    "type": "画面",
+    "text": "能带来价值的东西是资产；有用的人也可称为宝贵财富。"
+  },
+  "transition": {
+    "type": "画面",
+    "text": "从旧状态走向新状态，中间这一段就是过渡。"
+  },
+  "coalition": {
+    "type": "画面",
+    "text": "几支队伍为了共同目标站在一起：联盟。"
+  },
+  "negotiation": {
+    "type": "词族",
+    "text": "negotiate 是“谈判”；negotiation 是谈判的过程。"
+  },
+  "deficit": {
+    "type": "辨析",
+    "text": "收入不够支出时是赤字；与 surplus“盈余”相对。"
+  },
+  "immigration": {
+    "type": "辨析",
+    "text": "immigration 侧重“移入”；emigration 侧重“移出”。"
+  },
+  "historic": {
+    "type": "辨析",
+    "text": "historic 强调“有历史意义”；historical 只是“与历史有关”。"
+  },
+  "controversial": {
+    "type": "词族",
+    "text": "controversy 是“争议”；controversial 是“有争议的”。"
+  },
+  "facilitate": {
+    "type": "画面",
+    "text": "给一条难走的路铺平，让事情更容易：促进、使便利。"
+  },
+  "vulnerable": {
+    "type": "辨析",
+    "text": "vulnerable 容易受攻击或伤害；fragile 更强调脆弱、易碎。"
+  },
+  "fluctuate": {
+    "type": "画面",
+    "text": "想象价格曲线一会上、一会下：波动。"
+  },
+  "illuminate": {
+    "type": "辨析",
+    "text": "灯光照亮房间；解释也可以“照亮”问题，让人明白。"
+  },
+  "equilibrium": {
+    "type": "画面",
+    "text": "天平两边稳稳持平：平衡、均衡。"
+  },
+  "coherent": {
+    "type": "画面",
+    "text": "每句话都接得上，像一串连好的珠子：连贯、有条理。"
+  },
+  "transient": {
+    "type": "辨析",
+    "text": "transient 短暂、很快消失；perpetual 持续不断。"
+  },
+  "anonymous": {
+    "type": "画面",
+    "text": "信上没有署名：匿名、无名。"
+  },
+  "competence": {
+    "type": "辨析",
+    "text": "competence 是胜任工作的能力；competition 是竞争。"
+  },
+  "empirical": {
+    "type": "画面",
+    "text": "先观察、做实验，再根据证据判断：实证的。"
+  },
+  "disrupt": {
+    "type": "画面",
+    "text": "正在顺畅进行的活动被打断：扰乱、中断。"
+  },
+  "correlate": {
+    "type": "画面",
+    "text": "两条曲线一起变化：相互关联；有关联不等于有因果。"
+  },
+  "forge": {
+    "type": "辨析",
+    "text": "可指锻造金属、伪造文件，也可指建立关系。"
+  },
+  "haunt": {
+    "type": "画面",
+    "text": "某段回忆总在脑海里出现：萦绕心头。"
+  },
+  "evoke": {
+    "type": "画面",
+    "text": "熟悉的气味一下带回旧日回忆：唤起。"
+  },
+  "embody": {
+    "type": "画面",
+    "text": "抽象想法在一个具体的人或物上表现出来：体现。"
+  },
+  "induce": {
+    "type": "画面",
+    "text": "一个因素促使某种变化发生：引起、诱使。"
+  },
+  "uphold": {
+    "type": "画面",
+    "text": "把一面代表原则的旗帜稳稳举住：维护、支持。"
+  },
+  "reassure": {
+    "type": "画面",
+    "text": "对担心的人解释清楚，让他放下心：使安心。"
+  },
+  "obsession": {
+    "type": "辨析",
+    "text": "想法总占据脑海，难以放下：痴迷、执念。"
+  },
+  "predecessor": {
+    "type": "辨析",
+    "text": "predecessor 是前任；successor 是接任者。"
+  },
+  "successor": {
+    "type": "辨析",
+    "text": "接过前任的岗位继续做：接任者、继承者。"
+  },
+  "preservation": {
+    "type": "词族",
+    "text": "preserve 是“保护、保存”；preservation 是保护这件事。"
+  },
+  "persistent": {
+    "type": "辨析",
+    "text": "既可形容坚持不懈的人，也可形容持续存在的问题。"
+  },
+  "authentic": {
+    "type": "画面",
+    "text": "确认不是仿品，而是真品：真实、正宗。"
+  },
+  "concession": {
+    "type": "画面",
+    "text": "谈判时往后退一步：让步；也可指获得的特许权。"
+  },
+  "humanitarian": {
+    "type": "画面",
+    "text": "救灾时先关心人的生命和处境：人道主义的。"
+  },
+  "literacy": {
+    "type": "词族",
+    "text": "基本含义是读写能力；digital literacy 指数字素养。"
+  },
+  "parameter": {
+    "type": "画面",
+    "text": "调设备时设定一组数值：参数；也可指限定范围。"
+  },
+  "hierarchy": {
+    "type": "画面",
+    "text": "组织结构从上到下一层层排列：层级、等级制度。"
+  },
+  "nutrient": {
+    "type": "辨析",
+    "text": "nutrient 是营养物质；nutrition 是营养或营养学。"
+  },
+  "nutrition": {
+    "type": "辨析",
+    "text": "nutrition 指营养；nutrient 指具体的营养物质。"
+  }
+}
