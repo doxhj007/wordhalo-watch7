@@ -1,15 +1,97 @@
 {
-  "source": "https://github.com/skywind3000/ECDICT",
-  "license": "MIT",
-  "source_sha256": "d1ecbdf9ee2b920afb6f430ca6b6bb9f559588cf0dff86e04bd255f9390843cc",
-  "total": 1945,
-  "cet4": 0,
-  "cet6": 1945,
-  "cet6_extension": 1945,
-  "illustrated": 55,
-  "hand_edited_meanings": 136,
-  "excluded_no_short_meaning": [],
-  "note": "考试标记来自 ECDICT，不声称为官方完整大纲；短释义用于快速记忆，省略例句和部分义项。",
-  "wordlist_status": "provisional_ecdict_cet6_extension_not_baicizhan_2551",
-  "v020_common_sense_corrections": 68
+  "status": "six_separate_branded_books",
+  "union_headwords": 7981,
+  "books": [
+    {
+      "key": "cet4_star",
+      "bit": 1,
+      "level": 4,
+      "brand": "星火",
+      "title": "四级词汇必背乱序版",
+      "edition": "2014年3月第1版",
+      "headwords": 2261,
+      "first": "inherent",
+      "last": "unexpected"
+    },
+    {
+      "key": "cet4_new_oriental",
+      "bit": 2,
+      "level": 4,
+      "brand": "新东方",
+      "title": "四级词汇正序版",
+      "edition": "2013年11月第1版",
+      "headwords": 4447,
+      "first": "abandon",
+      "last": "zoo"
+    },
+    {
+      "key": "cet4_flash",
+      "bit": 4,
+      "level": 4,
+      "brand": "闪过",
+      "title": "四级词汇闪过",
+      "edition": "公开整理词序",
+      "headwords": 5821,
+      "first": "corresponding",
+      "last": "worksheet"
+    },
+    {
+      "key": "cet6_star",
+      "bit": 8,
+      "level": 6,
+      "brand": "星火",
+      "title": "六级巧记速记乱序版",
+      "edition": "2009年7月第1版",
+      "headwords": 2999,
+      "first": "same",
+      "last": "commute"
+    },
+    {
+      "key": "cet6_new_oriental",
+      "bit": 16,
+      "level": 6,
+      "brand": "新东方",
+      "title": "六级词汇正序版（红宝书）",
+      "edition": "2013年8月第1版",
+      "headwords": 2744,
+      "first": "abandon",
+      "last": "wound"
+    },
+    {
+      "key": "cet6_flash",
+      "bit": 32,
+      "level": 6,
+      "brand": "闪过",
+      "title": "六级词汇闪过乱序版",
+      "edition": "公开整理词序",
+      "headwords": 5325,
+      "first": "bias",
+      "last": "henceforth"
+    }
+  ],
+  "sources": [
+    {
+      "name": "DictionaryData",
+      "url": "https://github.com/LinXueyuanStdio/DictionaryData",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "English Vocabulary Vault",
+      "url": "https://github.com/lilinji/English",
+      "license": "repository non-commercial study notice"
+    },
+    {
+      "name": "ECDICT",
+      "url": "https://github.com/skywind3000/ECDICT",
+      "license": "MIT"
+    }
+  ],
+  "sha256": {
+    "dictionary_book": "774ec1494e74841a4c39d00c0354f849ae238359eb30df331d2dc261fbb6abb0",
+    "dictionary_relation": "db2ae44cc970dfb21d40f397c27dc26c1767381ef7b4bfce2221c1ae9fe527cd",
+    "cet4_flash": "1e3ccde846454533a500ba5c97d6741bdc1a377beafe0a169a16bbf38a8df8ab",
+    "cet6_flash": "2c69944f35d6017de5dec2fdb71414dda2bd969d4e5c7676330eaa491fe7c72b",
+    "ecdict": "d1ecbdf9ee2b920afb6f430ca6b6bb9f559588cf0dff86e04bd255f9390843cc"
+  },
+  "note": "六本书保留独立成员和独立顺序；words.tsv 仅为节省安装空间的去重存储。重合词共用个人记忆进度。释义优先采用 ECDICT 短释义，词书用于成员和词序。"
 }

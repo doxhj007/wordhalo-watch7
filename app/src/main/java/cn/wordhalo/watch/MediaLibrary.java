@@ -19,8 +19,7 @@ final class MediaLibrary {
     static final long CACHE_LIMIT=48L*1024*1024;
     final Context context;final SharedPreferences prefs;final File cache;
     final Handler main=new Handler(Looper.getMainLooper());
-    final ExecutorService requests=Executors.newFixedThreadPool(2);
-    final ExecutorService disconnects=Executors.newCachedThreadPool();
+    ExecutorService requests,disconnects;
     final Map<String,JSONObject> phones=new ConcurrentHashMap<>();
     final Map<String,Long> retryAfter=new ConcurrentHashMap<>();
     final LruCache<String,Bitmap> bitmaps=new LruCache<>(8);
@@ -36,14 +35,19 @@ final class MediaLibrary {
         volatile boolean canceled;volatile Future<?> future;HttpURLConnection connection;
         synchronized void attach(HttpURLConnection c)throws InterruptedIOException{check();connection=c;}
         synchronized void detach(HttpURLConnection c){if(connection==c)connection=null;}
-        void check()throws InterruptedIOException{if(canceled||closed||Thread.currentThread().isInterrupted())throw new InterruptedIOException();}
+        void check()throws InterruptedIOException{if(canceled||closed||!foreground||Thread.currentThread().isInterrupted())throw new InterruptedIOException();}
         void cancel(){HttpURLConnection c;synchronized(this){canceled=true;c=connection;connection=null;}Future<?> f=future;if(f!=null)f.cancel(true);
             // Disconnect may block on some implementations; never do it on the UI thread.
-            if(c!=null)try{disconnects.execute(c::disconnect);}catch(RejectedExecutionException ignored){}
+            if(c!=null)disconnect(c);
         }
         boolean current(){return !canceled&&!closed&&foreground;}
     }
     MediaLibrary(Context c,SharedPreferences p){context=c;prefs=p;cache=new File(c.getCacheDir(),"media-v2");cache.mkdirs();audio=c.getSystemService(AudioManager.class);}
+    synchronized ExecutorService requestPool(){if(closed||!foreground)return null;if(requests==null||requests.isShutdown())requests=Executors.newFixedThreadPool(2);return requests;}
+    synchronized ExecutorService disconnectPool(){if(disconnects==null||disconnects.isShutdown())disconnects=Executors.newCachedThreadPool();return disconnects;}
+    void disconnect(HttpURLConnection connection){try{disconnectPool().execute(connection::disconnect);}catch(RejectedExecutionException ignored){try{connection.disconnect();}catch(Exception ignoredAgain){}}}
+    void enterForeground(){if(!closed)foreground=true;}
+    void leaveForeground(){foreground=false;pageChanged();ExecutorService requestPool,disconnectPool;synchronized(this){requestPool=requests;requests=null;disconnectPool=disconnects;disconnects=null;}if(requestPool!=null)requestPool.shutdownNow();if(disconnectPool!=null)disconnectPool.shutdown();}
     void load()throws Exception{words=asset("word-media.json");scenes=asset("scenes.json");notes=asset("memory-notes.json");}
     JSONObject asset(String name)throws Exception{try(InputStream in=context.getAssets().open(name)){return new JSONObject(new String(read(in,3_000_000),StandardCharsets.UTF_8));}}
     JSONObject word(String id){JSONObject w=words.optJSONObject(id);return w==null?new JSONObject():w;}
@@ -62,7 +66,7 @@ final class MediaLibrary {
         if(phoneTask!=null)phoneTask.cancel();if(closed)return;
         if(phones.containsKey(id)){callback.accept(true);return;}
         if(SystemClock.elapsedRealtime()<retryAfter.getOrDefault(id,0L)){callback.accept(false);return;}
-        Request task=new Request();phoneTask=task;task.future=requests.submit(()->{boolean ok=false;try{
+        ExecutorService pool=requestPool();if(pool==null)return;Request task=new Request();phoneTask=task;try{task.future=pool.submit(()->{boolean ok=false;try{
             String url="https://dict.youdao.com/jsonapi?q="+encode(id)+"&dicts="+encode("{\"count\":1,\"dicts\":[[\"ec\"]]}");
             File f=download(url,300_000,task);JSONObject data=new JSONObject(new String(fileBytes(f,300_000),StandardCharsets.UTF_8));
             JSONObject entry=data.getJSONObject("ec").getJSONArray("word").getJSONObject(0);
@@ -70,12 +74,12 @@ final class MediaLibrary {
             if(!head.equalsIgnoreCase(id))throw new IOException("Different dictionary entry");
             JSONObject pair=new JSONObject();pair.put("uk",entry.optString("ukphone"));pair.put("us",entry.optString("usphone"));task.check();phones.put(id,pair);ok=true;
         }catch(Exception ignored){if(!task.canceled&&!Thread.currentThread().isInterrupted())retryAfter.put(id,SystemClock.elapsedRealtime()+60_000);}
-        final boolean found=ok;main.post(()->{if(task.current()&&phoneTask==task)callback.accept(found);});});
+        final boolean found=ok;main.post(()->{if(task.current()&&phoneTask==task)callback.accept(found);});});}catch(RejectedExecutionException ignored){task.cancel();if(phoneTask==task)phoneTask=null;}
     }
     void highPhoto(String id,Consumer<Bitmap> callback){
         if(photoTask!=null)photoTask.cancel();String url=scene(id).optString("url");if(closed||url.isEmpty())return;
-        Request task=new Request();photoTask=task;task.future=requests.submit(()->{Bitmap b=null;try{File f=download(url,1_500_000,task);BitmapFactory.Options bounds=new BitmapFactory.Options();bounds.inJustDecodeBounds=true;BitmapFactory.decodeFile(f.getPath(),bounds);if(bounds.outWidth>0&&bounds.outWidth<=2000&&bounds.outHeight>0&&bounds.outHeight<=2000){b=BitmapFactory.decodeFile(f.getPath());if(b==null)f.delete();}}catch(Exception ignored){}
-            final Bitmap photo=b;main.post(()->{if(task.current()&&photoTask==task&&photo!=null)callback.accept(photo);});});
+        ExecutorService pool=requestPool();if(pool==null)return;Request task=new Request();photoTask=task;try{task.future=pool.submit(()->{Bitmap b=null;try{File f=download(url,1_500_000,task);BitmapFactory.Options bounds=new BitmapFactory.Options();bounds.inJustDecodeBounds=true;BitmapFactory.decodeFile(f.getPath(),bounds);if(bounds.outWidth>0&&bounds.outWidth<=2000&&bounds.outHeight>0&&bounds.outHeight<=2000){b=BitmapFactory.decodeFile(f.getPath());if(b==null)f.delete();}}catch(Exception ignored){}
+            final Bitmap photo=b;main.post(()->{if(task.current()&&photoTask==task&&photo!=null)callback.accept(photo);});});}catch(RejectedExecutionException ignored){task.cancel();if(photoTask==task)photoTask=null;}
     }
     static String voiceUrl(String id,int accent){return "https://dict.youdao.com/dictvoice?audio="+encode(id)+"&type="+(accent==1?1:2);}
     /** Streams directly through Android; no audio file is read from or written to app cache. */
@@ -101,7 +105,7 @@ final class MediaLibrary {
     }
     boolean currentSound(MediaPlayer mp,int token){return player==mp&&token==soundToken&&foreground&&!closed;}
     void stop(){soundToken++;if(soundTimeout!=null){main.removeCallbacks(soundTimeout);soundTimeout=null;}if(player!=null){try{player.release();}catch(Exception ignored){}player=null;}if(audio!=null&&focus!=null){audio.abandonAudioFocusRequest(focus);focus=null;}}
-    void pageChanged(){stop();if(phoneTask!=null){phoneTask.cancel();phoneTask=null;}if(photoTask!=null){photoTask.cancel();photoTask=null;}((ThreadPoolExecutor)requests).purge();}
+    void pageChanged(){stop();if(phoneTask!=null){phoneTask.cancel();phoneTask=null;}if(photoTask!=null){photoTask.cancel();photoTask=null;}ExecutorService pool=requests;if(pool instanceof ThreadPoolExecutor)((ThreadPoolExecutor)pool).purge();}
     /** Upgrade cleanup is limited to the old hashed UK/US audio files for this vocabulary. */
     void discardLegacyAudio(List<Engine.Word> vocabulary){
         if(prefs.getBoolean("streamingAudioCleanup",false))return;boolean ok=true;
@@ -109,9 +113,9 @@ final class MediaLibrary {
         try{for(Engine.Word word:vocabulary){if(remaining.isEmpty())break;for(int kind=1;kind<=2;kind++){String name=hash(voiceUrl(word.id,kind));for(String suffix:new String[]{"",".part"})if(remaining.remove(name+suffix)){File f=new File(cache,name+suffix);if(f.exists()&&!f.delete())ok=false;}}}}catch(Exception e){ok=false;}
         if(ok)prefs.edit().putBoolean("streamingAudioCleanup",true).apply();
     }
-    void close(){closed=true;foreground=false;pageChanged();requests.shutdownNow();disconnects.shutdown();main.removeCallbacksAndMessages(null);bitmaps.evictAll();}
+    void close(){closed=true;leaveForeground();main.removeCallbacksAndMessages(null);bitmaps.evictAll();}
     long cacheBytes(){long n=0;File[] files=cache.listFiles();if(files!=null)for(File f:files)n+=f.length();return n;}
-    void clearCache(Consumer<Boolean> done){pageChanged();cacheGeneration++;requests.submit(()->{boolean ok=true;synchronized(this){File[] fs=cache.listFiles();if(fs!=null)for(File f:fs)ok=f.delete()&&ok;phones.clear();retryAfter.clear();}boolean result=ok;main.post(()->{if(!closed)done.accept(result);});});}
+    void clearCache(Consumer<Boolean> done){pageChanged();cacheGeneration++;ExecutorService pool=requestPool();if(pool==null){done.accept(false);return;}try{pool.submit(()->{boolean ok=true;synchronized(this){File[] fs=cache.listFiles();if(fs!=null)for(File f:fs)ok=f.delete()&&ok;phones.clear();retryAfter.clear();}boolean result=ok;main.post(()->{if(!closed&&foreground)done.accept(result);});});}catch(RejectedExecutionException ignored){done.accept(false);}}
     File download(String url,int max)throws Exception{return download(url,max,new Request());}
     File download(String url,int max,Request task)throws Exception{
         final int generation=cacheGeneration;task.check();if(url.contains("/dictvoice?"))throw new IOException("Audio must stream directly");File target=new File(cache,hash(url));

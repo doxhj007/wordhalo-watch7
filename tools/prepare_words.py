@@ -1,5 +1,10 @@
-"""Build compact offline assets from ECDICT's MIT-licensed CSV. Python stdlib only."""
+"""Legacy ECDICT builder for old releases.
+
+WordHalo 0.22 and later use prepare_branded_books.py so each concrete book
+keeps its verified membership and source order.
+"""
 import csv,re,json,sys,pathlib,hashlib,collections
+if len(sys.argv)<2:raise SystemExit('Legacy builder. Use prepare_branded_books.py for v0.22+ assets.')
 source=pathlib.Path(sys.argv[1]); dest=pathlib.Path(__file__).resolve().parents[1]/'app/src/main/assets'
 # Optional exact user word list: one English headword per line. Never fill to a
 # desired number with unrelated words, and fail rather than silently omit entries.

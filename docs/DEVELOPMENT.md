@@ -1,8 +1,8 @@
-# Word Halo / 词间 0.21.0
+# Word Halo / 词间 0.22.0
 
-Personal native Wear OS vocabulary app for Samsung Galaxy Watch7 44mm, 480×480, One UI Watch 8 / Wear OS 6 / API 36. Java 11, platform Views, SQLite. No runtime libraries, ads or account system. Permissions: VIBRATE and INTERNET. Package `cn.wordhalo.watch`, versionCode 6.
+Personal native Wear OS vocabulary app for Samsung Galaxy Watch7 44mm, 480×480, One UI Watch 8 / Wear OS 6 / API 36. Java 11, platform Views, SQLite. No runtime libraries, ads or account system. Permissions: VIBRATE and INTERNET. Package `cn.wordhalo.watch`, versionCode 7.
 
-The provisional vocabulary is still **1945 ECDICT CET6-extension words**, not the requested 百词斩六级核心（过考版）2551-word edition. The app and guide disclose this gap. Do not relabel it as that book.
+Version 0.22 contains six concrete, separate CET4/CET6 books: Star, New Oriental and Flash for each level. The active book is always one exact book bit, never a combined mask. The requested 百词斩六级核心（过考版）2551-word edition remains excluded until its exact list and order can be verified.
 
 ## Build
 
@@ -16,13 +16,13 @@ This runs aapt2, javac, D8, zipalign and apksigner and verifies the result. **Re
 
 ## Media and licenses
 
-`assets/scenes.json` pins 83 reviewed Commons images and their authors, source pages and licenses. `assets/word-media.json` maps 339 words to related scenes and provides 22 authored near-sound mnemonics plus generic IPA. Multiple words may share one scene. Images are displayed as associations, not literal definitions or etymology. See ../PHOTO-CREDITS.md. The app shows attribution in each picture's detail pages.
+`assets/scenes.json` pins 83 reviewed Commons images and their authors, source pages and licenses. Within the current 7981-word union, `assets/word-media.json` maps 268 words to related scenes and provides 15 authored near-sound mnemonics, 50 memory notes and generic IPA. Multiple words may share one scene. Images are displayed as associations, not literal definitions or etymology. See ../PHOTO-CREDITS.md. The app shows attribution in each picture's detail pages.
 
 Photos retain their original licenses (mostly CC BY / CC BY-SA, plus public-domain works); the source code license does not replace them. Bundled photos were resized and encoded to WebP. The ECDICT data license is included in app/src/main/assets/ECDICT-LICENSE.txt. Photo licenses are listed separately. No separate source-code license has been selected for this private project. The APK includes no redistributed third-party pronunciation recordings.
 
 `tools/prepare_media.py` needs Pillow and an ECDICT CSV in the indicated work directory. It uses pinned scenes when present. Newly searched replacements require manual contact-sheet inspection; search results are NOT automatically shown in the app. Generic IPA is from ECDICT. UK/US IPA is retrieved on demand from the public Youdao web dictionary endpoint; it is never fabricated by transforming generic IPA.
 
-Only explicit play taps call MediaPlayer. Pronunciation streams directly from the HTTPS UK/US URL with prepareAsync; no audio download or persistent audio cache is used. There is no prefetch UI. Leaving the page, switching words or pausing releases the player, abandons audio focus and invalidates late callbacks. A 15-second preparation timeout provides an explicit retry path. Each replay uses the remote source. The system media stack may buffer the active stream; the app never saves a recording. An upgrade migration removes only known legacy hashed audio files and their partials, preserving progress, images and phonetics.
+Only explicit play taps start any pronunciation network work or call MediaPlayer. Study rendering and opening the sound card use bundled generic IPA without contacting the network. Pronunciation streams directly from the HTTPS UK/US URL with prepareAsync; no audio download or persistent audio cache is used. There is no prefetch UI. Leaving the page, switching words or entering `onPause`, `onStop` or `onDestroy` releases the player, cancels tracked HTTP connections, destroys request pools, abandons audio focus and invalidates late callbacks. A 15-second preparation timeout provides an explicit retry path. Each replay uses the remote source. The system media stack may buffer the active stream; the app never saves a recording. An upgrade migration removes only known legacy hashed audio files and their partials, preserving progress, images and phonetics.
 
 Photos and phonetic metadata retain the bounded 48 MiB cache. Request-scoped cancellation disconnects slow metadata/photo connections off the UI thread; canceled callbacks cannot update subsequent pages. Declared response lengths are checked before files are committed. Public services can be unavailable. No learning progress is uploaded, and no phone companion, wake lock or background service is required.
 
@@ -30,14 +30,13 @@ See https://developer.android.com/reference/android/media/MediaPlayer for the pl
 
 ## Word data
 
-TSV columns remain headword, short Chinese meaning, POS, bank bitmask, legacy illustration scene and hint, preserving the original word IDs and existing progress tables. Schema 2 adds a separate daily practice table. The new image catalog is separate; the 55 legacy vector tags in vocabulary-info.json are not the active photo count. ECDICT license and source hash are embedded in assets.
+`words.tsv` stores the 7981-headword union once; its columns are headword, short Chinese meaning, POS, legacy bank bitmask, illustration scene, hint and concrete-book membership mask. `book-orders.tsv` stores each book bit and ordered headword, preserving all six independent memberships and source orders. Schema 2 and existing word-keyed progress remain unchanged, so overlapping books can share personal memory state while showing separate totals and schedules.
 
 ```text
-python tools/prepare_words.py path/to/ecdict.csv
-python tools/prepare_words.py path/to/ecdict.csv exact-2551.txt
+python tools/prepare_branded_books.py --dictionary-root path/to/DictionaryData --cet4-flash path/to/cet4.xlsx --cet6-flash path/to/cet6.xlsx --ecdict path/to/ecdict.csv
 ```
 
-The optional second file must be a verified UTF-8 list with exactly 2551 distinct headwords. The tool checks count and missing definitions before replacing the vocabulary. This is a developer build step, not account sync. A future replacement also needs media and saved-session ID validation before release.
+The generator validates every expected book count, keeps source order, hashes all inputs and writes `vocabulary-info.json`. Full source and license details are in ../VOCABULARY-SOURCES.md. `prepare_words.py` is retained only for reproducing older single-list releases and must not generate 0.22+ assets.
 
 ## Interaction
 
@@ -57,6 +56,12 @@ The reveal button becomes “再想想” and “下一词”; hiding the defini
 
 The fourth dashboard page draws an allocation-free seven-day forecast and reports exact due counts for the next 24 hours and three days. Its page, session and return origin survive Activity recreation. No new database column or migration is required, so existing progress remains compatible.
 
+## Version 0.22
+
+`BookCatalog` defines six exact books and `Store.bookWords` reconstructs each ordered list from `book-orders.tsv`. Book selection is single-choice, split into CET4 and CET6 tabs, and applies to the next group. Progress dashboards, new-word limits, due counts, flashcards and memory-note lists are scoped to the active book. Overlapping headwords retain their word-keyed memory state.
+
+Saved session JSON now stores one `book` bit. Old sessions infer a default book from their legacy level; sessions containing missing IDs or invalid positions are discarded during load while progress, favorites and settings remain intact.
+
 ## Version 0.20
 
 Session configuration supports 5/10/20-word groups and an optional recall mode. Recall state and reveal state are persisted with backward-compatible JSON defaults. Grading before reveal is rejected in both the activity and engine. Immediate retries still cannot inflate first-attempt results. Changes to preferences only affect the next group.
@@ -65,16 +70,16 @@ Favorites persist as a copied SharedPreferences string set, independently of sch
 
 SQLite schema 2 adds `practice(day,word,correct)` with a composite primary key. Each graded first attempt is committed in the same transaction as progress/session, using conflict-ignore insertion for idempotent daily records. Legacy progress is NOT synthesized into daily history. The original progress/state tables and word IDs are preserved; tests open a real schema-1 database and verify its migration.
 
-`assets/memory-notes.json` provides 51 authored construction, contrast and imagery cues; `VOCABULARY-REVIEW.json` records 68 reviewed meaning/POS corrections. The original ECDICT provenance is retained. These corrections address found issues rather than claiming a complete dictionary audit. The prepare_words.py override source is updated so corrections survive a vocabulary rebuild.
+`assets/memory-notes.json` contributes 50 construction, contrast and imagery cues present in the current union; `VOCABULARY-REVIEW.json` records 68 reviewed meaning/POS corrections. The original ECDICT provenance is retained. These corrections address found issues rather than claiming a complete dictionary audit. `prepare_branded_books.py` applies the reviewed overrides during a vocabulary rebuild.
 
 ## Tests
 
 ```text
 javac -encoding UTF-8 -d test-classes app/src/main/java/cn/wordhalo/watch/Engine.java tests/EngineTest.java
-java -cp test-classes cn.wordhalo.watch.EngineTest app/src/main/assets/words.tsv
+java -cp test-classes cn.wordhalo.watch.EngineTest app/src/main/assets/words.tsv app/src/main/assets/book-orders.tsv
 ```
 
-EngineTest checks 10025 assertions across all vocabulary choices and 80 complete randomized sessions. DeviceFlowTest uses Robolectric 4.16.1, JUnit 4.13.2 and native Android 16 graphics. Its 32 tests cover personal retention decay, threshold and exact due forecasting, progress recovery, native photo decoding, long answer/IPA layout, focus interpolation, accumulated rotary scrolling, haptic policy, remote playback source selection, replay, completion, timeout/error handling, stale prepared callbacks, scoped request cancellation and legacy audio cleanup isolation, filtered/shuffled bookmarks, empty scopes, current-quiz preservation, long mistake contrasts, completed-group review and nested-page Activity recreation, self-rated recall, batch sizes, schema-1 migration, daily deduplication, favorites, independent touch levels, all authored note layouts and large system fonts. All transport and player tests use controlled fakes; they make no live network requests and do not claim physical-watch connectivity validation.
+EngineTest checks 63830 assertions across the exact membership/order of all six books, vocabulary choices and 80 complete randomized sessions. DeviceFlowTest uses Robolectric 4.16.1, JUnit 4.13.2 and native Android 16 graphics. Its 35 tests add independent book selection, next-group switching, invalid legacy-session recovery, zero automatic study traffic and full background network shutdown to the existing coverage for retention forecasting, database migration, native photo decoding, layout, haptics, scoped review and controlled streaming failures. All transport and player tests use controlled fakes; they make no live network requests and do not claim physical-watch connectivity validation.
 
 The supplied screenshots are actual native View renders in the desktop Android test runtime. Physical vibration strength, Samsung touch-bezel event delivery and Bluetooth-network behavior still require the user's real watch. See 使用说明.md and validation.json in this directory for delivery checks.
 

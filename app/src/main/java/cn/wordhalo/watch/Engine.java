@@ -11,8 +11,12 @@ public final class Engine {
     public static class Word {
         public final String id, meaning, pos, scene, hint;
         public final int bank;
+        public final long books;
         public Word(String id,String meaning,String pos,int bank,String scene,String hint) {
-            this.id=id;this.meaning=meaning;this.pos=pos;this.bank=bank;this.scene=scene;this.hint=hint;
+            this(id,meaning,pos,bank,scene,hint,(bank&1)!=0?BookCatalog.CET4_STAR:BookCatalog.CET6_STAR);
+        }
+        public Word(String id,String meaning,String pos,int bank,String scene,String hint,long books) {
+            this.id=id;this.meaning=meaning;this.pos=pos;this.bank=bank;this.scene=scene;this.hint=hint;this.books=books;
         }
     }
     public static class Progress {
@@ -26,6 +30,7 @@ public final class Engine {
         public ArrayList<String> queue=new ArrayList<>(), learn=new ArrayList<>(), options=new ArrayList<>();
         public HashSet<String> answered=new HashSet<>(), retried=new HashSet<>();
         public int at=0, learning=0, correct=0, bank=6, focus=-1;
+        public long books=BookCatalog.defaultMask();
         public boolean feedback=false, lastCorrect=false, mistakesOnly=false, recall=false, revealed=false;
         public String chosen="";
         public long seed;
@@ -35,17 +40,23 @@ public final class Engine {
     }
     public static String today(long now){return java.time.Instant.ofEpochMilli(now).atZone(ZoneId.systemDefault()).toLocalDate().toString();}
     public static boolean inBank(Word w,int bank){return bank==0 || (bank==6?w.bank==2:(w.bank&1)!=0);}
+    public static boolean inBooks(Word w,long books){return (w.books&books)!=0;}
     public static int studiedToday(Map<String,Progress> all,long now){String d=today(now);int n=0;for(Progress p:all.values())if(d.equals(p.lastDay))n++;return n;}
     public static int newToday(Map<String,Progress> all,long now){String d=today(now);int n=0;for(Progress p:all.values())if(d.equals(p.firstDay))n++;return n;}
     public static Session start(List<Word> words,Map<String,Progress> progress,int bank,int newLimit,boolean wrong,long now) {
         return start(words,progress,bank,newLimit,wrong,now,10,false);
     }
     public static Session start(List<Word> words,Map<String,Progress> progress,int bank,int newLimit,boolean wrong,long now,int batchSize,boolean recall) {
+        long books=bank==6?BookCatalog.CET6_STAR:BookCatalog.CET4_STAR;
+        Session s=start(words,progress,books,newLimit,wrong,now,batchSize,recall);s.bank=bank;return s;
+    }
+    public static Session start(List<Word> words,Map<String,Progress> progress,long books,int newLimit,boolean wrong,long now,int batchSize,boolean recall) {
         batchSize=Math.max(1,Math.min(20,batchSize));
-        Session s=new Session();s.seed=now;s.bank=bank;s.mistakesOnly=wrong;
+        books=BookCatalog.sanitize(books);
+        Session s=new Session();s.seed=now;s.books=books;s.mistakesOnly=wrong;
         s.recall=recall;
         ArrayList<Word> due=new ArrayList<>(),fresh=new ArrayList<>();
-        for(Word w:words){if(!inBank(w,bank))continue;Progress p=progress.get(w.id);
+        for(Word w:words){if(!inBooks(w,books))continue;Progress p=progress.get(w.id);
             if(wrong){if(p!=null&&p.trouble)due.add(w);}
             else if(p==null)fresh.add(w);else if(p.due<=now)due.add(w);
         }
@@ -59,14 +70,17 @@ public final class Engine {
         return s;
     }
     public static List<String> choices(Word target,List<Word> words,long seed) {
+        return choices(target,words,BookCatalog.ALL_MASK,seed);
+    }
+    public static List<String> choices(Word target,List<Word> words,long books,long seed) {
         ArrayList<Word> candidates=new ArrayList<>();
-        for(Word w:words)if(!w.id.equals(target.id)&&w.pos.equals(target.pos))candidates.add(w);
+        for(Word w:words)if(inBooks(w,books)&&!w.id.equals(target.id)&&w.pos.equals(target.pos))candidates.add(w);
         Collections.shuffle(candidates,new Random(seed));
         ArrayList<String> result=new ArrayList<>();HashSet<String> meanings=new HashSet<>();
         result.add(target.id);meanings.add(target.meaning);
         String targetStem=stem(target.id);
         for(Word w:candidates){if(result.size()==3)break;if(!stem(w.id).equals(targetStem)&&disjoint(w.meaning,target.meaning)&&meanings.add(w.meaning))result.add(w.id);}
-        if(result.size()<3)for(Word w:words){if(result.size()==3)break;if(!w.id.equals(target.id)&&meanings.add(w.meaning)&&disjoint(w.meaning,target.meaning))result.add(w.id);}
+        if(result.size()<3)for(Word w:words){if(result.size()==3)break;if(inBooks(w,books)&&!w.id.equals(target.id)&&meanings.add(w.meaning)&&disjoint(w.meaning,target.meaning))result.add(w.id);}
         Collections.shuffle(result,new Random(seed^0xABCDEF));
         return result;
     }
