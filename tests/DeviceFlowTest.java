@@ -209,7 +209,14 @@ public class DeviceFlowTest {
     @Test public void dailyHistoryCountsEachWordOnceAndKeepsItsFirstResult()throws Exception{
         a.start(false);a.session.learning=a.session.learn.size();a.render();String id=a.session.current();a.answer((a.session.options.indexOf(id)+1)%3);String today=Engine.today(System.currentTimeMillis());int[] first=a.store.practice().get(today);assertArrayEquals(new int[]{1,0},first);
         Engine.Progress p=a.progress.get(id);p.trouble=false;p.stage=1;p.attempts++;a.store.save(a.session,p);assertArrayEquals(new int[]{1,0},a.store.practice().get(today));a.store.save(a.session,p);assertArrayEquals(new int[]{1,0},a.store.practice().get(today));
-        a.screen="stats";a.statsPage=0;shot("29-weekly");a.rotate(1);assertEquals(1,a.statsPage);shot("30-progress");a.rotate(1);assertEquals(2,a.statsPage);shot("31-schedule");a.rotate(1);assertEquals(0,a.statsPage);
+        a.screen="stats";a.statsPage=0;shot("29-weekly");a.rotate(1);assertEquals(1,a.statsPage);shot("30-progress");a.rotate(1);assertEquals(2,a.statsPage);a.rotate(1);assertEquals(3,a.statsPage);shot("31-schedule");a.rotate(1);assertEquals(0,a.statsPage);
+    }
+    @Test public void forgettingCurveForecastRestoresWithoutChangingTheGroup()throws Exception{
+        a.start(false);a.session.learning=a.session.learn.size();a.render();a.answer(a.session.options.indexOf(a.session.current()));String before=Store.encode(a.session).toString();
+        a.statsReturn="session";a.screen="stats";a.statsPage=2;layout();MemoryCurveView curve=null;for(int i=0;i<a.root.getChildCount();i++)if(a.root.getChildAt(i) instanceof MemoryCurveView)curve=(MemoryCurveView)a.root.getChildAt(i);
+        assertNotNull(curve);assertTrue(curve.getContentDescription().toString().contains("百分之85"));assertEquals(before,Store.encode(a.session).toString());shot("35-forgetting-curve");
+        android.os.Bundle state=new android.os.Bundle();controller.pause().saveInstanceState(state).stop().destroy();controller=null;controller=Robolectric.buildActivity(MainActivity.class).setup(state);a=controller.get();for(int i=0;i<100&&!a.ready;i++){Thread.sleep(20);shadowOf(Looper.getMainLooper()).idle();}assertTrue(a.ready);a.media.connections=u->{throw new IOException("Real networking disabled in tests");};layout();
+        assertEquals("stats",a.screen);assertEquals(2,a.statsPage);assertEquals(before,Store.encode(a.session).toString());a.rotate(1);assertEquals(3,a.statsPage);shot("36-review-plan");a.back();assertEquals("session",a.screen);
     }
     @Test public void databaseUpgradePreservesV1ProgressAndOldSessions()throws Exception{
         a.start(false);Engine.Session original=a.session;org.json.JSONObject json=Store.encode(original);json.remove("recall");json.remove("revealed");

@@ -52,6 +52,14 @@ public class EngineTest {
         }
         check(Engine.start(words,new HashMap<>(),6,50,false,now,100,true).queue.size()==20,"Oversized batches are bounded");
         check(Engine.start(words,new HashMap<>(),6,50,false,now,0,false).queue.size()==1,"Empty batch preference cannot break scheduling");
+        Engine.Progress curve=new Engine.Progress("curve");curve.stage=3;curve.due=now+Engine.INTERVALS[curve.stage];
+        check(Math.abs(MemoryCurve.retention(curve,now)-1)<.0001,"Fresh review starts at full predicted retention");
+        check(Math.abs(MemoryCurve.retention(curve,curve.due)-MemoryCurve.REVIEW_THRESHOLD)<.0001,"Due time meets the review threshold");
+        check(MemoryCurve.retention(curve,now+Engine.DAY)>MemoryCurve.retention(curve,now+3*Engine.DAY),"Retention falls over time");
+        check(MemoryCurve.entering(java.util.List.of(curve),now,curve.due)==1,"Forecast counts words entering the review zone");
+        check(MemoryCurve.dueWithin(java.util.List.of(curve),now,curve.due)==1,"Daily plan counts the exact due time");
+        curve.trouble=true;check(MemoryCurve.percent(curve,now)==62,"A forgotten word immediately enters the low-retention zone");
+        check(MemoryCurve.forecast(java.util.List.of(curve),now).length==8,"Seven-day forecast includes today");
         check(by.get("disrupt").pos.equals("v.")&&by.get("serpent").meaning.equals("蛇"),"Reviewed common senses are bundled");
         System.out.println("PASS: "+count+" assertions; full vocabulary, scheduling, recall, batch limits, retries and 80 simulated sessions.");
     }

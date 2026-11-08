@@ -1,6 +1,6 @@
-# Word Halo / 词间 0.20.0
+# Word Halo / 词间 0.21.0
 
-Personal native Wear OS vocabulary app for Samsung Galaxy Watch7 44mm, 480×480, One UI Watch 8 / Wear OS 6 / API 36. Java 11, platform Views, SQLite. No runtime libraries, ads or account system. Permissions: VIBRATE and INTERNET. Package `cn.wordhalo.watch`, versionCode 5.
+Personal native Wear OS vocabulary app for Samsung Galaxy Watch7 44mm, 480×480, One UI Watch 8 / Wear OS 6 / API 36. Java 11, platform Views, SQLite. No runtime libraries, ads or account system. Permissions: VIBRATE and INTERNET. Package `cn.wordhalo.watch`, versionCode 6.
 
 The provisional vocabulary is still **1945 ECDICT CET6-extension words**, not the requested 百词斩六级核心（过考版）2551-word edition. The app and guide disclose this gap. Do not relabel it as that book.
 
@@ -51,6 +51,12 @@ The mistake hub supports non-grading flashcards even while a quiz is in progress
 
 The reveal button becomes “再想想” and “下一词”; hiding the definition never modifies scheduling. Empty scopes accept rotary input without division-by-zero errors. Quiz feedback contrasts the chosen meaning with the correct meaning, with an accessible large tap target for associations. Completed sessions offer a unique list of that session's mistakes without changing first-attempt results. Saved Activity state restores nested pronunciation/association/flash pages, their card order and reveal state; audio is never restarted automatically. Word IDs remain unchanged. Schema version 2 adds the daily practice table without altering existing progress or session tables.
 
+## Version 0.21
+
+`MemoryCurve` derives the last review time from the persisted due time and stage interval, predicts exponential retention, and uses 85% as the normal review threshold. Trouble words start in the low-retention zone and remain scheduled for the existing ten-minute correction review. Due eligibility remains exact; when more due words exist than fit in a group, the lowest predicted retention wins.
+
+The fourth dashboard page draws an allocation-free seven-day forecast and reports exact due counts for the next 24 hours and three days. Its page, session and return origin survive Activity recreation. No new database column or migration is required, so existing progress remains compatible.
+
 ## Version 0.20
 
 Session configuration supports 5/10/20-word groups and an optional recall mode. Recall state and reveal state are persisted with backward-compatible JSON defaults. Grading before reveal is rejected in both the activity and engine. Immediate retries still cannot inflate first-attempt results. Changes to preferences only affect the next group.
@@ -68,7 +74,7 @@ javac -encoding UTF-8 -d test-classes app/src/main/java/cn/wordhalo/watch/Engine
 java -cp test-classes cn.wordhalo.watch.EngineTest app/src/main/assets/words.tsv
 ```
 
-EngineTest checks 10018 assertions across all vocabulary choices and 80 complete randomized sessions. DeviceFlowTest uses Robolectric 4.16.1, JUnit 4.13.2 and native Android 16 graphics. Its 31 tests cover progress recovery, native photo decoding, long answer/IPA layout, focus interpolation, accumulated rotary scrolling, haptic policy, remote playback source selection, replay, completion, timeout/error handling, stale prepared callbacks, scoped request cancellation and legacy audio cleanup isolation, filtered/shuffled bookmarks, empty scopes, current-quiz preservation, long mistake contrasts, completed-group review and nested-page Activity recreation, self-rated recall, batch sizes, schema-1 migration, daily deduplication, favorites, independent touch levels, all authored note layouts and large system fonts. All transport and player tests use controlled fakes; they make no live network requests and do not claim physical-watch connectivity validation.
+EngineTest checks 10025 assertions across all vocabulary choices and 80 complete randomized sessions. DeviceFlowTest uses Robolectric 4.16.1, JUnit 4.13.2 and native Android 16 graphics. Its 32 tests cover personal retention decay, threshold and exact due forecasting, progress recovery, native photo decoding, long answer/IPA layout, focus interpolation, accumulated rotary scrolling, haptic policy, remote playback source selection, replay, completion, timeout/error handling, stale prepared callbacks, scoped request cancellation and legacy audio cleanup isolation, filtered/shuffled bookmarks, empty scopes, current-quiz preservation, long mistake contrasts, completed-group review and nested-page Activity recreation, self-rated recall, batch sizes, schema-1 migration, daily deduplication, favorites, independent touch levels, all authored note layouts and large system fonts. All transport and player tests use controlled fakes; they make no live network requests and do not claim physical-watch connectivity validation.
 
 The supplied screenshots are actual native View renders in the desktop Android test runtime. Physical vibration strength, Samsung touch-bezel event delivery and Bluetooth-network behavior still require the user's real watch. See 使用说明.md and validation.json in this directory for delivery checks.
 

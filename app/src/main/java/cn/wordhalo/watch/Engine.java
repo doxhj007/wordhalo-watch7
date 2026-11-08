@@ -49,7 +49,9 @@ public final class Engine {
             if(wrong){if(p!=null&&p.trouble)due.add(w);}
             else if(p==null)fresh.add(w);else if(p.due<=now)due.add(w);
         }
-        due.sort(Comparator.comparingLong(w->progress.get(w.id).due));
+        // Fill each group with the words whose predicted retention is lowest.
+        // Eligibility still follows the due time, so this only prioritizes genuinely due words.
+        due.sort(MemoryCurve.priority(progress,now));
         for(Word w:due){if(s.queue.size()>=batchSize)break;s.queue.add(w.id);}
         int allowance=Math.max(0,newLimit-newToday(progress,now));
         if(!wrong)for(Word w:fresh){if(s.queue.size()>=batchSize||s.learn.size()>=allowance)break;s.queue.add(w.id);s.learn.add(w.id);}

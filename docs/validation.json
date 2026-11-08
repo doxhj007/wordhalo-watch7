@@ -1,18 +1,18 @@
 {
-  "apk": "WordHalo-Watch7-v0.20.apk",
-  "bytes": 1952287,
-  "sha256": "5f196f43c647b4768d9568edfe1af71efdb89c93a31d9283289b0315397aed4a",
+  "apk": "WordHalo-Watch7-v0.21.apk",
+  "bytes": 1956383,
+  "sha256": "78babb120985f485187f7fae0117f1f7036a73a86167eb18eda3fcebeaf6a729",
   "compileSdk": 36,
   "targetSdk": 36,
   "minSdk": 30,
-  "versionName": "0.20.0",
-  "versionCode": 5,
+  "versionName": "0.21.0",
+  "versionCode": 6,
   "package": "cn.wordhalo.watch",
   "certificate_sha256": "5db65304282edf2a77766c8ac2bf77ec13c101df0d55fe90ac86c49cc3269a5f",
   "same_signature_as_preview": true,
   "same_signature_as_v012": true,
-  "engine_assertions": 10018,
-  "native_api36_tests": 31,
+  "engine_assertions": 10025,
+  "native_api36_tests": 32,
   "dataset_words": 1945,
   "offline_photos": 83,
   "photo_associations": 339,
@@ -25,7 +25,7 @@
   "image_and_phonetic_cache_limit_bytes": 50331648,
   "persistent_audio_cache": false,
   "legacy_audio_cleanup": true,
-  "native_screenshots": "WordHalo-screens",
+  "native_screenshots": "WordHalo-screens-v021",
   "review_scopes": [
     "all",
     "wrong",
@@ -35,7 +35,7 @@
   ],
   "flash_shuffle_bookmarks": true,
   "nested_activity_restore": true,
-  "database_schema_changed": true,
+  "database_schema_changed": false,
   "database_schema_version": 2,
   "legacy_database_migration_tested": true,
   "self_rated_recall": true,
@@ -49,4 +49,8 @@
   "large_font_tested": true,
   "authored_memory_notes": 51,
   "reviewed_meaning_corrections": 68
+  ,"personal_forgetting_curve": true
+  ,"review_retention_threshold": 0.85
+  ,"daily_due_forecast": true
+  ,"lowest_retention_due_first": true
 }
