@@ -39,7 +39,4 @@ password.txt
 
 # Only the reviewed release APK belongs in this repository
 *.apk
-!dist/WordHalo-Watch7-v0.20.apk
-!dist/WordHalo-Watch7-v0.21.apk
-!dist/WordHalo-Watch7-v0.22.apk
-!dist/WordHalo-Watch7-v0.23.apk
+!dist/WordHalo-Watch7-v0.25.apk

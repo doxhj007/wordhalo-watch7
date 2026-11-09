@@ -10,6 +10,7 @@ import android.view.*;
 import android.widget.*;
 import android.graphics.*;
 import java.io.*;
+import java.util.*;
 import static org.junit.Assert.*;
 import static org.robolectric.Shadows.shadowOf;
 
@@ -25,6 +26,8 @@ public class DeviceFlowTest {
         assertTrue("Vocabulary loads from APK assets",a.ready);a.media.connections=url->{throw new IOException("Real networking disabled in tests");};layout();
     }
     void layout(){a.root.measure(View.MeasureSpec.makeMeasureSpec(480,View.MeasureSpec.EXACTLY),View.MeasureSpec.makeMeasureSpec(480,View.MeasureSpec.EXACTLY));a.root.layout(0,0,480,480);shadowOf(Looper.getMainLooper()).idle();a.render();a.root.measure(View.MeasureSpec.makeMeasureSpec(480,View.MeasureSpec.EXACTLY),View.MeasureSpec.makeMeasureSpec(480,View.MeasureSpec.EXACTLY));a.root.layout(0,0,480,480);}
+    void collect(View view,List<View> result){if(view!=a.root)result.add(view);if(view instanceof ViewGroup){ViewGroup group=(ViewGroup)view;for(int i=0;i<group.getChildCount();i++)collect(group.getChildAt(i),result);}}
+    List<View> views(){List<View> result=new ArrayList<>();collect(a.scene,result);return result;}
     void shot(String name)throws Exception{layout();Bitmap b=Bitmap.createBitmap(480,480,Bitmap.Config.ARGB_8888);a.root.draw(new Canvas(b));File f=new File(System.getProperty("shots"),name+".png");f.getParentFile().mkdirs();try(FileOutputStream out=new FileOutputStream(f)){b.compress(Bitmap.CompressFormat.PNG,100,out);}}
     @Test public void learnAnswerResumeAndFinish()throws Exception{
         shot("01-home");a.start(false);assertNotNull(a.session);assertTrue(a.session.studying());shot("02-study");
@@ -95,6 +98,12 @@ public class DeviceFlowTest {
         a.rotate(-1);assertEquals(176,a.scrollTarget);MotionEvent e=MotionEvent.obtain(0,0,MotionEvent.ACTION_DOWN,240,240,0);a.root.dispatchTouchEvent(e);e.recycle();assertNull(a.scrollMotion);
         a.motion=false;a.rotate(1);assertNull(a.scrollMotion);assertEquals(a.scrollTarget,a.scroll.getScrollY());
     }
+    @Test public void pageAndTurnTransitionsUseOneCompositedScene(){
+        a.screen="settings";a.render();assertNotNull("Page navigation keeps the old scene for a composed transition",a.outgoingScene);assertNotNull(a.sceneMotion);assertTrue(a.outgoingScene.blocked);
+        a.settleSceneMotion();assertNull(a.outgoingScene);assertNull(a.sceneMotion);assertEquals(1f,a.scene.getAlpha(),0f);
+        a.renderTurn(1);assertNotNull("In-page turns share the same transition system",a.outgoingScene);assertNotNull(a.sceneMotion);a.settleSceneMotion();
+        a.motion=false;a.screen="home";a.render();assertNull("Reduced motion does not retain an outgoing layer",a.outgoingScene);assertNull(a.sceneMotion);
+    }
     @Test public void movingOffTheRimDoesNotRotate(){
         MotionEvent down=MotionEvent.obtain(0,0,MotionEvent.ACTION_DOWN,462,240,0),move=MotionEvent.obtain(0,20,MotionEvent.ACTION_MOVE,250,260,0),up=MotionEvent.obtain(0,40,MotionEvent.ACTION_UP,250,260,0);
         a.root.dispatchTouchEvent(down);a.root.dispatchTouchEvent(move);a.root.dispatchTouchEvent(up);down.recycle();move.recycle();up.recycle();assertEquals(-1,a.homeFocus);
@@ -149,7 +158,7 @@ public class DeviceFlowTest {
     }
     @Test public void dedicatedMnemonicArtIsUniqueOfflineAndExplainsTheWord()throws Exception{
         assertEquals(72,a.media.visuals.length());java.util.Set<String> files=new java.util.HashSet<>();java.util.Iterator<String> keys=a.media.visuals.keys();while(keys.hasNext()){String id=keys.next();assertNotNull("Dedicated visual belongs to vocabulary: "+id,a.byId.get(id));org.json.JSONObject visual=a.media.scene(id);assertTrue(visual.optBoolean("generated"));assertTrue(visual.optString("caption").length()>=8);assertTrue("One image per word: "+id,files.add(visual.getString("file")));Bitmap bitmap=a.media.photo(id);assertNotNull("Dedicated visual decodes: "+id,bitmap);assertEquals(512,bitmap.getWidth());assertEquals(512,bitmap.getHeight());}
-        java.util.concurrent.atomic.AtomicInteger opens=new java.util.concurrent.atomic.AtomicInteger();a.media.connections=url->{opens.incrementAndGet();throw new IOException("Dedicated visual must stay offline");};a.openMemory("hypothesis");layout();assertEquals(0,opens.get());assertTrue(a.media.hasDedicatedVisual("hypothesis"));TextView title=a.root.findViewWithTag("pageTitle");assertTrue(title.getText().toString().startsWith("专属图卡"));boolean cropped=false;for(int i=0;i<a.root.getChildCount();i++)if(a.root.getChildAt(i) instanceof ImageView)cropped|=((ImageView)a.root.getChildAt(i)).getScaleType()==ImageView.ScaleType.CENTER_CROP;assertTrue(cropped);shot("38-dedicated-visual");a.screen="session";a.session=new Engine.Session();a.session.books=a.activeBook;a.session.learn.add("hypothesis");a.session.learning=0;a.render();shot("39-dedicated-study");assertEquals(0,opens.get());
+        java.util.concurrent.atomic.AtomicInteger opens=new java.util.concurrent.atomic.AtomicInteger();a.media.connections=url->{opens.incrementAndGet();throw new IOException("Dedicated visual must stay offline");};a.openMemory("hypothesis");layout();assertEquals(0,opens.get());assertTrue(a.media.hasDedicatedVisual("hypothesis"));TextView title=a.root.findViewWithTag("pageTitle");assertTrue(title.getText().toString().startsWith("专属图卡"));boolean cropped=false;for(View v:views())if(v instanceof ImageView)cropped|=((ImageView)v).getScaleType()==ImageView.ScaleType.CENTER_CROP;assertTrue(cropped);shot("38-dedicated-visual");a.screen="session";a.session=new Engine.Session();a.session.books=a.activeBook;a.session.learn.add("hypothesis");a.session.learning=0;a.render();shot("39-dedicated-study");assertEquals(0,opens.get());
     }
     @Test public void canceledSlowMetadataDisconnectsAndTruncatedDataIsRejected()throws Exception{
         a.prefs.edit().putBoolean("online",true).commit();java.util.concurrent.CountDownLatch reading=new java.util.concurrent.CountDownLatch(1),released=new java.util.concurrent.CountDownLatch(1);
@@ -179,7 +188,7 @@ public class DeviceFlowTest {
         String today=Engine.today(System.currentTimeMillis());fixture(0,true,2,today);fixture(1,true,3,today);a.start(false);String before=Store.encode(a.session).toString();a.flashShuffle=true;a.flashSeed=42;
         a.openFlash(0,"flashmenu");java.util.List<String> order=a.flashIds();assertEquals(a.activeWordCount(),new java.util.HashSet<>(order).size());a.moveFlash(7);String last=a.flashWords.get(a.flashAt).id;
         a.openFlash(1,"review");a.moveFlash(1);String wrongLast=a.flashWords.get(a.flashAt).id;a.openFlash(0,"flashmenu");assertEquals(order,a.flashIds());assertEquals(last,a.flashWords.get(a.flashAt).id);assertFalse(a.flipped);
-        a.openFlash(1,"review");assertEquals(wrongLast,a.flashWords.get(a.flashAt).id);a.flipped=true;layout();for(int i=0;i<a.root.getChildCount();i++){View v=a.root.getChildAt(i);if(v instanceof TextView&&((TextView)v).getText().toString().equals("再想想")){click((TextView)v);break;}}assertFalse(a.flipped);assertEquals(before,Store.encode(a.session).toString());
+        a.openFlash(1,"review");assertEquals(wrongLast,a.flashWords.get(a.flashAt).id);a.flipped=true;layout();for(View v:views()){if(v instanceof TextView&&((TextView)v).getText().toString().equals("再想想")){click((TextView)v);break;}}assertFalse(a.flipped);assertEquals(before,Store.encode(a.session).toString());
         a.flashMode=0;a.screen="flashmenu";layout();a.rotate(1);assertEquals(1,a.flashMode);a.rotate(1);assertEquals(2,a.flashMode);a.rotate(1);assertEquals(4,a.flashMode);a.rotate(1);assertEquals(0,a.flashMode);shot("19-flash-menu");
     }
     @Test public void emptyFlashAndBusyReviewDoNotLoseTheCurrentGroup()throws Exception{
@@ -209,7 +218,10 @@ public class DeviceFlowTest {
         while(!a.session.complete()){a.revealRecall();a.gradeRecall(true);a.nextAnswer();}assertEquals(4,a.session.correct);assertEquals(5,a.session.answered.size());assertEquals(1,a.progress.get(id).attempts);shot("25-recall-complete");
     }
     @Test public void groupPreferencesApplyOnlyToTheNextGroup()throws Exception{
-        a.start(false);String saved=Store.encode(a.session).toString();a.screen="studysettings";layout();java.util.List<TextView> buttons=new java.util.ArrayList<>();for(int i=0;i<a.root.getChildCount();i++){View v=a.root.getChildAt(i);if(v instanceof TextView&&v.isClickable())buttons.add((TextView)v);}click(buttons.get(0));assertTrue(a.recallMode);assertFalse(a.session.recall);assertEquals(saved,Store.encode(a.session).toString());
+        a.start(false);String saved=Store.encode(a.session).toString();a.screen="studysettings";layout();java.util.List<TextView> buttons=new java.util.ArrayList<>();for(View v:views()){if(v instanceof TextView&&v.isClickable())buttons.add((TextView)v);}click(buttons.get(0));
+        assertTrue("Preference button changes the next-group mode",a.recallMode);
+        assertFalse("The active group keeps its original mode",a.session.recall);
+        assertEquals("Changing a preference does not rewrite the active group",saved,Store.encode(a.session).toString());
         a.batchSize=5;a.prefs.edit().putInt("batchSize",5).commit();shot("26-study-settings");a.finishGroup();a.start(false);assertEquals(5,a.session.queue.size());assertTrue(a.session.recall);
     }
     @Test public void favoritesArePersistentAndDoNotRevealAnUnansweredMeaning()throws Exception{
@@ -224,7 +236,7 @@ public class DeviceFlowTest {
     }
     @Test public void forgettingCurveForecastRestoresWithoutChangingTheGroup()throws Exception{
         a.start(false);a.session.learning=a.session.learn.size();a.render();a.answer(a.session.options.indexOf(a.session.current()));String before=Store.encode(a.session).toString();
-        a.statsReturn="session";a.screen="stats";a.statsPage=2;layout();MemoryCurveView curve=null;for(int i=0;i<a.root.getChildCount();i++)if(a.root.getChildAt(i) instanceof MemoryCurveView)curve=(MemoryCurveView)a.root.getChildAt(i);
+        a.statsReturn="session";a.screen="stats";a.statsPage=2;layout();MemoryCurveView curve=null;for(View v:views())if(v instanceof MemoryCurveView)curve=(MemoryCurveView)v;
         assertNotNull(curve);assertTrue(curve.getContentDescription().toString().contains("百分之85"));assertEquals(before,Store.encode(a.session).toString());shot("35-forgetting-curve");
         android.os.Bundle state=new android.os.Bundle();controller.pause().saveInstanceState(state).stop().destroy();controller=null;controller=Robolectric.buildActivity(MainActivity.class).setup(state);a=controller.get();for(int i=0;i<100&&!a.ready;i++){Thread.sleep(20);shadowOf(Looper.getMainLooper()).idle();}assertTrue(a.ready);a.media.connections=u->{throw new IOException("Real networking disabled in tests");};layout();
         assertEquals("stats",a.screen);assertEquals(2,a.statsPage);assertEquals(before,Store.encode(a.session).toString());a.rotate(1);assertEquals(3,a.statsPage);shot("36-review-plan");a.back();assertEquals("session",a.screen);
@@ -252,7 +264,7 @@ public class DeviceFlowTest {
         a.screen="home";layout();assertButtonsFit();a.start(false);a.session.learning=a.session.learn.size();a.render();a.toggleFavorite(a.session.current());a.openWordTools(a.session.current());layout();assertButtonsFit();shot("34-large-text-tools");
         a.screen="studysettings";layout();assertButtonsFit();a.screen="touch";layout();assertButtonsFit();a.screen="session";a.session.recall=true;a.session.revealed=true;a.render();layout();assertButtonsFit();
     }
-    void assertButtonsFit(){for(int i=0;i<a.root.getChildCount();i++){View view=a.root.getChildAt(i);if(view instanceof TextView&&view.isClickable()){TextView t=(TextView)view;android.text.Layout l=t.getLayout();assertNotNull(l);assertTrue("Action height fits: "+t.getText(),l.getHeight()<=t.getHeight()-t.getPaddingTop()-t.getPaddingBottom());for(int row=0;row<l.getLineCount();row++)assertEquals("Action text visible: "+t.getText(),0,l.getEllipsisCount(row));}}}
+    void assertButtonsFit(){for(View view:views()){if(view instanceof TextView&&view.isClickable()){TextView t=(TextView)view;android.text.Layout l=t.getLayout();assertNotNull(l);assertTrue("Action height fits: "+t.getText(),l.getHeight()<=t.getHeight()-t.getPaddingTop()-t.getPaddingBottom());for(int row=0;row<l.getLineCount();row++)assertEquals("Action text visible: "+t.getText(),0,l.getEllipsisCount(row));}}}
     @Test public void booksStaySeparateAndSwitchWithoutResettingProgressOrCurrentGroup()throws Exception{
         long original=a.activeBook;BookCatalog.Book originalBook=BookCatalog.find(original),chosen=null;for(BookCatalog.Book book:BookCatalog.forLevel(originalBook.level))if(book.bit!=original){chosen=book;break;}assertNotNull(chosen);
         final BookCatalog.Book selectedBook=chosen;Engine.Progress learned=fixture(0,false,0,Engine.today(System.currentTimeMillis()));a.start(false);long groupBook=a.session.books;String current=a.session.current();a.screen="books";layout();shot("37-word-books");
@@ -266,7 +278,7 @@ public class DeviceFlowTest {
     }
     @Test public void settingsRotarySelectsWithoutChangingPreferences(){
         a.screen="studysettings";layout();int size=a.batchSize;boolean mode=a.recallMode;a.rotate(1);assertEquals(0,a.studyFocus);assertEquals(mode,a.recallMode);a.rotate(1);assertEquals(1,a.studyFocus);assertEquals(size,a.batchSize);a.lastAction=-1000;a.onKeyDown(KeyEvent.KEYCODE_DPAD_CENTER,new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_DPAD_CENTER));assertNotEquals(size,a.batchSize);
-        a.screen="touch";layout();for(int i=0;i<a.root.getChildCount();i++){View v=a.root.getChildAt(i);if(v instanceof TextView&&((TextView)v).getText().toString().equals("体验全部节奏")){click((TextView)v);break;}}assertEquals("haptics",a.screen);a.back();assertEquals("touch",a.screen);a.statsReturn="settings";a.screen="stats";a.render();a.back();assertEquals("settings",a.screen);
+        a.screen="touch";layout();for(View v:views()){if(v instanceof TextView&&((TextView)v).getText().toString().equals("体验全部节奏")){click((TextView)v);break;}}assertEquals("haptics",a.screen);a.back();assertEquals("touch",a.screen);a.statsReturn="settings";a.screen="stats";a.render();a.back();assertEquals("settings",a.screen);
     }
     @After public void close(){if(controller!=null)controller.pause().stop().destroy();}
 }
