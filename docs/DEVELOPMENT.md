@@ -1,6 +1,6 @@
-# Word Halo / 词间 0.22.0
+# Word Halo / 词间 0.23.0
 
-Personal native Wear OS vocabulary app for Samsung Galaxy Watch7 44mm, 480×480, One UI Watch 8 / Wear OS 6 / API 36. Java 11, platform Views, SQLite. No runtime libraries, ads or account system. Permissions: VIBRATE and INTERNET. Package `cn.wordhalo.watch`, versionCode 7.
+Personal native Wear OS vocabulary app for Samsung Galaxy Watch7 44mm, 480×480, One UI Watch 8 / Wear OS 6 / API 36. Java 11, platform Views, SQLite. No runtime libraries, ads or account system. Permissions: VIBRATE and INTERNET. Package `cn.wordhalo.watch`, versionCode 8.
 
 Version 0.22 contains six concrete, separate CET4/CET6 books: Star, New Oriental and Flash for each level. The active book is always one exact book bit, never a combined mask. The requested 百词斩六级核心（过考版）2551-word edition remains excluded until its exact list and order can be verified.
 
@@ -16,7 +16,7 @@ This runs aapt2, javac, D8, zipalign and apksigner and verifies the result. **Re
 
 ## Media and licenses
 
-`assets/scenes.json` pins 83 reviewed Commons images and their authors, source pages and licenses. Within the current 7981-word union, `assets/word-media.json` maps 268 words to related scenes and provides 15 authored near-sound mnemonics, 50 memory notes and generic IPA. Multiple words may share one scene. Images are displayed as associations, not literal definitions or etymology. See ../PHOTO-CREDITS.md. The app shows attribution in each picture's detail pages.
+`assets/visual-mnemonics.json` maps 72 high-frequency abstract words to unique 512×512 offline WebP illustrations and word-specific Chinese visual cues. `assets/stock-photo-curation.json` limits each fallback Commons photo to at most three semantically direct words. The resulting UI pictures 216 words: 72 dedicated illustrations plus 144 curated photo associations from 72 Commons sources. `assets/word-media.json` also provides 15 authored near-sound mnemonics, 50 memory notes and generic IPA. Images are memory associations, not literal definitions or etymology. See ../PHOTO-CREDITS.md and VISUAL-MNEMONICS.md; the app shows source details on each picture's final card.
 
 Photos retain their original licenses (mostly CC BY / CC BY-SA, plus public-domain works); the source code license does not replace them. Bundled photos were resized and encoded to WebP. The ECDICT data license is included in app/src/main/assets/ECDICT-LICENSE.txt. Photo licenses are listed separately. No separate source-code license has been selected for this private project. The APK includes no redistributed third-party pronunciation recordings.
 
@@ -24,7 +24,7 @@ Photos retain their original licenses (mostly CC BY / CC BY-SA, plus public-doma
 
 Only explicit play taps start any pronunciation network work or call MediaPlayer. Study rendering and opening the sound card use bundled generic IPA without contacting the network. Pronunciation streams directly from the HTTPS UK/US URL with prepareAsync; no audio download or persistent audio cache is used. There is no prefetch UI. Leaving the page, switching words or entering `onPause`, `onStop` or `onDestroy` releases the player, cancels tracked HTTP connections, destroys request pools, abandons audio focus and invalidates late callbacks. A 15-second preparation timeout provides an explicit retry path. Each replay uses the remote source. The system media stack may buffer the active stream; the app never saves a recording. An upgrade migration removes only known legacy hashed audio files and their partials, preserving progress, images and phonetics.
 
-Photos and phonetic metadata retain the bounded 48 MiB cache. Request-scoped cancellation disconnects slow metadata/photo connections off the UI thread; canceled callbacks cannot update subsequent pages. Declared response lengths are checked before files are committed. Public services can be unavailable. No learning progress is uploaded, and no phone companion, wake lock or background service is required.
+Dedicated illustrations are APK assets and never create a network request. Commons photos and phonetic metadata retain the bounded 48 MiB cache. Request-scoped cancellation disconnects slow metadata/photo connections off the UI thread; canceled callbacks cannot update subsequent pages. Declared response lengths are checked before files are committed. Public services can be unavailable. No learning progress is uploaded, and no phone companion, wake lock or background service is required.
 
 See https://developer.android.com/reference/android/media/MediaPlayer for the platform streaming lifecycle.
 
@@ -62,6 +62,14 @@ The fourth dashboard page draws an allocation-free seven-day forecast and report
 
 Saved session JSON now stores one `book` bit. Old sessions infer a default book from their legacy level; sessions containing missing IDs or invalid positions are discarded during load while progress, favorites and settings remain intact.
 
+## Version 0.23
+
+Seventy-two CET6-heavy legal, medical, economic, collaboration and academic words now override generic shared photos with dedicated AMOLED-oriented illustrations. Each has a concise Chinese cue that explicitly connects visible elements to the headword's core meaning. The compact study card shows the uncropped square image beside the cue; the detail card enlarges it and provides a generated-art source page. Reviewed atlas hashes and the exact row-major word mapping are stored in `visual-mnemonics.json` and documented in `VISUAL-MNEMONICS.md`.
+
+Fallback stock photos are curated down to 144 associations, with no source image used for more than three words. This removes 52 weak mappings while retaining all 72 reviewed Commons assets for directly related vocabulary. Generated art stays offline; the existing high-resolution network path is only used by Commons photo cards.
+
+Panel surfaces now use quiet gradients and selected states. Rotary focus combines the moving outline with a short card scale transition and a one-shot glow; it never loops. Answer feedback uses a status capsule and the completion page uses the existing vector success artwork. Reduced-motion and lifecycle behavior remain unchanged.
+
 ## Version 0.20
 
 Session configuration supports 5/10/20-word groups and an optional recall mode. Recall state and reveal state are persisted with backward-compatible JSON defaults. Grading before reveal is rejected in both the activity and engine. Immediate retries still cannot inflate first-attempt results. Changes to preferences only affect the next group.
@@ -79,7 +87,7 @@ javac -encoding UTF-8 -d test-classes app/src/main/java/cn/wordhalo/watch/Engine
 java -cp test-classes cn.wordhalo.watch.EngineTest app/src/main/assets/words.tsv app/src/main/assets/book-orders.tsv
 ```
 
-EngineTest checks 63830 assertions across the exact membership/order of all six books, vocabulary choices and 80 complete randomized sessions. DeviceFlowTest uses Robolectric 4.16.1, JUnit 4.13.2 and native Android 16 graphics. Its 35 tests add independent book selection, next-group switching, invalid legacy-session recovery, zero automatic study traffic and full background network shutdown to the existing coverage for retention forecasting, database migration, native photo decoding, layout, haptics, scoped review and controlled streaming failures. All transport and player tests use controlled fakes; they make no live network requests and do not claim physical-watch connectivity validation.
+EngineTest checks 63830 assertions across the exact membership/order of all six books, vocabulary choices and 80 complete randomized sessions. DeviceFlowTest uses Robolectric 4.16.1, JUnit 4.13.2 and native Android 16 graphics. Its 36 tests add independent book selection, next-group switching, invalid legacy-session recovery, zero automatic study traffic, full background network shutdown, 72 unique dedicated images, zero-network generated cards and a three-word maximum for fallback photo reuse to the existing coverage for retention forecasting, database migration, native image decoding, layout, haptics, scoped review and controlled streaming failures. All transport and player tests use controlled fakes; they make no live network requests and do not claim physical-watch connectivity validation.
 
 The supplied screenshots are actual native View renders in the desktop Android test runtime. Physical vibration strength, Samsung touch-bezel event delivery and Bluetooth-network behavior still require the user's real watch. See 使用说明.md and validation.json in this directory for delivery checks.
 

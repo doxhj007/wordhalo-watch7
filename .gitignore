@@ -9,6 +9,7 @@ build-local/
 .device-test-*/
 .test-classes-*/
 docs/test-screens-v022*/
+docs/test-screens-v023*/
 test-classes/
 work/
 __pycache__/
@@ -41,3 +42,4 @@ password.txt
 !dist/WordHalo-Watch7-v0.20.apk
 !dist/WordHalo-Watch7-v0.21.apk
 !dist/WordHalo-Watch7-v0.22.apk
+!dist/WordHalo-Watch7-v0.23.apk

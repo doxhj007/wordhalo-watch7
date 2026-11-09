@@ -1,0 +1,18 @@
+{
+  "meeting": ["participant", "presentation", "negotiation"],
+  "hospital": ["clinic", "clinical", "ward"],
+  "court": ["attorney", "defendant", "testify"],
+  "warehouse": ["warehouse", "inventory", "shipment"],
+  "ship": ["tanker", "maritime", "embark"],
+  "money": ["banker", "earnings", "millionaire"],
+  "forest": ["ecology", "ecosystem", "vegetation"],
+  "church": ["bishop", "pope", "ritual"],
+  "guitar": ["guitar", "melody", "chord"],
+  "globe": ["equator", "latitude", "longitude"],
+  "mountain": ["hike", "expedition", "terrain"],
+  "light": ["gleam", "illuminate", "luminous"],
+  "city": ["skyscraper", "metropolitan", "municipal"],
+  "lab": ["microscopic", "analytic", "formulate"],
+  "galaxy": ["galaxy", "astronomy", "cosmic"],
+  "farm": ["pasture", "graze", "ranch"]
+}

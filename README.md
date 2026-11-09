@@ -6,11 +6,11 @@
 
 后续计划逐步适配不同品牌、尺寸和输入方式的 Wear OS 手表，让更多 Wear OS 设备都能使用。
 
-当前版本 **v0.22.0** · Wear OS 6 / API 36 · 480 × 480 圆屏。
+当前版本 **v0.23.0** · Wear OS 6 / API 36 · 480 × 480 圆屏。
 
 ## 安装
 
-[下载 v0.22 APK](dist/WordHalo-Watch7-v0.22.apk) · [使用说明](docs/使用说明.md) · [SHA-256 校验](dist/SHA256SUMS.txt)
+[下载 v0.23 APK](dist/WordHalo-Watch7-v0.23.apk) · [使用说明](docs/使用说明.md) · [SHA-256 校验](dist/SHA256SUMS.txt)
 
 在 GitHub 文件页点击下载按钮保存 APK，再通过 Wear OS 工具箱无线调试安装。已有词间的用户直接覆盖安装，**不要先卸载**；本版包名和签名与之前版本一致，保留学习进度。
 
@@ -23,7 +23,8 @@
 - 分别调节答题、完成与表圈、翻卡的触感强度，支持关闭。
 - 表圈移动选框、翻卡、滚动菜单、调整触感和切换统计页；答题须显式确认。
 - 收藏词本、错词本、今日词、稳定乱序翻卡，以及七天学习概览。
-- 83 张离线图片关联 268 个内置词，15 条近音助记，50 条构词、辨析及画面线索。
+- 72 张一词一图的专属联想插画，重点覆盖六级法律、医疗、经济、协作和学术抽象词；另有 72 张离线图库照片，经筛选后关联 144 个词，同图最多复用 3 次。
+- 专属图旁直接写出“图中元素 → 词义”的中文联想关系；15 条近音助记，50 条构词、辨析及画面线索。
 - 英式、美式读音手动点播；背词和打开读音卡不会自动联网，只有点击播放才请求网络。退到后台立即断开请求并释放播放器，不预下载、不保存录音。
 
 ![Watch7 原生界面预览](docs/preview.png)
@@ -41,7 +42,7 @@ v0.20 起校正了 68 个词的常用释义或词性，详见 [修改记录](VOC
 
 ## 构建与验证
 
-原生 Java 11 + Android Views + SQLite，无第三方运行时依赖。已通过 35 项 Android API 36 运行测试、63830 条学习逻辑断言；未连接真实 Watch7 测试本版触感、表圈事件或蓝牙代理网络。
+原生 Java 11 + Android Views + SQLite，无第三方运行时依赖。已通过 36 项 Android API 36 运行测试、63830 条学习逻辑断言；未连接真实 Watch7 测试本版触感、表圈事件或蓝牙代理网络。
 
 构建使用 JDK 17+、Python 3、Android SDK Platform 36 和 Build Tools 36.0.0，从仓库根目录执行：
 
@@ -57,4 +58,4 @@ python tools/build.py --platform SDK/platforms/android-36 --tools SDK/build-tool
 
 学习记录、收藏保存在手表本机。读音和地区音标请求使用公开词典服务，服务可用性与网络会影响播放。
 
-ECDICT 数据的 MIT 许可见 [ECDICT-LICENSE.txt](app/src/main/assets/ECDICT-LICENSE.txt)，DictionaryData 的 Apache-2.0 许可见 [DictionaryData-LICENSE.txt](app/src/main/assets/DictionaryData-LICENSE.txt)。照片各自保留原许可，来源、作者及修改说明见 [PHOTO-CREDITS.md](PHOTO-CREDITS.md)，应用内也可查看。源码和自编文字尚未单独指定开放许可。
+ECDICT 数据的 MIT 许可见 [ECDICT-LICENSE.txt](app/src/main/assets/ECDICT-LICENSE.txt)，DictionaryData 的 Apache-2.0 许可见 [DictionaryData-LICENSE.txt](app/src/main/assets/DictionaryData-LICENSE.txt)。照片各自保留原许可，来源、作者及修改说明见 [PHOTO-CREDITS.md](PHOTO-CREDITS.md)，应用内也可查看。专属插画的生成方式、词表、图集哈希和提示词见 [专属联想图说明](docs/VISUAL-MNEMONICS.md)。源码和自编文字尚未单独指定开放许可。

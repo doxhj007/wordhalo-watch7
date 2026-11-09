@@ -63,7 +63,7 @@ public class DeviceFlowTest {
         a.halo.motion.setCurrentPlayTime(100);assertTrue("Highlight interpolates between rows",a.halo.current.top>first.top&&a.halo.current.top<a.px(278));
         shadowOf(Looper.getMainLooper()).idleFor(java.time.Duration.ofMillis(200));assertEquals(1,a.session.focus);assertFalse(a.session.feedback);shot("11-focus");
         assertNotNull(a.phonetic);assertEquals(a.session.current(),a.pronunciationWord);assertNull("Rendering a quiz must never play audio",a.media.player);
-        a.openMemory("environmental");assertTrue(a.media.hasPhoto("environmental"));shot("12-photo");a.back();assertEquals("session",a.screen);
+        a.openMemory("ecology");assertTrue(a.media.hasPhoto("ecology"));shot("12-photo");a.back();assertEquals("session",a.screen);
         a.openMemory("ambitious");assertFalse(a.media.mnemonic("ambitious").isEmpty());shot("13-mnemonic");
         a.screen="haptics";a.render();int before=a.hapticAt;a.rotate(1);assertEquals((before+1)%6,a.hapticAt);
         a.motion=false;a.screen="session";a.render();a.rotate(1);assertNull("Reduced motion never starts an animator",a.halo.motion);
@@ -103,8 +103,8 @@ public class DeviceFlowTest {
         String id="ambitious",url="https://dict.youdao.com/jsonapi?q="+MediaLibrary.encode(id)+"&dicts="+MediaLibrary.encode("{\"count\":1,\"dicts\":[[\"ec\"]]}");
         seed(url,"{\"ec\":{\"word\":[{\"return-phrase\":{\"l\":{\"i\":\"ambitious\"}},\"ukphone\":\"test\",\"usphone\":\"test\"}]}}".getBytes(java.nio.charset.StandardCharsets.UTF_8));
         java.util.List<Boolean> results=new java.util.ArrayList<>();a.media.phones(id,results::add);a.media.phoneTask.future.get(3,java.util.concurrent.TimeUnit.SECONDS);a.media.pageChanged();shadowOf(Looper.getMainLooper()).idle();assertTrue(results.isEmpty());
-        org.json.JSONObject scene=a.media.scene("environmental");try(InputStream in=a.getAssets().open(scene.getString("file"))){seed(scene.getString("url"),MediaLibrary.read(in,1500000));}
-        java.util.List<Bitmap> pictures=new java.util.ArrayList<>();a.media.highPhoto("environmental",pictures::add);a.media.photoTask.future.get(3,java.util.concurrent.TimeUnit.SECONDS);a.media.pageChanged();shadowOf(Looper.getMainLooper()).idle();assertTrue(pictures.isEmpty());
+        org.json.JSONObject scene=a.media.scene("ecology");try(InputStream in=a.getAssets().open(scene.getString("file"))){seed(scene.getString("url"),MediaLibrary.read(in,1500000));}
+        java.util.List<Bitmap> pictures=new java.util.ArrayList<>();a.media.highPhoto("ecology",pictures::add);a.media.photoTask.future.get(3,java.util.concurrent.TimeUnit.SECONDS);a.media.pageChanged();shadowOf(Looper.getMainLooper()).idle();assertTrue(pictures.isEmpty());
     }
     static class FakeConnection extends java.net.HttpURLConnection {
         byte[] data;long declared;String type="audio/wav";volatile boolean disconnected;
@@ -143,8 +143,12 @@ public class DeviceFlowTest {
         a.media.clearCache(ok->{});for(int i=0;i<40&&photo.exists();i++)Thread.sleep(10);assertFalse(photo.exists());assertEquals(attempts,a.store.progress().get(id).attempts);
     }
     @Test public void allPhotosDecodeAndNoDownloadEntryRemains()throws Exception{
-        int pictured=0;for(Engine.Word w:a.words)if(a.media.hasPhoto(w.id)){pictured++;Bitmap b=a.media.photo(w.id);assertNotNull("Bundled photo decodes: "+w.id,b);assertTrue(b.getWidth()>20&&b.getHeight()>20);assertFalse(a.media.scene(w.id).optString("source").isEmpty());assertFalse(a.media.scene(w.id).optString("license").isEmpty());}assertTrue(pictured>=250);
+        int pictured=0;java.util.Map<String,Integer> reused=new java.util.HashMap<>();for(Engine.Word w:a.words)if(a.media.hasPhoto(w.id)){pictured++;Bitmap b=a.media.photo(w.id);assertNotNull("Bundled photo decodes: "+w.id,b);assertTrue(b.getWidth()>20&&b.getHeight()>20);assertFalse(a.media.scene(w.id).optString("source").isEmpty());assertFalse(a.media.scene(w.id).optString("license").isEmpty());if(!a.media.hasDedicatedVisual(w.id)){String file=a.media.scene(w.id).optString("file");reused.put(file,reused.getOrDefault(file,0)+1);}}assertTrue(pictured>=200);for(java.util.Map.Entry<String,Integer> use:reused.entrySet())assertTrue("Curated stock photo is not over-reused: "+use.getKey(),use.getValue()<=3);
         a.screen="settings";layout();LinearLayout list=(LinearLayout)a.scroll.getChildAt(0);for(int i=0;i<list.getChildCount();i++){String title=((TextView)list.getChildAt(i)).getText().toString();assertFalse(title.contains("课前缓存"));}assertNull(a.media.player);
+    }
+    @Test public void dedicatedMnemonicArtIsUniqueOfflineAndExplainsTheWord()throws Exception{
+        assertEquals(72,a.media.visuals.length());java.util.Set<String> files=new java.util.HashSet<>();java.util.Iterator<String> keys=a.media.visuals.keys();while(keys.hasNext()){String id=keys.next();assertNotNull("Dedicated visual belongs to vocabulary: "+id,a.byId.get(id));org.json.JSONObject visual=a.media.scene(id);assertTrue(visual.optBoolean("generated"));assertTrue(visual.optString("caption").length()>=8);assertTrue("One image per word: "+id,files.add(visual.getString("file")));Bitmap bitmap=a.media.photo(id);assertNotNull("Dedicated visual decodes: "+id,bitmap);assertEquals(512,bitmap.getWidth());assertEquals(512,bitmap.getHeight());}
+        java.util.concurrent.atomic.AtomicInteger opens=new java.util.concurrent.atomic.AtomicInteger();a.media.connections=url->{opens.incrementAndGet();throw new IOException("Dedicated visual must stay offline");};a.openMemory("hypothesis");layout();assertEquals(0,opens.get());assertTrue(a.media.hasDedicatedVisual("hypothesis"));TextView title=a.root.findViewWithTag("pageTitle");assertTrue(title.getText().toString().startsWith("专属图卡"));boolean cropped=false;for(int i=0;i<a.root.getChildCount();i++)if(a.root.getChildAt(i) instanceof ImageView)cropped|=((ImageView)a.root.getChildAt(i)).getScaleType()==ImageView.ScaleType.CENTER_CROP;assertTrue(cropped);shot("38-dedicated-visual");a.screen="session";a.session=new Engine.Session();a.session.books=a.activeBook;a.session.learn.add("hypothesis");a.session.learning=0;a.render();shot("39-dedicated-study");assertEquals(0,opens.get());
     }
     @Test public void canceledSlowMetadataDisconnectsAndTruncatedDataIsRejected()throws Exception{
         a.prefs.edit().putBoolean("online",true).commit();java.util.concurrent.CountDownLatch reading=new java.util.concurrent.CountDownLatch(1),released=new java.util.concurrent.CountDownLatch(1);

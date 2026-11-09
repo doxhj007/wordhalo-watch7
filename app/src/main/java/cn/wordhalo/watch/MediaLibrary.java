@@ -23,7 +23,7 @@ final class MediaLibrary {
     final Map<String,JSONObject> phones=new ConcurrentHashMap<>();
     final Map<String,Long> retryAfter=new ConcurrentHashMap<>();
     final LruCache<String,Bitmap> bitmaps=new LruCache<>(8);
-    JSONObject words=new JSONObject(),scenes=new JSONObject(),notes=new JSONObject();
+    JSONObject words=new JSONObject(),scenes=new JSONObject(),notes=new JSONObject(),visuals=new JSONObject(),photoCuration=new JSONObject();
     MediaPlayer player;AudioFocusRequest focus;Request phoneTask,photoTask;Runnable soundTimeout;
     int soundToken=0;volatile int cacheGeneration=0;boolean foreground=false;volatile boolean closed=false;
     final AudioManager audio;
@@ -48,10 +48,11 @@ final class MediaLibrary {
     void disconnect(HttpURLConnection connection){try{disconnectPool().execute(connection::disconnect);}catch(RejectedExecutionException ignored){try{connection.disconnect();}catch(Exception ignoredAgain){}}}
     void enterForeground(){if(!closed)foreground=true;}
     void leaveForeground(){foreground=false;pageChanged();ExecutorService requestPool,disconnectPool;synchronized(this){requestPool=requests;requests=null;disconnectPool=disconnects;disconnects=null;}if(requestPool!=null)requestPool.shutdownNow();if(disconnectPool!=null)disconnectPool.shutdown();}
-    void load()throws Exception{words=asset("word-media.json");scenes=asset("scenes.json");notes=asset("memory-notes.json");}
+    void load()throws Exception{words=asset("word-media.json");scenes=asset("scenes.json");notes=asset("memory-notes.json");visuals=asset("visual-mnemonics.json").optJSONObject("words");if(visuals==null)visuals=new JSONObject();photoCuration=asset("stock-photo-curation.json");}
     JSONObject asset(String name)throws Exception{try(InputStream in=context.getAssets().open(name)){return new JSONObject(new String(read(in,3_000_000),StandardCharsets.UTF_8));}}
     JSONObject word(String id){JSONObject w=words.optJSONObject(id);return w==null?new JSONObject():w;}
-    JSONObject scene(String id){JSONObject s=scenes.optJSONObject(word(id).optString("scene"));return s==null?new JSONObject():s;}
+    JSONObject scene(String id){JSONObject exact=visuals.optJSONObject(id);if(exact!=null)return exact;String sceneId=word(id).optString("scene");JSONArray keep=photoCuration.optJSONArray(sceneId);if(keep!=null){boolean found=false;for(int i=0;i<keep.length();i++)if(id.equals(keep.optString(i))){found=true;break;}if(!found)return new JSONObject();}JSONObject s=scenes.optJSONObject(sceneId);return s==null?new JSONObject():s;}
+    boolean hasDedicatedVisual(String id){return visuals.has(id);}
     boolean hasPhoto(String id){return !scene(id).optString("file").isEmpty();}
     String mnemonic(String id){return word(id).optString("mnemonic");}
     JSONObject note(String id){JSONObject value=notes.optJSONObject(id);return value==null?new JSONObject():value;}

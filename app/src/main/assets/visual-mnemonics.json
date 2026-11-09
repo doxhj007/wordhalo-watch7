@@ -1,0 +1,664 @@
+{
+  "version": 1,
+  "style": "word-specific AMOLED mnemonic illustrations",
+  "atlasSha256": [
+    "6da3f8c653005dc1145ab971447f37efa4d05dbc53a29949cf6fbcab5a0bd706",
+    "a86983ac641e39a1e8d6c91d1962d3ec96ad3d7699f370b1c54dbf66d542ef0b",
+    "e5a4e69c0aea86ae44fe144993df4b470a129a1055ba9da62e8eb65fc602ac4f",
+    "e4350c03019fad0d5dfb4a0e7535f94e927e8bb1b3f0b9761a9c3c997ea24507",
+    "df008c80f1756b28b55dbd1a5accfacadfe466c6a65e3fc80516f1dcd8d13a14",
+    "134097c1f433e4463fb04bcdb1febfc91e366e07d0269db7a1afc05afc8c9f5e",
+    "907d87ed368313512053c4d751aa9bddd0e6390e6b1ed22326c25945187b0874",
+    "f53a6b9c49e51aa8ec49291fcc3110b390d809f394ebf137b22835fa15091dbd"
+  ],
+  "words": {
+    "allegation": {
+      "file": "visual-allegation.webp",
+      "caption": "手指 + 问号文件：只是指控，尚未证实",
+      "title": "Word Halo mnemonic illustration: allegation",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 1, tile 1",
+      "generated": true
+    },
+    "convict": {
+      "file": "visual-convict.webp",
+      "caption": "法槌落下 + 戴铐入狱：定罪；罪犯",
+      "title": "Word Halo mnemonic illustration: convict",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 1, tile 2",
+      "generated": true
+    },
+    "testimony": {
+      "file": "visual-testimony.webp",
+      "caption": "证人席举手陈述：证词 / 证言",
+      "title": "Word Halo mnemonic illustration: testimony",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 1, tile 3",
+      "generated": true
+    },
+    "immune": {
+      "file": "visual-immune.webp",
+      "caption": "人体护盾挡住病毒：免疫，不受影响",
+      "title": "Word Halo mnemonic illustration: immune",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 1, tile 4",
+      "generated": true
+    },
+    "outbreak": {
+      "file": "visual-outbreak.webp",
+      "caption": "一个源头向人群扩散：突然爆发",
+      "title": "Word Halo mnemonic illustration: outbreak",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 1, tile 5",
+      "generated": true
+    },
+    "fracture": {
+      "file": "visual-fracture.webp",
+      "caption": "X 光中的裂缝：骨折；断裂",
+      "title": "Word Halo mnemonic illustration: fracture",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 1, tile 6",
+      "generated": true
+    },
+    "prescription": {
+      "file": "visual-prescription.webp",
+      "caption": "医生签字 + 药瓶：处方；指示",
+      "title": "Word Halo mnemonic illustration: prescription",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 1, tile 7",
+      "generated": true
+    },
+    "therapy": {
+      "file": "visual-therapy.webp",
+      "caption": "面对面疏导：治疗；疗法",
+      "title": "Word Halo mnemonic illustration: therapy",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 1, tile 8",
+      "generated": true
+    },
+    "verdict": {
+      "file": "visual-verdict.webp",
+      "caption": "法槌 + 天平定下来：最终裁决",
+      "title": "Word Halo mnemonic illustration: verdict",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 1, tile 9",
+      "generated": true
+    },
+    "deficit": {
+      "file": "visual-deficit.webp",
+      "caption": "一边空缺的天平：收入不够，出现赤字",
+      "title": "Word Halo mnemonic illustration: deficit",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 2, tile 1",
+      "generated": true
+    },
+    "inflation": {
+      "file": "visual-inflation.webp",
+      "caption": "钱币气球越涨越大，购物篮却没变：通胀",
+      "title": "Word Halo mnemonic illustration: inflation",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 2, tile 2",
+      "generated": true
+    },
+    "mortgage": {
+      "file": "visual-mortgage.webp",
+      "caption": "房子被合同链住：抵押贷款",
+      "title": "Word Halo mnemonic illustration: mortgage",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 2, tile 3",
+      "generated": true
+    },
+    "recession": {
+      "file": "visual-recession.webp",
+      "caption": "下降箭头穿过关门店铺：经济衰退",
+      "title": "Word Halo mnemonic illustration: recession",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 2, tile 4",
+      "generated": true
+    },
+    "transaction": {
+      "file": "visual-transaction.webp",
+      "caption": "钱与包裹双向交换：交易",
+      "title": "Word Halo mnemonic illustration: transaction",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 2, tile 5",
+      "generated": true
+    },
+    "consensus": {
+      "file": "visual-consensus.webp",
+      "caption": "大家放下同样的勾：达成共识",
+      "title": "Word Halo mnemonic illustration: consensus",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 2, tile 6",
+      "generated": true
+    },
+    "mediate": {
+      "file": "visual-mediate.webp",
+      "caption": "站在争吵双方中间：调解",
+      "title": "Word Halo mnemonic illustration: mediate",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 2, tile 7",
+      "generated": true
+    },
+    "coalition": {
+      "file": "visual-coalition.webp",
+      "caption": "不同颜色拼图组成一环：联合 / 联盟",
+      "title": "Word Halo mnemonic illustration: coalition",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 2, tile 8",
+      "generated": true
+    },
+    "expertise": {
+      "file": "visual-expertise.webp",
+      "caption": "精密工具 + 发光知识：专长",
+      "title": "Word Halo mnemonic illustration: expertise",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 2, tile 9",
+      "generated": true
+    },
+    "hypothesis": {
+      "file": "visual-hypothesis.webp",
+      "caption": "问号想法指向试管：待验证的假设",
+      "title": "Word Halo mnemonic illustration: hypothesis",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 3, tile 1",
+      "generated": true
+    },
+    "empirical": {
+      "file": "visual-empirical.webp",
+      "caption": "亲眼观察并记录实验：经验 / 实证",
+      "title": "Word Halo mnemonic illustration: empirical",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 3, tile 2",
+      "generated": true
+    },
+    "qualitative": {
+      "file": "visual-qualitative.webp",
+      "caption": "比较颜色、材质和感受：定性",
+      "title": "Word Halo mnemonic illustration: qualitative",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 3, tile 3",
+      "generated": true
+    },
+    "quantitative": {
+      "file": "visual-quantitative.webp",
+      "caption": "量具、计数珠和柱图：定量",
+      "title": "Word Halo mnemonic illustration: quantitative",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 3, tile 4",
+      "generated": true
+    },
+    "synthesis": {
+      "file": "visual-synthesis.webp",
+      "caption": "不同碎片汇成新晶体：综合 / 合成",
+      "title": "Word Halo mnemonic illustration: synthesis",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 3, tile 5",
+      "generated": true
+    },
+    "parameter": {
+      "file": "visual-parameter.webp",
+      "caption": "边界柱 + 可调旋钮：限定参数范围",
+      "title": "Word Halo mnemonic illustration: parameter",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 3, tile 6",
+      "generated": true
+    },
+    "literacy": {
+      "file": "visual-literacy.webp",
+      "caption": "书本点亮理解力：读写能力",
+      "title": "Word Halo mnemonic illustration: literacy",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 3, tile 7",
+      "generated": true
+    },
+    "manuscript": {
+      "file": "visual-manuscript.webp",
+      "caption": "亲手写下的原始长稿：手稿 / 原稿",
+      "title": "Word Halo mnemonic illustration: manuscript",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 3, tile 8",
+      "generated": true
+    },
+    "thesis": {
+      "file": "visual-thesis.webp",
+      "caption": "向评审展示研究成果：论文 / 论点",
+      "title": "Word Halo mnemonic illustration: thesis",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 3, tile 9",
+      "generated": true
+    },
+    "detain": {
+      "file": "visual-detain.webp",
+      "caption": "关卡拦住并暂扣证件：拘留 / 留住",
+      "title": "Word Halo mnemonic illustration: detain",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 4, tile 1",
+      "generated": true
+    },
+    "fraud": {
+      "file": "visual-fraud.webp",
+      "caption": "漂亮礼盒里藏着陷阱：欺诈",
+      "title": "Word Halo mnemonic illustration: fraud",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 4, tile 2",
+      "generated": true
+    },
+    "lawsuit": {
+      "file": "visual-lawsuit.webp",
+      "caption": "双方带材料走向法院：诉讼",
+      "title": "Word Halo mnemonic illustration: lawsuit",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 4, tile 3",
+      "generated": true
+    },
+    "legitimate": {
+      "file": "visual-legitimate.webp",
+      "caption": "文件通过绿色认证门：合法 / 正当",
+      "title": "Word Halo mnemonic illustration: legitimate",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 4, tile 4",
+      "generated": true
+    },
+    "penalty": {
+      "file": "visual-penalty.webp",
+      "caption": "违规后亮牌退场：处罚 / 惩罚",
+      "title": "Word Halo mnemonic illustration: penalty",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 4, tile 5",
+      "generated": true
+    },
+    "plead": {
+      "file": "visual-plead.webp",
+      "caption": "在法官前张开双手恳求：辩护 / 恳求",
+      "title": "Word Halo mnemonic illustration: plead",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 4, tile 6",
+      "generated": true
+    },
+    "proceeding": {
+      "file": "visual-proceeding.webp",
+      "caption": "按步骤走完司法流程：诉讼程序 / 进程",
+      "title": "Word Halo mnemonic illustration: proceeding",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 4, tile 7",
+      "generated": true
+    },
+    "sue": {
+      "file": "visual-sue.webp",
+      "caption": "把起诉材料正式交给对方：起诉",
+      "title": "Word Halo mnemonic illustration: sue",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 4, tile 8",
+      "generated": true
+    },
+    "warrant": {
+      "file": "visual-warrant.webp",
+      "caption": "带授权印章的搜查令：授权 / 许可证",
+      "title": "Word Halo mnemonic illustration: warrant",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 4, tile 9",
+      "generated": true
+    },
+    "chronic": {
+      "file": "visual-chronic.webp",
+      "caption": "日历长带反复环绕：长期的 / 慢性的",
+      "title": "Word Halo mnemonic illustration: chronic",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 5, tile 1",
+      "generated": true
+    },
+    "complication": {
+      "file": "visual-complication.webp",
+      "caption": "简单医疗路径突然缠成多条：并发症 / 复杂化",
+      "title": "Word Halo mnemonic illustration: complication",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 5, tile 2",
+      "generated": true
+    },
+    "diagnose": {
+      "file": "visual-diagnose.webp",
+      "caption": "放大症状并锁定病因：诊断",
+      "title": "Word Halo mnemonic illustration: diagnose",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 5, tile 3",
+      "generated": true
+    },
+    "epidemic": {
+      "file": "visual-epidemic.webp",
+      "caption": "疾病标记在区域内扩散：流行病",
+      "title": "Word Halo mnemonic illustration: epidemic",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 5, tile 4",
+      "generated": true
+    },
+    "humanitarian": {
+      "file": "visual-humanitarian.webp",
+      "caption": "灾后送水、食物与药箱：人道主义",
+      "title": "Word Halo mnemonic illustration: humanitarian",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 5, tile 5",
+      "generated": true
+    },
+    "infectious": {
+      "file": "visual-infectious.webp",
+      "caption": "飞沫从一人传到另一人：传染性的",
+      "title": "Word Halo mnemonic illustration: infectious",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 5, tile 6",
+      "generated": true
+    },
+    "kidney": {
+      "file": "visual-kidney.webp",
+      "caption": "成对器官过滤体液：肾脏",
+      "title": "Word Halo mnemonic illustration: kidney",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 5, tile 7",
+      "generated": true
+    },
+    "maternity": {
+      "file": "visual-maternity.webp",
+      "caption": "母亲抱着新生儿：母性 / 产科",
+      "title": "Word Halo mnemonic illustration: maternity",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 5, tile 8",
+      "generated": true
+    },
+    "nutrition": {
+      "file": "visual-nutrition.webp",
+      "caption": "均衡餐盘让身体有力量：营养",
+      "title": "Word Halo mnemonic illustration: nutrition",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 5, tile 9",
+      "generated": true
+    },
+    "asset": {
+      "file": "visual-asset.webp",
+      "caption": "房屋、机器和储蓄收进保护盾：资产",
+      "title": "Word Halo mnemonic illustration: asset",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 6, tile 1",
+      "generated": true
+    },
+    "bankrupt": {
+      "file": "visual-bankrupt.webp",
+      "caption": "空收银机 + 空口袋 + 断线：破产",
+      "title": "Word Halo mnemonic illustration: bankrupt",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 6, tile 2",
+      "generated": true
+    },
+    "compensation": {
+      "file": "visual-compensation.webp",
+      "caption": "修补损失并给予补偿：补偿 / 赔偿",
+      "title": "Word Halo mnemonic illustration: compensation",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 6, tile 3",
+      "generated": true
+    },
+    "currency": {
+      "file": "visual-currency.webp",
+      "caption": "纸币、硬币和卡片循环流通：货币",
+      "title": "Word Halo mnemonic illustration: currency",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 6, tile 4",
+      "generated": true
+    },
+    "funding": {
+      "file": "visual-funding.webp",
+      "caption": "资金浇灌项目幼苗：资金 / 资助",
+      "title": "Word Halo mnemonic illustration: funding",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 6, tile 5",
+      "generated": true
+    },
+    "monetary": {
+      "file": "visual-monetary.webp",
+      "caption": "中央机制调节货币流向：货币的",
+      "title": "Word Halo mnemonic illustration: monetary",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 6, tile 6",
+      "generated": true
+    },
+    "premium": {
+      "file": "visual-premium.webp",
+      "caption": "标准保护盾上再加一层：额外费用 / 高级的",
+      "title": "Word Halo mnemonic illustration: premium",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 6, tile 7",
+      "generated": true
+    },
+    "tariff": {
+      "file": "visual-tariff.webp",
+      "caption": "货物过边境时加收费用：关税",
+      "title": "Word Halo mnemonic illustration: tariff",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 6, tile 8",
+      "generated": true
+    },
+    "allowance": {
+      "file": "visual-allowance.webp",
+      "caption": "大预算中分出固定小袋：津贴 / 零用钱",
+      "title": "Word Halo mnemonic illustration: allowance",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 6, tile 9",
+      "generated": true
+    },
+    "alliance": {
+      "file": "visual-alliance.webp",
+      "caption": "两个不同群体架起一座桥：联盟",
+      "title": "Word Halo mnemonic illustration: alliance",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 7, tile 1",
+      "generated": true
+    },
+    "ally": {
+      "file": "visual-ally.webp",
+      "caption": "伙伴背靠背互相保护：盟友",
+      "title": "Word Halo mnemonic illustration: ally",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 7, tile 2",
+      "generated": true
+    },
+    "collaboration": {
+      "file": "visual-collaboration.webp",
+      "caption": "多只手一起装好同一机器：协作",
+      "title": "Word Halo mnemonic illustration: collaboration",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 7, tile 3",
+      "generated": true
+    },
+    "consultant": {
+      "file": "visual-consultant.webp",
+      "caption": "专家为具体问题指一条路：顾问",
+      "title": "Word Halo mnemonic illustration: consultant",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 7, tile 4",
+      "generated": true
+    },
+    "corporate": {
+      "file": "visual-corporate.webp",
+      "caption": "多个部门连进同一组织：公司的 / 法人的",
+      "title": "Word Halo mnemonic illustration: corporate",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 7, tile 5",
+      "generated": true
+    },
+    "counterpart": {
+      "file": "visual-counterpart.webp",
+      "caption": "不同地点承担同一角色的两人：对应的人",
+      "title": "Word Halo mnemonic illustration: counterpart",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 7, tile 6",
+      "generated": true
+    },
+    "diplomatic": {
+      "file": "visual-diplomatic.webp",
+      "caption": "两国代表谨慎握手：外交的 / 圆融的",
+      "title": "Word Halo mnemonic illustration: diplomatic",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 7, tile 7",
+      "generated": true
+    },
+    "engagement": {
+      "file": "visual-engagement.webp",
+      "caption": "从旁观者变成参与者：参与 / 投入",
+      "title": "Word Halo mnemonic illustration: engagement",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 7, tile 8",
+      "generated": true
+    },
+    "enterprise": {
+      "file": "visual-enterprise.webp",
+      "caption": "团队把新事业发射升空：企业 / 进取心",
+      "title": "Word Halo mnemonic illustration: enterprise",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 7, tile 9",
+      "generated": true
+    },
+    "chronicle": {
+      "file": "visual-chronicle.webp",
+      "caption": "卷轴按顺序记录历史事件：编年史 / 记录",
+      "title": "Word Halo mnemonic illustration: chronicle",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 8, tile 1",
+      "generated": true
+    },
+    "curriculum": {
+      "file": "visual-curriculum.webp",
+      "caption": "沿规划路线学完各门课程：课程体系",
+      "title": "Word Halo mnemonic illustration: curriculum",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 8, tile 2",
+      "generated": true
+    },
+    "glossary": {
+      "file": "visual-glossary.webp",
+      "caption": "陌生词和解释一一对应：术语表",
+      "title": "Word Halo mnemonic illustration: glossary",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 8, tile 3",
+      "generated": true
+    },
+    "intellect": {
+      "file": "visual-intellect.webp",
+      "caption": "用推理连通复杂图案：智力 / 才智",
+      "title": "Word Halo mnemonic illustration: intellect",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 8, tile 4",
+      "generated": true
+    },
+    "narrative": {
+      "file": "visual-narrative.webp",
+      "caption": "多段场景被一条故事线串起：叙事",
+      "title": "Word Halo mnemonic illustration: narrative",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 8, tile 5",
+      "generated": true
+    },
+    "prose": {
+      "file": "visual-prose.webp",
+      "caption": "文字连续自然流动，不分诗行：散文",
+      "title": "Word Halo mnemonic illustration: prose",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 8, tile 6",
+      "generated": true
+    },
+    "instructor": {
+      "file": "visual-instructor.webp",
+      "caption": "老师分步骤示范技能：教员 / 导师",
+      "title": "Word Halo mnemonic illustration: instructor",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 8, tile 7",
+      "generated": true
+    },
+    "historian": {
+      "file": "visual-historian.webp",
+      "caption": "由文物、地图和时间线重建过去：历史学家",
+      "title": "Word Halo mnemonic illustration: historian",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 8, tile 8",
+      "generated": true
+    },
+    "handbook": {
+      "file": "visual-handbook.webp",
+      "caption": "照小手册一步步完成任务：手册",
+      "title": "Word Halo mnemonic illustration: handbook",
+      "artist": "OpenAI image generation · Word Halo curation",
+      "license": "Generated project artwork",
+      "source": "Reviewed atlas 8, tile 9",
+      "generated": true
+    }
+  }
+}
