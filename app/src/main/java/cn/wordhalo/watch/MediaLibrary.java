@@ -4,6 +4,9 @@ import android.content.*;
 import android.graphics.*;
 import android.media.*;
 import android.os.*;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
+import android.speech.tts.Voice;
 import android.util.LruCache;
 import org.json.*;
 import java.io.*;
@@ -24,7 +27,9 @@ final class MediaLibrary {
     final Map<String,Long> retryAfter=new ConcurrentHashMap<>();
     final LruCache<String,Bitmap> bitmaps=new LruCache<>(8);
     JSONObject words=new JSONObject(),scenes=new JSONObject(),notes=new JSONObject(),visuals=new JSONObject(),photoCuration=new JSONObject();
-    MediaPlayer player;AudioFocusRequest focus;Request phoneTask,photoTask;Runnable soundTimeout;
+    MediaPlayer player;TextToSpeech speech;AudioFocusRequest focus;Request phoneTask,photoTask;Runnable soundTimeout;
+    boolean speechReady=false,forceStreamingForTests=false;int speechGeneration=0,speechAccent=0;
+    String speechUtterance="";Consumer<String> speechStatus;final Set<Integer> failedLocalAccents=new HashSet<>();
     int soundToken=0;volatile int cacheGeneration=0;boolean foreground=false;volatile boolean closed=false;
     final AudioManager audio;
     interface ConnectionFactory {HttpURLConnection open(URL url)throws IOException;}
@@ -46,8 +51,22 @@ final class MediaLibrary {
     synchronized ExecutorService requestPool(){if(closed||!foreground)return null;if(requests==null||requests.isShutdown())requests=Executors.newFixedThreadPool(2);return requests;}
     synchronized ExecutorService disconnectPool(){if(disconnects==null||disconnects.isShutdown())disconnects=Executors.newCachedThreadPool();return disconnects;}
     void disconnect(HttpURLConnection connection){try{disconnectPool().execute(connection::disconnect);}catch(RejectedExecutionException ignored){try{connection.disconnect();}catch(Exception ignoredAgain){}}}
-    void enterForeground(){if(!closed)foreground=true;}
-    void leaveForeground(){foreground=false;pageChanged();ExecutorService requestPool,disconnectPool;synchronized(this){requestPool=requests;requests=null;disconnectPool=disconnects;disconnects=null;}if(requestPool!=null)requestPool.shutdownNow();if(disconnectPool!=null)disconnectPool.shutdown();}
+    void enterForeground(){if(!closed){foreground=true;initSpeech();}}
+    void leaveForeground(){foreground=false;pageChanged();shutdownSpeech();ExecutorService requestPool,disconnectPool;synchronized(this){requestPool=requests;requests=null;disconnectPool=disconnects;disconnects=null;}if(requestPool!=null)requestPool.shutdownNow();if(disconnectPool!=null)disconnectPool.shutdown();}
+    void initSpeech(){
+        if(closed||!foreground||speech!=null||forceStreamingForTests)return;final int generation=++speechGeneration;speechReady=false;
+        try{speech=new TextToSpeech(context,result->main.post(()->{
+            TextToSpeech active=speech;if(closed||!foreground||generation!=speechGeneration||active==null)return;
+            speechReady=result==TextToSpeech.SUCCESS;if(!speechReady)return;
+            active.setSpeechRate(.93f);active.setPitch(1f);active.setOnUtteranceProgressListener(new UtteranceProgressListener(){
+                @Override public void onStart(String utteranceId){main.post(()->speechStarted(utteranceId));}
+                @Override public void onDone(String utteranceId){main.post(()->speechFinished(utteranceId));}
+                @Override public void onError(String utteranceId){main.post(()->speechFailed(utteranceId));}
+                @Override public void onError(String utteranceId,int errorCode){main.post(()->speechFailed(utteranceId));}
+            });
+        }));}catch(Exception ignored){speech=null;speechReady=false;}
+    }
+    void shutdownSpeech(){speechGeneration++;speechReady=false;speechUtterance="";speechStatus=null;failedLocalAccents.clear();TextToSpeech old=speech;speech=null;if(old!=null)try{old.shutdown();}catch(Exception ignored){}}
     void load()throws Exception{words=asset("word-media.json");scenes=asset("scenes.json");notes=asset("memory-notes.json");visuals=asset("visual-mnemonics.json").optJSONObject("words");if(visuals==null)visuals=new JSONObject();photoCuration=asset("stock-photo-curation.json");}
     JSONObject asset(String name)throws Exception{try(InputStream in=context.getAssets().open(name)){return new JSONObject(new String(read(in,3_000_000),StandardCharsets.UTF_8));}}
     JSONObject word(String id){JSONObject w=words.optJSONObject(id);return w==null?new JSONObject():w;}
@@ -83,10 +102,40 @@ final class MediaLibrary {
             final Bitmap photo=b;main.post(()->{if(task.current()&&photoTask==task&&photo!=null)callback.accept(photo);});});}catch(RejectedExecutionException ignored){task.cancel();if(photoTask==task)photoTask=null;}
     }
     static String voiceUrl(String id,int accent){return "https://dict.youdao.com/dictvoice?audio="+encode(id)+"&type="+(accent==1?1:2);}
-    /** Streams directly through Android; no audio file is read from or written to app cache. */
+    String accentName(int accent){return accent==1?"英式":"美式";}
+    Locale accentLocale(int accent){return accent==1?Locale.UK:Locale.US;}
+    boolean chooseLocalVoice(int accent){
+        TextToSpeech active=speech;if(!speechReady||active==null||failedLocalAccents.contains(accent))return false;Locale wanted=accentLocale(accent);
+        try{Voice chosen=null;Set<Voice> voices=active.getVoices();if(voices!=null)for(Voice voice:voices){Locale locale=voice.getLocale();if(voice.isNetworkConnectionRequired()||locale==null||!wanted.getLanguage().equals(locale.getLanguage())||!wanted.getCountry().equals(locale.getCountry()))continue;if(chosen==null||voice.getQuality()>chosen.getQuality())chosen=voice;}if(voices!=null&&!voices.isEmpty()&&chosen==null){failedLocalAccents.add(accent);return false;}int support=chosen!=null?active.setVoice(chosen):active.setLanguage(wanted);if(support<TextToSpeech.LANG_AVAILABLE){failedLocalAccents.add(accent);return false;}return true;}catch(Exception ignored){failedLocalAccents.add(accent);return false;}
+    }
+    boolean requestSoundFocus(AudioAttributes attr,int token,Consumer<String> status){
+        if(audio==null)return true;focus=new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK).setAudioAttributes(attr).setOnAudioFocusChangeListener(change->{if(change<0&&token==soundToken){status.accept("播放已暂停");stop();}}).build();return audio.requestAudioFocus(focus)==AudioManager.AUDIOFOCUS_REQUEST_GRANTED;
+    }
+    void releaseSoundFocus(){if(audio!=null&&focus!=null)try{audio.abandonAudioFocusRequest(focus);}catch(Exception ignored){}focus=null;}
+    boolean speakLocal(String id,int accent,Consumer<String> status,int token){
+        TextToSpeech active=speech;if(!chooseLocalVoice(accent)||active==null)return false;
+        AudioAttributes attr=new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_SPEECH).build();
+        if(!requestSoundFocus(attr,token,status)){status.accept("暂时无法播放，请稍后再试");stop();return true;}
+        active.setAudioAttributes(attr);active.setSpeechRate(accent==1?.91f:.94f);active.setPitch(accent==1?.98f:1f);
+        String utterance="wordhalo-"+token+"-"+accent;speechUtterance=utterance;speechStatus=status;speechAccent=accent;
+        Bundle params=new Bundle();params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME,1f);
+        int result=active.speak(id,TextToSpeech.QUEUE_FLUSH,params,utterance);if(result==TextToSpeech.ERROR){speechUtterance="";speechStatus=null;failedLocalAccents.add(accent);releaseSoundFocus();return false;}
+        status.accept(accentName(accent)+" · 本机即时发声");return true;
+    }
+    void speechStarted(String utterance){if(utterance.equals(speechUtterance)&&speechStatus!=null&&foreground&&!closed)speechStatus.accept(accentName(speechAccent)+" · 本机即时发声");}
+    void speechFinished(String utterance){if(!utterance.equals(speechUtterance)||speechStatus==null)return;Consumer<String> status=speechStatus;speechUtterance="";speechStatus=null;releaseSoundFocus();if(foreground&&!closed)status.accept("播放完毕 · 点按可重听");}
+    void speechFailed(String utterance){if(!utterance.equals(speechUtterance)||speechStatus==null)return;Consumer<String> status=speechStatus;int accent=speechAccent;failedLocalAccents.add(accent);speechUtterance="";speechStatus=null;releaseSoundFocus();if(foreground&&!closed){status.accept("本机语音不可用 · 正在切换在线原声");stream(speakingWord,accent,status);}}
+    String speakingWord="";
+    /** Uses the pre-warmed system voice first, then streams as a fallback. Audio is never persisted. */
     void speak(String id,int accent,Consumer<String> status){
-        stop();if(!foreground||closed)return;if(!online()){status.accept("联网已关闭 · 开启后可听读音");return;}final int token=soundToken;
-        status.accept("正在连接"+(accent==1?"英式":"美式")+"读音…");
+        stop();if(!foreground||closed)return;speakingWord=id;final int token=soundToken;
+        if(!forceStreamingForTests&&speakLocal(id,accent,status,token))return;
+        if(!forceStreamingForTests&&speech!=null&&!speechReady){status.accept("正在准备本机语音…");soundTimeout=()->{if(token!=soundToken||!foreground||closed)return;soundTimeout=null;if(!speakLocal(id,accent,status,token))stream(id,accent,status);};main.postDelayed(soundTimeout,450);return;}
+        stream(id,accent,status);
+    }
+    void stream(String id,int accent,Consumer<String> status){
+        if(!foreground||closed)return;if(!online()){status.accept("本机语音不可用 · 联网备用已关闭");return;}final int token=soundToken;
+        status.accept("正在连接"+accentName(accent)+"在线原声…");
         try{
             AudioAttributes attr=new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_SPEECH).build();
             MediaPlayer next=new MediaPlayer();player=next;next.setAudioAttributes(attr);
@@ -94,9 +143,8 @@ final class MediaLibrary {
             next.setDataSource(context,android.net.Uri.parse(voiceUrl(id,accent)),headers);
             next.setOnPreparedListener(mp->{if(!currentSound(mp,token))return;
                 if(soundTimeout!=null)main.removeCallbacks(soundTimeout);
-                focus=new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK).setAudioAttributes(attr).setOnAudioFocusChangeListener(change->{if(change<0&&token==soundToken){status.accept("播放已暂停");stop();}}).build();
-                if(audio!=null&&audio.requestAudioFocus(focus)!=AudioManager.AUDIOFOCUS_REQUEST_GRANTED){status.accept("暂时无法播放，请稍后再试");stop();return;}
-                try{mp.start();status.accept((accent==1?"英式":"美式")+" · 在线播放");soundTimeout=()->{if(token==soundToken){status.accept("播放已结束");stop();}};main.postDelayed(soundTimeout,12_000);}
+                if(!requestSoundFocus(attr,token,status)){status.accept("暂时无法播放，请稍后再试");stop();return;}
+                try{mp.start();status.accept(accentName(accent)+" · 在线原声");soundTimeout=()->{if(token==soundToken){status.accept("播放已结束");stop();}};main.postDelayed(soundTimeout,12_000);}
                 catch(Exception e){status.accept("读音暂不可用 · 点按重试");stop();}
             });
             next.setOnCompletionListener(mp->{if(currentSound(mp,token)){status.accept("播放完毕 · 点按可重听");stop();}});
@@ -105,7 +153,7 @@ final class MediaLibrary {
         }catch(Exception e){stop();status.accept("读音暂不可用 · 点按重试");}
     }
     boolean currentSound(MediaPlayer mp,int token){return player==mp&&token==soundToken&&foreground&&!closed;}
-    void stop(){soundToken++;if(soundTimeout!=null){main.removeCallbacks(soundTimeout);soundTimeout=null;}if(player!=null){try{player.release();}catch(Exception ignored){}player=null;}if(audio!=null&&focus!=null){audio.abandonAudioFocusRequest(focus);focus=null;}}
+    void stop(){soundToken++;if(soundTimeout!=null){main.removeCallbacks(soundTimeout);soundTimeout=null;}speechUtterance="";speechStatus=null;if(speech!=null)try{speech.stop();}catch(Exception ignored){}if(player!=null){try{player.release();}catch(Exception ignored){}player=null;}releaseSoundFocus();}
     void pageChanged(){stop();if(phoneTask!=null){phoneTask.cancel();phoneTask=null;}if(photoTask!=null){photoTask.cancel();photoTask=null;}ExecutorService pool=requests;if(pool instanceof ThreadPoolExecutor)((ThreadPoolExecutor)pool).purge();}
     /** Upgrade cleanup is limited to the old hashed UK/US audio files for this vocabulary. */
     void discardLegacyAudio(List<Engine.Word> vocabulary){
@@ -114,7 +162,7 @@ final class MediaLibrary {
         try{for(Engine.Word word:vocabulary){if(remaining.isEmpty())break;for(int kind=1;kind<=2;kind++){String name=hash(voiceUrl(word.id,kind));for(String suffix:new String[]{"",".part"})if(remaining.remove(name+suffix)){File f=new File(cache,name+suffix);if(f.exists()&&!f.delete())ok=false;}}}}catch(Exception e){ok=false;}
         if(ok)prefs.edit().putBoolean("streamingAudioCleanup",true).apply();
     }
-    void close(){closed=true;leaveForeground();main.removeCallbacksAndMessages(null);bitmaps.evictAll();}
+    void close(){closed=true;leaveForeground();shutdownSpeech();main.removeCallbacksAndMessages(null);bitmaps.evictAll();}
     long cacheBytes(){long n=0;File[] files=cache.listFiles();if(files!=null)for(File f:files)n+=f.length();return n;}
     void clearCache(Consumer<Boolean> done){pageChanged();cacheGeneration++;ExecutorService pool=requestPool();if(pool==null){done.accept(false);return;}try{pool.submit(()->{boolean ok=true;synchronized(this){File[] fs=cache.listFiles();if(fs!=null)for(File f:fs)ok=f.delete()&&ok;phones.clear();retryAfter.clear();}boolean result=ok;main.post(()->{if(!closed&&foreground)done.accept(result);});});}catch(RejectedExecutionException ignored){done.accept(false);}}
     File download(String url,int max)throws Exception{return download(url,max,new Request());}

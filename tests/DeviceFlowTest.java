@@ -86,7 +86,7 @@ public class DeviceFlowTest {
         assertEquals("sound",a.screen);assertEquals(2,a.soundViews.size());assertNull(a.media.player);int token=a.media.soundToken;a.rotate(1);assertEquals(token,a.media.soundToken);assertNull(a.media.player);assertEquals(before,Store.encode(a.session).toString());
         a.back();assertEquals("session",a.screen);assertEquals(before,Store.encode(a.session).toString());
         a.openMemory("ambitious");int page=a.memoryPage;a.openSound("ambitious");a.back();assertEquals("memory",a.screen);assertEquals(page,a.memoryPage);
-        a.prefs.edit().putBoolean("online",true).commit();a.media.phones.put("ambitious",new org.json.JSONObject().put("uk","æmˈbɪʃəs").put("us","æmˈbɪʃəs"));a.openSound("ambitious");shot("15-pronunciation");assertTrue(a.soundViews.get(0).getText().toString().contains("在线播放"));assertTrue(a.soundViews.get(1).getText().toString().contains("在线播放"));a.prefs.edit().putBoolean("online",false).commit();
+        a.prefs.edit().putBoolean("online",true).commit();a.media.phones.put("ambitious",new org.json.JSONObject().put("uk","æmˈbɪʃəs").put("us","æmˈbɪʃəs"));a.openSound("ambitious");shot("15-pronunciation");assertTrue(a.soundViews.get(0).getText().toString().contains("本机发声"));assertTrue(a.soundViews.get(1).getText().toString().contains("本机发声"));a.prefs.edit().putBoolean("online",false).commit();
         java.util.List<Engine.Word> longest=new java.util.ArrayList<>(a.words);longest.sort((x,y)->Integer.compare(a.media.genericIpa(y.id).length(),a.media.genericIpa(x.id).length()));
         for(int i=0;i<10;i++){a.soundId=longest.get(i).id;layout();for(TextView t:a.soundViews){android.text.Layout l=t.getLayout();assertTrue(l.getHeight()<=t.getHeight()-t.getPaddingTop()-t.getPaddingBottom());for(int k=0;k<l.getLineCount();k++)assertEquals("Full IPA: "+t.getText(),0,l.getEllipsisCount(k));}}
     }
@@ -114,31 +114,32 @@ public class DeviceFlowTest {
         @Override public InputStream getInputStream(){return new ByteArrayInputStream(data);}
     }
     @Test public void onlineAudioStreamsWithoutFilesAndRepeatsOnDemand()throws Exception{
-        a.prefs.edit().putBoolean("online",true).commit();java.util.List<String> messages=new java.util.ArrayList<>();java.util.concurrent.atomic.AtomicInteger opens=new java.util.concurrent.atomic.AtomicInteger();
+        a.media.forceStreamingForTests=true;a.prefs.edit().putBoolean("online",true).commit();java.util.List<String> messages=new java.util.ArrayList<>();java.util.concurrent.atomic.AtomicInteger opens=new java.util.concurrent.atomic.AtomicInteger();
         org.robolectric.shadows.ShadowMediaPlayer.setMediaInfoProvider(source->{opens.incrementAndGet();return new org.robolectric.shadows.ShadowMediaPlayer.MediaInfo(400,100);});
         long bytes=a.media.cacheBytes();a.media.speak("ambitious",1,messages::add);android.media.MediaPlayer first=a.media.player;assertNotNull(first);assertFalse(first.isPlaying());
-        assertEquals(android.net.Uri.parse(MediaLibrary.voiceUrl("ambitious",1)),shadowOf(first).getSourceUri());shadowOf(Looper.getMainLooper()).idleFor(java.time.Duration.ofMillis(120));assertTrue(first.isPlaying());assertTrue(messages.get(messages.size()-1).contains("在线播放"));
+        assertEquals(android.net.Uri.parse(MediaLibrary.voiceUrl("ambitious",1)),shadowOf(first).getSourceUri());shadowOf(Looper.getMainLooper()).idleFor(java.time.Duration.ofMillis(120));assertTrue(first.isPlaying());assertTrue(messages.get(messages.size()-1).contains("在线原声"));
         shadowOf(Looper.getMainLooper()).idleFor(java.time.Duration.ofMillis(500));assertNull(a.media.player);assertTrue(messages.get(messages.size()-1).contains("播放完毕"));assertEquals(bytes,a.media.cacheBytes());
         a.media.speak("ambitious",1,messages::add);assertNotNull(a.media.player);assertNotSame(first,a.media.player);assertTrue(opens.get()>=2);a.media.stop();assertEquals(bytes,a.media.cacheBytes());
         try{a.media.download(MediaLibrary.voiceUrl("ambitious",1),750000);fail("Audio must never use persistent cache");}catch(IOException expected){}
     }
     @Test public void latePreparedEventsCannotPlayAfterSwitchOrPause()throws Exception{
-        a.prefs.edit().putBoolean("online",true).commit();org.robolectric.shadows.ShadowMediaPlayer.setMediaInfoProvider(source->new org.robolectric.shadows.ShadowMediaPlayer.MediaInfo(400,5000));
+        a.media.forceStreamingForTests=true;a.prefs.edit().putBoolean("online",true).commit();org.robolectric.shadows.ShadowMediaPlayer.setMediaInfoProvider(source->new org.robolectric.shadows.ShadowMediaPlayer.MediaInfo(400,5000));
         java.util.List<String> old=new java.util.ArrayList<>(),fresh=new java.util.ArrayList<>();a.media.speak("ambitious",1,old::add);android.media.MediaPlayer first=a.media.player;android.media.MediaPlayer.OnPreparedListener late=shadowOf(first).getOnPreparedListener();
         a.media.speak("ambitious",2,fresh::add);android.media.MediaPlayer second=a.media.player;assertNotSame(first,second);late.onPrepared(first);assertEquals(1,old.size());assertFalse(first.isPlaying());assertSame(second,a.media.player);
         android.media.MediaPlayer.OnPreparedListener lateSecond=shadowOf(second).getOnPreparedListener();a.onPause();lateSecond.onPrepared(second);assertNull(a.media.player);assertFalse(second.isPlaying());assertEquals(1,fresh.size());
     }
     @Test public void failedAndTimedOutStreamingCanRetryWithoutBlockingStudy()throws Exception{
-        a.start(false);String current=a.session.current();a.prefs.edit().putBoolean("online",true).commit();java.util.List<String> messages=new java.util.ArrayList<>();
+        a.media.forceStreamingForTests=true;a.start(false);String current=a.session.current();a.prefs.edit().putBoolean("online",true).commit();java.util.List<String> messages=new java.util.ArrayList<>();
         org.robolectric.shadows.ShadowMediaPlayer.setMediaInfoProvider(source->new org.robolectric.shadows.ShadowMediaPlayer.MediaInfo(400,60000));a.media.speak("ambitious",1,messages::add);
         shadowOf(Looper.getMainLooper()).idleFor(java.time.Duration.ofMillis(15001));assertNull(a.media.player);assertTrue(messages.get(messages.size()-1).contains("超时"));assertEquals(current,a.session.current());
         a.media.speak("ambitious",2,messages::add);assertNotNull(a.media.player);shadowOf(a.media.player).invokeErrorListener(android.media.MediaPlayer.MEDIA_ERROR_UNKNOWN,0);assertNull(a.media.player);assertTrue(messages.get(messages.size()-1).contains("重试"));
         a.media.speak("ambitious",1,messages::add);assertNotNull(a.media.player);a.media.pageChanged();assertNull(a.media.player);
     }
     @Test public void upgradeRemovesOnlyLegacyAudioAndOfflineModeNeverPlaysIt()throws Exception{
+        a.media.forceStreamingForTests=true;
         File legacy=seed(MediaLibrary.voiceUrl("ambitious",1),wav()),partial=seed(MediaLibrary.voiceUrl("ambitious",2),wav());File part=new File(partial.getPath()+".part");assertTrue(partial.renameTo(part));File photo=seed("https://example.test/photo",new byte[30]);
         a.start(false);a.session.learning=a.session.learn.size();a.render();String id=a.session.current();a.answer(a.session.options.indexOf(id));int attempts=a.store.progress().get(id).attempts;
-        java.util.List<String> messages=new java.util.ArrayList<>();a.media.speak("ambitious",1,messages::add);assertNull(a.media.player);assertTrue(messages.get(0).contains("联网已关闭"));
+        java.util.List<String> messages=new java.util.ArrayList<>();a.media.speak("ambitious",1,messages::add);assertNull(a.media.player);assertTrue(messages.get(0).contains("联网备用已关闭"));
         a.prefs.edit().putBoolean("streamingAudioCleanup",false).commit();a.media.discardLegacyAudio(a.words);assertFalse(legacy.exists());assertFalse(part.exists());assertTrue(photo.exists());assertEquals(attempts,a.store.progress().get(id).attempts);
         a.media.clearCache(ok->{});for(int i=0;i<40&&photo.exists();i++)Thread.sleep(10);assertFalse(photo.exists());assertEquals(attempts,a.store.progress().get(id).attempts);
     }
@@ -164,7 +165,7 @@ public class DeviceFlowTest {
         a.prefs.edit().putBoolean("online",true).commit();java.util.concurrent.atomic.AtomicInteger opens=new java.util.concurrent.atomic.AtomicInteger();
         a.media.connections=url->{opens.incrementAndGet();throw new IOException("Unexpected automatic network request");};a.start(false);a.session.learning=a.session.learn.size();a.render();a.openSound(a.session.current());layout();assertEquals("Study and opening the sound card stay offline until Play is tapped",0,opens.get());assertNull(a.media.phoneTask);assertNull(a.media.requests);
         java.util.concurrent.CountDownLatch reading=new java.util.concurrent.CountDownLatch(1),released=new java.util.concurrent.CountDownLatch(1);FakeConnection blocked=new FakeConnection(new java.net.URL("https://dict.youdao.com/jsonapi"),new byte[20]){@Override public InputStream getInputStream(){return new InputStream(){public int read()throws IOException{reading.countDown();while(released.getCount()>0){try{released.await(50,java.util.concurrent.TimeUnit.MILLISECONDS);}catch(InterruptedException ignored){}}throw new IOException("Disconnected");}};}@Override public void disconnect(){super.disconnect();released.countDown();}};
-        a.media.connections=url->{opens.incrementAndGet();return blocked;};a.media.phones("background-network-test",ok->fail("Background callback must be suppressed"));assertTrue(reading.await(3,java.util.concurrent.TimeUnit.SECONDS));a.onPause();a.onStop();assertTrue(released.await(3,java.util.concurrent.TimeUnit.SECONDS));assertTrue(blocked.disconnected);assertFalse(a.media.foreground);assertNull(a.media.requests);assertNull(a.media.disconnects);assertNull(a.media.player);a.onResume();assertTrue(a.media.foreground);assertEquals("Resume and render still do not wake Wi-Fi",1,opens.get());
+        a.media.connections=url->{opens.incrementAndGet();return blocked;};a.media.phones("background-network-test",ok->fail("Background callback must be suppressed"));assertTrue(reading.await(3,java.util.concurrent.TimeUnit.SECONDS));a.onPause();a.onStop();assertTrue(released.await(3,java.util.concurrent.TimeUnit.SECONDS));assertTrue(blocked.disconnected);assertFalse(a.media.foreground);assertNull(a.media.requests);assertNull(a.media.disconnects);assertNull(a.media.player);assertNull("TTS must be unbound in background",a.media.speech);a.onResume();assertTrue(a.media.foreground);assertEquals("Resume and render still do not wake Wi-Fi",1,opens.get());
     }
     Engine.Progress fixture(int index,boolean wrong,int lapses,String day)throws Exception{Engine.Word target=a.activeWords().get(index);assertNotNull(target);Engine.Progress p=new Engine.Progress(target.id);p.trouble=wrong;p.lapses=lapses;p.attempts=1;p.firstDay=day;p.lastDay=day;p.due=System.currentTimeMillis()+Engine.DAY;a.progress.put(p.id,p);a.store.save(a.session,p);return p;}
     void click(TextView view){a.lastAction=-1000;view.performClick();}

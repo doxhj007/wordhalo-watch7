@@ -1,6 +1,6 @@
-# Word Halo / 词间 0.23.0
+# Word Halo / 词间 0.24.0
 
-Personal native Wear OS vocabulary app for Samsung Galaxy Watch7 44mm, 480×480, One UI Watch 8 / Wear OS 6 / API 36. Java 11, platform Views, SQLite. No runtime libraries, ads or account system. Permissions: VIBRATE and INTERNET. Package `cn.wordhalo.watch`, versionCode 8.
+Personal native Wear OS vocabulary app for Samsung Galaxy Watch7 44mm, 480×480, One UI Watch 8 / Wear OS 6 / API 36. Java 11, platform Views, SQLite. No runtime libraries, ads or account system. Permissions: VIBRATE and INTERNET. Package `cn.wordhalo.watch`, versionCode 9. The project owner/user has exercised the core install, learning, haptic, touch-bezel, network and background-exit flows on a physical Watch7 44mm; automated tests remain separately identified below.
 
 Version 0.22 contains six concrete, separate CET4/CET6 books: Star, New Oriental and Flash for each level. The active book is always one exact book bit, never a combined mask. The requested 百词斩六级核心（过考版）2551-word edition remains excluded until its exact list and order can be verified.
 
@@ -22,7 +22,7 @@ Photos retain their original licenses (mostly CC BY / CC BY-SA, plus public-doma
 
 `tools/prepare_media.py` needs Pillow and an ECDICT CSV in the indicated work directory. It uses pinned scenes when present. Newly searched replacements require manual contact-sheet inspection; search results are NOT automatically shown in the app. Generic IPA is from ECDICT. UK/US IPA is retrieved on demand from the public Youdao web dictionary endpoint; it is never fabricated by transforming generic IPA.
 
-Only explicit play taps start any pronunciation network work or call MediaPlayer. Study rendering and opening the sound card use bundled generic IPA without contacting the network. Pronunciation streams directly from the HTTPS UK/US URL with prepareAsync; no audio download or persistent audio cache is used. There is no prefetch UI. Leaving the page, switching words or entering `onPause`, `onStop` or `onDestroy` releases the player, cancels tracked HTTP connections, destroys request pools, abandons audio focus and invalidates late callbacks. A 15-second preparation timeout provides an explicit retry path. Each replay uses the remote source. The system media stack may buffer the active stream; the app never saves a recording. An upgrade migration removes only known legacy hashed audio files and their partials, preserving progress, images and phonetics.
+`MediaLibrary` pre-warms the platform `TextToSpeech` engine only while the activity is in the foreground. An explicit UK/US tap selects an installed non-network regional voice when available, speaks immediately, and queries regional IPA independently. Missing or failed local voices fall back to the existing HTTPS dictionary recording when online access is enabled. There is no pronunciation prefetch and no persistent audio cache. Leaving the activity shuts down TTS, releases MediaPlayer and audio focus, cancels tracked HTTP connections, destroys request pools and invalidates late callbacks. The fallback stream keeps the 15-second timeout. An upgrade migration removes only known legacy hashed audio files and partials, preserving progress, images and phonetics.
 
 Dedicated illustrations are APK assets and never create a network request. Commons photos and phonetic metadata retain the bounded 48 MiB cache. Request-scoped cancellation disconnects slow metadata/photo connections off the UI thread; canceled callbacks cannot update subsequent pages. Declared response lengths are checked before files are committed. Public services can be unavailable. No learning progress is uploaded, and no phone companion, wake lock or background service is required.
 
@@ -42,7 +42,7 @@ The generator validates every expected book count, keeps source order, hashes al
 
 Clear haptics use explicitly sustained waveform envelopes because short vendor primitives were too faint in the user's Watch7 test. Correct: 154 ms including a pause; error: 308 ms; bezel: 34 ms; complete: 294 ms. Values are requested timings, not measured motor output. Global touch-haptics and interruption policies are respected. Results cannot be interrupted by lightweight navigation cues. Everything stops on pause.
 
-FocusHalo animates one outline between real answer rectangles, retargeting from its current position on fast turns. Native rotary scroll events and an outer-screen touch gesture are supported. Rotation never submits a quiz answer. Study cards require an explicit confirmation at the last card before starting a quiz. Reduced-motion preference and Android animation policy are supported. Rapid rotary menu steps accumulate against the destination, while touch cancels that animation. Study/flash/memory cards use a short directional transition. Tapping a word or IPA opens a UK/US pronunciation card and returns to the same learning state; rotation selects an accent without starting audio.
+FocusHalo animates one flat outline between real answer rectangles, retargeting from its current position on fast turns. It has no glow fill or overshoot. Native rotary scroll events and an outer-screen touch gesture are supported. Rotation never submits a quiz answer. Study cards require an explicit confirmation at the last card before starting a quiz. Reduced-motion preference and Android animation policy are supported. Rapid rotary menu steps accumulate against the destination, while touch cancels that animation. Study/flash/memory cards use a short directional transition. Tapping a word or IPA opens a UK/US pronunciation card and returns to the same learning state; rotation selects an accent without starting audio.
 
 ## Focused review
 
@@ -70,6 +70,12 @@ Fallback stock photos are curated down to 144 associations, with no source image
 
 Panel surfaces now use quiet gradients and selected states. Rotary focus combines the moving outline with a short card scale transition and a one-shot glow; it never loops. Answer feedback uses a status capsule and the completion page uses the existing vector success artwork. Reduced-motion and lifecycle behavior remain unchanged.
 
+## Version 0.24
+
+UK/US playback now prefers the pre-warmed Wear OS TTS engine and selects the requested regional locale. This removes the DNS, TLS and remote buffering delay from the normal path. The previous dictionary stream remains a controlled fallback when a local regional voice is missing. TTS is shut down on pause/stop, and neither path persists recordings.
+
+The visual system now uses flat OLED surfaces, quieter borders, a single-line rotary focus and restrained scale transitions. UK/US controls and the pronunciation card use a compact typographic hierarchy. Large gradients, focus glow and overshoot were removed while preserving visible selection and reduced-motion behavior.
+
 ## Version 0.20
 
 Session configuration supports 5/10/20-word groups and an optional recall mode. Recall state and reveal state are persisted with backward-compatible JSON defaults. Grading before reveal is rejected in both the activity and engine. Immediate retries still cannot inflate first-attempt results. Changes to preferences only affect the next group.
@@ -83,12 +89,12 @@ SQLite schema 2 adds `practice(day,word,correct)` with a composite primary key. 
 ## Tests
 
 ```text
-javac -encoding UTF-8 -d test-classes app/src/main/java/cn/wordhalo/watch/Engine.java tests/EngineTest.java
+javac -encoding UTF-8 -d test-classes app/src/main/java/cn/wordhalo/watch/BookCatalog.java app/src/main/java/cn/wordhalo/watch/MemoryCurve.java app/src/main/java/cn/wordhalo/watch/Engine.java tests/EngineTest.java
 java -cp test-classes cn.wordhalo.watch.EngineTest app/src/main/assets/words.tsv app/src/main/assets/book-orders.tsv
 ```
 
-EngineTest checks 63830 assertions across the exact membership/order of all six books, vocabulary choices and 80 complete randomized sessions. DeviceFlowTest uses Robolectric 4.16.1, JUnit 4.13.2 and native Android 16 graphics. Its 36 tests add independent book selection, next-group switching, invalid legacy-session recovery, zero automatic study traffic, full background network shutdown, 72 unique dedicated images, zero-network generated cards and a three-word maximum for fallback photo reuse to the existing coverage for retention forecasting, database migration, native image decoding, layout, haptics, scoped review and controlled streaming failures. All transport and player tests use controlled fakes; they make no live network requests and do not claim physical-watch connectivity validation.
+EngineTest checks 63830 assertions across the exact membership/order of all six books, vocabulary choices and 80 complete randomized sessions. DeviceFlowTest uses Robolectric 4.16.1, JUnit 4.13.2 and native Android 16 graphics. Its 36 tests cover independent book selection, next-group switching, invalid legacy-session recovery, zero automatic study traffic, full background shutdown, local-voice UI, controlled streaming fallback, 72 unique dedicated images, zero-network generated cards and a three-word maximum for fallback photo reuse, plus retention forecasting, database migration, native image decoding, layout, haptics and scoped review. Transport/player tests use controlled fakes and make no live network requests.
 
-The supplied screenshots are actual native View renders in the desktop Android test runtime. Physical vibration strength, Samsung touch-bezel event delivery and Bluetooth-network behavior still require the user's real watch. See 使用说明.md and validation.json in this directory for delivery checks.
+The supplied screenshots are actual native View renders in the desktop Android test runtime. Physical Watch7 coverage is user verification, recorded separately in validation.json; the automated suite does not pretend to measure motor strength, Samsung bezel delivery, TTS voice quality or Bluetooth-proxy latency. See 使用说明.md and validation.json for the exact scopes.
 
 The native DeviceFlowTest harness was run in the development workspace; its dependency setup is not bundled here. The EngineTest command above is independently runnable. The Gradle configuration is provided for reference and was not used to build the distributed APK.
