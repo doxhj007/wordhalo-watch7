@@ -55,6 +55,11 @@ public class EngineTest {
         }
         check(Engine.start(active,new HashMap<>(),selected,50,false,now,100,true).queue.size()==20,"Oversized batches are bounded");
         check(Engine.start(active,new HashMap<>(),selected,50,false,now,0,false).queue.size()==1,"Empty batch preference cannot break scheduling");
+        Engine.Session quiet=Engine.startQuiet(active,new HashMap<>(),selected,50,now);
+        check(quiet.quiet&&quiet.recall,"Silent quick study is an explicit self-rated session");
+        check(quiet.queue.size()==5&&quiet.learn.size()==5,"Silent quick study is capped at five cards");
+        check(!quiet.studying()&&!quiet.revealed,"The reveal is the first exposure in silent quick study");
+        check(Engine.answer(quiet,new HashMap<>(),true,quiet.current(),now)==null,"Silent cards cannot be graded before reveal");
         Engine.Progress curve=new Engine.Progress("curve");curve.stage=3;curve.due=now+Engine.INTERVALS[curve.stage];
         check(Math.abs(MemoryCurve.retention(curve,now)-1)<.0001,"Fresh review starts at full predicted retention");
         check(Math.abs(MemoryCurve.retention(curve,curve.due)-MemoryCurve.REVIEW_THRESHOLD)<.0001,"Due time meets the review threshold");

@@ -1,6 +1,6 @@
-# Word Halo / 词间 0.25.0
+# Word Halo / 词间 0.26.0
 
-Personal native Wear OS vocabulary app for Samsung Galaxy Watch7 44mm, 480×480, One UI Watch 8 / Wear OS 6 / API 36. Java 11, platform Views, SQLite. No runtime libraries, ads or account system. Permissions: VIBRATE and INTERNET. Package `cn.wordhalo.watch`, versionCode 10. The project owner/user has exercised the core install, learning, haptic, touch-bezel, network and background-exit flows on a physical Watch7 44mm; automated tests remain separately identified below.
+Personal native Wear OS vocabulary app for Samsung Galaxy Watch7 44mm, 480×480, One UI Watch 8 / Wear OS 6 / API 36. Java 11, platform Views, SQLite. No runtime libraries, ads or account system. Permissions: VIBRATE and INTERNET. Package `cn.wordhalo.watch`, versionCode 11. The project owner/user has exercised the core install, learning, haptic, touch-bezel, network and background-exit flows on a physical Watch7 44mm; automated tests remain separately identified below.
 
 Version 0.22 contains six concrete, separate CET4/CET6 books: Star, New Oriental and Flash for each level. The active book is always one exact book bit, never a combined mask. The requested 百词斩六级核心（过考版）2551-word edition remains excluded until its exact list and order can be verified.
 
@@ -44,6 +44,10 @@ Clear haptics use explicitly sustained waveform envelopes because short vendor p
 
 Page navigation uses two `SceneLayer` instances: the old hierarchy is blocked and animated out as one hardware-composited layer while the new hierarchy enters as one layer. In-page turns use the same coordinator with shorter vertical travel, and answer reveals use a scale crossfade. A new transition settles the previous one before retargeting, so rapid input cannot leave orphan views or competing child animators. `FocusHalo` retargets from its current rectangle with distance-aware timing. The progress arc, button press feedback, rotary scroll and focus scale share the same emphasized-decelerate curve. There are no looping animations. Native rotary events and an outer-screen touch gesture are supported. Rotation never submits a quiz answer. Reduced-motion preference, Android's animator policy and activity pause cancel or bypass every transition.
 
+Version 0.26 adds a visible five-card quiet-study entry. `Engine.startQuiet` uses the normal due/new selection and recall grading, skips the separate exposure pass, and stores a backward-compatible `quiet` flag in session JSON. It never invokes media APIs automatically. A rotary step can reveal the card, then rotary focus selects the visible self-rating buttons; confirmation remains explicit. Each grade commits scheduling and the advanced session in one SQLite transaction. The outer progress arc is based on unique first attempts so a queued retry never moves it backward.
+
+Back navigation now begins only inside the leftmost 20% of the display. The active `SceneLayer` follows the drag with bounded translation, alpha and scale, returns with the shared easing below threshold, and commits on distance or velocity. Vertical intent cancels the candidate before the menu receives a false back. Pause, render and detachment cancel the temporary animator and normalize the layer.
+
 ## Focused review
 
 The mistake hub supports non-grading flashcards even while a quiz is in progress. Flashcards can filter all words, trouble-marked words or words practiced today. Unshuffled mistakes are ordered by lapse count, then due time and headword. Optional seeded shuffle is stable across openings. Each scope remembers a headword ID rather than an index, so filtered-list changes do not silently move the bookmark to another word. Existing all-word numeric bookmarks migrate on first use.
@@ -82,6 +86,12 @@ Full-page changes now retain the previous and next View hierarchies briefly and 
 
 Rotary focus retargets from its current bounds with distance-aware duration and a quiet alpha ramp. Answer reveal, pressed controls, menu scrolling and the outer progress arc use the same non-overshooting easing. The motion preference and platform animation policy still disable all of these paths; pause removes outgoing layers and cancels progress/focus animators.
 
+## Version 0.26
+
+The home screen exposes a five-card silent quick-study path that uses the existing due-first scheduler, self-rating rules, retry queue and SQLite progress. A visible reveal button keeps the feature discoverable while a rotary step offers the faster one-handed path. It makes no automatic media or network call, persists the exact card and reveal state, and advances immediately after an explicit remembered/forgotten grade.
+
+Back navigation begins at the left edge and visually follows the finger. Vertical intent is rejected, short drags return with the shared easing and committed drags enter the existing composited back transition. The gesture, quiet layouts and enlarged system text are covered by the API 36 native suite.
+
 ## Version 0.20
 
 Session configuration supports 5/10/20-word groups and an optional recall mode. Recall state and reveal state are persisted with backward-compatible JSON defaults. Grading before reveal is rejected in both the activity and engine. Immediate retries still cannot inflate first-attempt results. Changes to preferences only affect the next group.
@@ -99,7 +109,7 @@ javac -encoding UTF-8 -d test-classes app/src/main/java/cn/wordhalo/watch/BookCa
 java -cp test-classes cn.wordhalo.watch.EngineTest app/src/main/assets/words.tsv app/src/main/assets/book-orders.tsv
 ```
 
-EngineTest checks 63830 assertions across the exact membership/order of all six books, vocabulary choices and 80 complete randomized sessions. DeviceFlowTest uses Robolectric 4.16.1, JUnit 4.13.2 and native Android 16 graphics. Its 37 tests cover composed page/turn transitions, reduced motion, independent book selection, next-group switching, invalid legacy-session recovery, zero automatic study traffic, full background shutdown, local-voice UI, controlled streaming fallback, 72 unique dedicated images, zero-network generated cards and a three-word maximum for fallback photo reuse, plus retention forecasting, database migration, native image decoding, layout, haptics and scoped review. Transport/player tests use controlled fakes and make no live network requests.
+EngineTest checks 63,834 assertions across the exact membership/order of all six books, vocabulary choices, quiet-session invariants and 80 complete randomized sessions. DeviceFlowTest uses Robolectric 4.16.1, JUnit 4.13.2 and native Android 16 graphics. Its 39 tests cover quiet-study offline behavior and restoration, edge-back following and rejection, composed page/turn transitions, reduced motion, independent book selection, next-group switching, invalid legacy-session recovery, zero automatic study traffic, full background shutdown, local-voice UI, controlled streaming fallback, 72 unique dedicated images, zero-network generated cards and a three-word maximum for fallback photo reuse, plus retention forecasting, database migration, native image decoding, large-text layout, haptics and scoped review. Transport/player tests use controlled fakes and make no live network requests.
 
 The supplied screenshots are actual native View renders in the desktop Android test runtime. Physical Watch7 coverage is user verification, recorded separately in validation.json; the automated suite does not pretend to measure motor strength, Samsung bezel delivery, TTS voice quality or Bluetooth-proxy latency. See 使用说明.md and validation.json for the exact scopes.
 

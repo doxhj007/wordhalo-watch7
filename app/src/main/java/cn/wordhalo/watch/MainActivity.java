@@ -54,7 +54,7 @@ public final class MainActivity extends Activity {
         }catch(Exception e){runOnUiThread(()->{screen="error";render();});}},"load-vocabulary").start();
     }
     @Override protected void onResume(){super.onResume();active=true;if(haptics!=null)haptics.foreground=true;if(media!=null)media.enterForeground();if(ready)render();}
-    @Override protected void onPause(){active=false;haptics.foreground=false;haptics.cancel();media.leaveForeground();stopScroll();if(halo!=null)halo.stop();settleSceneMotion();root.stopProgress();ui.removeCallbacksAndMessages(null);persist(null);super.onPause();}
+    @Override protected void onPause(){active=false;haptics.foreground=false;haptics.cancel();media.leaveForeground();stopScroll();if(halo!=null)halo.stop();settleSceneMotion();root.stopProgress();root.stopBackMotion();ui.removeCallbacksAndMessages(null);persist(null);super.onPause();}
     @Override protected void onStop(){if(media!=null)media.leaveForeground();super.onStop();}
     @Override protected void onDestroy(){settleSceneMotion();media.close();if(ready)store.close();super.onDestroy();}
     @Override public void onBackPressed(){back();}
@@ -97,7 +97,7 @@ public final class MainActivity extends Activity {
     }
     void finishSceneMotion(Animator animation){if(sceneMotion!=animation)return;sceneMotion=null;if(outgoingScene!=null){outgoingScene.setLayerType(View.LAYER_TYPE_NONE,null);root.removeView(outgoingScene);outgoingScene=null;}if(scene!=null){scene.setAlpha(1);scene.setTranslationX(0);scene.setTranslationY(0);scene.setScaleX(1);scene.setScaleY(1);scene.setLayerType(View.LAYER_TYPE_NONE,null);scene.blocked=false;scene.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_AUTO);}}
     void settleSceneMotion(){ValueAnimator running=sceneMotion;sceneMotion=null;if(running!=null){running.removeAllUpdateListeners();running.removeAllListeners();running.cancel();}if(outgoingScene!=null){outgoingScene.animate().cancel();root.removeView(outgoingScene);outgoingScene=null;}if(scene!=null){scene.animate().cancel();scene.setAlpha(1);scene.setTranslationX(0);scene.setTranslationY(0);scene.setScaleX(1);scene.setScaleY(1);scene.setLayerType(View.LAYER_TYPE_NONE,null);scene.blocked=false;scene.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_AUTO);}}
-    void render(){if(root.getWidth()==0)return;media.pageChanged();stopScroll();pronunciationWord="";phonetic=null;audioStatus=null;unit=Math.min(root.getWidth(),root.getHeight())/480f;if(halo!=null)halo.stop();halo=null;focusedCard=null;SceneTransition transition=beginSceneTransition();answerViews.clear();homeViews.clear();soundViews.clear();reviewViews.clear();recallViews.clear();studyViews.clear();bookViews.clear();scroll=null;root.invalidate();
+    void render(){if(root.getWidth()==0)return;media.pageChanged();stopScroll();root.stopBackMotion();pronunciationWord="";phonetic=null;audioStatus=null;unit=Math.min(root.getWidth(),root.getHeight())/480f;if(halo!=null)halo.stop();halo=null;focusedCard=null;SceneTransition transition=beginSceneTransition();answerViews.clear();homeViews.clear();soundViews.clear();reviewViews.clear();recallViews.clear();studyViews.clear();bookViews.clear();scroll=null;root.invalidate();
         if(screen.equals("error")){label("无法载入词库",70,145,340,60,34,INK,true);label("请重新打开，或覆盖安装 APK",70,220,340,90,25,MUTED,false);finishRender(transition);return;}
         if(!ready){label("词间",90,174,300,66,46,MINT,true);label("正在打开离线词库",90,250,300,40,23,MUTED,false);finishRender(transition);return;}
         switch(screen){case "session":showSession();break;case "settings":showSettings();break;case "books":showBooks();break;case "haptics":showHaptics();break;case "about":showAbout();break;case "flash":showFlash();break;case "flashmenu":showFlashMenu();break;case "review":showReview();break;case "empty":showEmpty();break;case "memory":showMemory();break;case "mnemonics":showMnemonics();break;case "sound":showSound();break;case "wordtools":showWordTools();break;case "studysettings":showStudySettings();break;case "touch":showTouchSettings();break;case "stats":showStats();break;default:showHome();}
@@ -139,7 +139,7 @@ public final class MainActivity extends Activity {
     void showSound(){if(!byId.containsKey(soundId)){screen=soundReturn;render();return;}top("发音");word(soundId);pronunciationWord=soundId;
         for(int kind=1;kind<=2;kind++){final int chosen=kind;TextView row=button("",75,161+(kind-1)*99,330,89,PANEL,INK,()->{soundFocus=chosen;refreshSoundRows();focusView(soundViews.get(chosen-1),true);playWord(soundId,chosen);});row.setMaxLines(3);row.setAutoSizeTextTypeUniformWithConfiguration(px(16),px(24),1,TypedValue.COMPLEX_UNIT_PX);soundViews.add(row);}
         audioStatus=label("转圈选择，点按播放",75,365,330,45,21,MUTED,false);audioStatus.setAutoSizeTextTypeUniformWithConfiguration(px(17),px(21),1,TypedValue.COMPLEX_UNIT_PX);refreshSoundRows();focusView(soundViews.get(soundFocus-1),false);
-        label("右滑返回",120,425,240,24,18,MUTED,false);
+        label("左缘右滑返回",120,425,240,24,18,MUTED,false);
     }
     void refreshSoundRows(){for(int i=0;i<soundViews.size();i++){int kind=i+1;String regional=media.ipa(soundId,kind),generic=media.genericIpa(soundId);String phoneme=!regional.isEmpty()?"/"+regional+"/":!generic.isEmpty()?"/"+generic+"/":"音标暂缺";TextView row=soundViews.get(i);row.setText((kind==1?"UK  英式":"US  美式")+"     ▶  本机发声\n"+phoneme);row.setSelected(kind==soundFocus);row.setTextColor(kind==soundFocus?MINT:INK);}}
     void showHome(){
@@ -147,16 +147,19 @@ public final class MainActivity extends Activity {
         StudyVisual dial=new StudyVisual(this,MINT,newToday/(float)limit);put(dial,145,82,190,190);
         TextView total=label(Integer.toString(today),157,121,166,73,67,MINT,true);total.setContentDescription("今日已练"+today+"词，点开学习概览");total.setOnClickListener(v->{if(tap()){statsReturn="home";screen="stats";statsPage=0;haptics.press();render();}});
         label("今日已练",150,197,180,27,19,MUTED,false);label("新词 "+newToday+" / "+limit,150,229,180,20,15,MUTED,false);
-        String main=session!=null?(session.complete()?"查看本组结果":"继续这一组"):"开始学习 · "+batchSize+"词";
+        String main=session!=null?(session.complete()?"查看本组结果":session.quiet?"继续静默速记":"继续这一组"):"开始学习 · "+batchSize+"词";
         homeViews.add(button(main,76,280,328,72,MINT,0xff102019,()->{haptics.reveal();if(session==null)start(false);else{screen="session";render();}}));
-        homeViews.add(button("错词 "+wrongCount(),95,365,138,60,PANEL,INK,()->{reviewFocus=-1;screen="review";haptics.press();render();}));
-        homeViews.add(button("更多",247,365,138,60,PANEL,INK,()->{haptics.press();screen="settings";render();}));
-        label(BookCatalog.find(activeBook).brand+"   "+dueCount()+" 待复习   "+(recallMode?"回忆":"选择"),105,437,270,22,17,MUTED,false);if(homeFocus>=0)focusView(homeViews.get(homeFocus),false);
+        if(session==null)homeViews.add(button("静默 5",64,365,112,60,PANEL,MINT,this::startQuiet));
+        homeViews.add(button("错词 "+wrongCount(),session==null?184:95,365,session==null?112:138,60,PANEL,INK,()->{reviewFocus=-1;screen="review";haptics.press();render();}));
+        homeViews.add(button("更多",session==null?304:247,365,session==null?112:138,60,PANEL,INK,()->{haptics.press();screen="settings";render();}));
+        label(BookCatalog.find(activeBook).brand+"   "+dueCount()+" 待复习   "+(recallMode?"回忆":"选择"),105,437,270,22,17,MUTED,false);if(homeFocus>=0&&!homeViews.isEmpty()){homeFocus=Math.min(homeFocus,homeViews.size()-1);focusView(homeViews.get(homeFocus),false);}
     }
     void start(boolean wrong){session=Engine.start(activeWords(),progress,activeBook,limit,wrong,System.currentTimeMillis(),batchSize,recallMode);session.bank=BookCatalog.find(activeBook).level;if(session.complete()){session=null;screen="empty";}else screen="session";persist(null);render();}
+    void startQuiet(){haptics.reveal();session=Engine.startQuiet(activeWords(),progress,activeBook,limit,System.currentTimeMillis());session.bank=BookCatalog.find(activeBook).level;if(session.complete()){session=null;screen="empty";}else screen="session";persist(null);render();}
     void showEmpty(){top("当前没有待学词");label("歇一小会儿",65,143,350,65,42,MINT,true);label("到期复习或明天的新词会在这里出现。也可以去「更多」随手翻卡。",78,222,324,110,25,MUTED,false);button("回到首页",110,356,260,67,PANEL,INK,()->{screen="home";render();});}
     void showSession(){
         if(session==null){screen="home";showHome();return;}
+        if(session.quiet){showQuietSession();return;}
         if(session.studying()){
             Engine.Word w=byId.get(session.learn.get(session.learning));top("先认一遍 · "+(session.learning+1)+" / "+session.learn.size());word(w.id);pronunciation(w);meaning(w,194,INK);art(w,260);
             button(session.learning+1==session.learn.size()?"开始测一测":"记住，下一词",105,386,270,58,MINT,0xff102019,()->{haptics.reveal();session.learning++;persist(null);renderTurn(1);});quietStatus();return;
@@ -204,8 +207,30 @@ public final class MainActivity extends Activity {
         setting(list,"清理图片 / 音标缓存 · "+(media.cacheBytes()/1024/1024)+" MB",()->media.clearCache(ok->{Toast.makeText(this,ok?"已清理，学习进度已保留":"部分缓存暂未清理",Toast.LENGTH_SHORT).show();if(active)render();}));
         setting(list,"使用说明 / 词库来源",()->{screen="about";render();});
         ScrollView menu=scroll;menu.post(()->menu.scrollTo(0,settingsY));menu.setOnScrollChangeListener((v,x,y,ox,oy)->settingsY=y);
-        label("右滑返回",130,426,220,23,19,MUTED,false);
+        label("左缘右滑返回",130,426,220,23,19,MUTED,false);
     }
+    void showQuietSession(){
+        if(session.feedback)Engine.next(session);
+        if(session.complete()){showQuietComplete();return;}
+        Engine.Word w=byId.get(session.current());int unique=Math.max(1,session.queue.size()-session.retried.size());boolean retry=session.answered.contains(w.id);
+        top(retry?"静默巩固 · 再想一次":"静默速记 · "+Math.min(session.answered.size()+1,unique)+" / "+unique);word(w.id);
+        if(!session.revealed){
+            put(new UiArtwork(this,"spark",MINT),153,190,174,92);
+            label("先在心里说出词义",85,298,310,38,24,INK,true);
+            button("看词义",105,359,270,66,MINT,0xff102019,this::revealQuiet);
+            label("点按或转动表圈揭晓",100,433,280,22,17,MUTED,false);
+            return;
+        }
+        String ipa=media.genericIpa(w.id);label(ipa.isEmpty()?"轻触单词可听发音":"/"+ipa+"/",105,150,270,30,19,MUTED,false);
+        meaning(w,196,INK);
+        label("记得 "+session.correct+"   ·   待巩固 "+session.retried.size(),100,279,280,28,18,MUTED,false);
+        recallViews.add(button("忘了",78,329,153,72,PANEL,RED,()->gradeQuiet(false)));
+        recallViews.add(button("记得",243,329,159,72,MINT,0xff102019,()->gradeQuiet(true)));
+        label("转圈选择 · 点按确认",100,423,280,24,18,MUTED,false);updateRecallFocus();
+    }
+    void revealQuiet(){if(session==null||!session.quiet||session.complete()||session.revealed)return;session.revealed=true;session.focus=-1;haptics.reveal();persist(null);renderSwap();}
+    void gradeQuiet(boolean remembered){if(session==null||!session.quiet||!session.revealed||session.feedback||session.complete())return;if(saveFailed){persist(null);if(saveFailed)return;}Engine.Progress p=Engine.answer(session,progress,remembered,remembered?session.current():"",System.currentTimeMillis());Engine.next(session);persist(p);if(remembered)haptics.correct();else haptics.wrong();boolean finished=session.complete();renderTurn(1);if(finished)ui.postDelayed(()->{if(active&&session!=null&&session.quiet&&session.complete())haptics.done();},430);}
+    void showQuietComplete(){top("静默速记完成");put(new UiArtwork(this,"success",MINT),145,91,190,88);label(session.answered.size()+" 张卡",100,181,280,55,45,INK,true);label("记得 "+session.correct+"   ·   待巩固 "+session.retried.size(),82,246,316,42,22,MUTED,false);button("再来 5 词",86,310,308,61,PANEL,MINT,()->{session=null;persist(null);startQuiet();});button("回到首页",112,386,256,58,MINT,0xff102019,this::finishGroup);}
     void setBookLevel(int level){bookLevel=level;prefs.edit().putInt("bookLevel",level).apply();haptics.select();renderTurn(level==6?1:-1);}
     void selectBook(BookCatalog.Book book){if(activeBook==book.bit){haptics.boundary();return;}activeBook=book.bit;bookLevel=book.level;prefs.edit().putLong("activeBook",activeBook).putInt("bookLevel",bookLevel).apply();haptics.bookmark();renderSwap();}
     void showBooks(){top("选择词书 · 每次一本");button("四级词书",83,96,150,54,bookLevel==4?MINT:PANEL,bookLevel==4?0xff102019:INK,()->setBookLevel(4));button("六级词书",247,96,150,54,bookLevel==6?MINT:PANEL,bookLevel==6?0xff102019:INK,()->setBookLevel(6));
@@ -215,14 +240,15 @@ public final class MainActivity extends Activity {
     void showHaptics(){String[] names={"表圈 · 清脆刻度","按下 · 稳稳落点","翻卡 · 渐强轻弹","答对 · 两下跃动","答错 · 长振回落","完成 · 三段上扬"};top("触感实验室 · "+(hapticAt+1)+" / 6");put(new UiArtwork(this,"wave"+hapticAt,hapticAt==4?RED:MINT),115,117,250,126);label(names[hapticAt],64,250,352,44,31,INK,true);label(haptics.modeLabel(),80,301,320,30,21,MUTED,false);button("点一下，感受",105,350,270,66,PANEL,MINT,this::sampleHaptic);label("转表圈切换并体验",95,427,290,24,20,MUTED,false);}
     void sampleHaptic(){haptics.cancel();switch(hapticAt){case 0:haptics.tick();break;case 1:haptics.press();break;case 2:haptics.reveal();break;case 3:haptics.correct();break;case 4:haptics.wrong();break;default:haptics.done();}}
     void showAbout(){
-        top("词间 0.25 · 使用说明");
+        top("词间 0.26 · 使用说明");
         scroll=new ScrollView(this);scroll.setVerticalScrollBarEnabled(false);
         int artCount=0,dedicatedCount=0,mnemonicCount=0;for(Engine.Word w:words){if(media.hasPhoto(w.id))artCount++;if(media.hasDedicatedVisual(w.id))dedicatedCount++;if(!media.mnemonic(w.id).isEmpty())mnemonicCount++;}
         String info="Galaxy Watch7 44mm 用户实机验证\n本机发音 · 离线背词 · 无账号\n\n"+
             "内置 6 本互相独立的词书：四级和六级各有星火、新东方、闪过。每次只启用一本，词数、原有词序和已学进度都按书显示，不会把几家词表合并成一个学习计划。切换从下一组生效，重合单词继续沿用你的记忆记录。\n\n"+
             "本版共保存 "+words.size()+" 个不重复词条。星火、新东方会标明具体版次；闪过标为公开整理词序。百词斩“六级核心（过考版）”2551 词目前没有可核验的公开完整词序，因此没有拿通用 2551 词冒充。\n\n"+
             "先认识新词，再做选择题。错词会稍后重现。复习间隔：10分钟、1天、3天、7天、14天、30天、60天。\n\n"+
-            "首页转圈选择入口；认词时转圈前后翻词，最后点按钮开测；答题时转圈选答案，点选项作答；结果页顺转到下一词、逆转看联想；联想页转圈翻页；菜单转圈滚动。也可沿屏幕最外圈划动。\n\n"+
+            "首页的静默速记每次安排5张卡：先自己回想，点按或转表圈揭晓，再选择记得或忘了。它不自动发声、不自动联网，退出后会回到同一张卡。\n\n"+
+            "首页转圈选择入口；认词时转圈前后翻词，最后点按钮开测；答题时转圈选答案，点选项作答；结果页顺转到下一词、逆转看联想；联想页转圈翻页；菜单转圈滚动。也可沿屏幕最外圈划动；从左缘右滑返回时页面会跟手移动。\n\n"+
             "词书成员与词序来自 DictionaryData 和 English Vocabulary Vault；短释义及基础音标主要来自 ECDICT。具体来源、版本和校验值随源码提供。释义为快速记忆摘要，省略例句及部分义项。\n\n"+
             dedicatedCount+" 个六级高频抽象词配有一词一图的专属联想插画，每张都附有针对该词的中文看图提示；其余 "+(artCount-dedicatedCount)+" 个词保留经过筛选的图库场景。专属图优先覆盖原来重复最多的法律、医疗、经济、协作和学术词。谐音只帮记意思，不代表正确发音或词源。\n\n"+
             "图库照片来自 Wikimedia Commons，已附带离线缩略图，点开后可联网加载清晰图；各自的作者、来源与许可都在署名页。专属插画由 OpenAI 图像生成工具制作并逐张按词义筛选，只保存在 APK 内，不发起图片请求。\n\n"+
@@ -233,7 +259,7 @@ public final class MainActivity extends Activity {
             "点星星收藏单词；长按单词打开工具。学习概览显示近七天练词量、个人遗忘曲线和每天的复习预测；85%保持率是复习提醒线，到期词按最可能忘记的优先。每日去重统计从0.20版开始，旧进度保留但不推算过去成绩。进度只存在手表本机，同签名覆盖安装可保留，卸载会清除。\n\n"+
             "答题与表圈操作可分别设置震动强度。清晰档使用更长的满幅振动段和分段收尾，实际力度仍受系统和硬件影响。震动尊重系统触感与勿扰；除手动点播发音外没有声音，不保持屏幕常亮。\n\n"+
             "已有校正保留，另有51条自编构词、辨析和画面线索；线索用于辅助记忆，不代替完整词典。完整源码、词库来源与许可说明随项目交付。";
-        TextView t=text(info,24,INK,false);t.setGravity(Gravity.START);t.setMaxLines(1000);t.setEllipsize(null);t.setLineSpacing(px(5),1);t.setPadding(px(12),px(8),px(12),px(30));scroll.addView(t);put(scroll,81,105,318,306);label("转表圈滚动 · 右滑返回",95,425,290,25,18,MUTED,false);
+        TextView t=text(info,24,INK,false);t.setGravity(Gravity.START);t.setMaxLines(1000);t.setEllipsize(null);t.setLineSpacing(px(5),1);t.setPadding(px(12),px(8),px(12),px(30));scroll.addView(t);put(scroll,81,105,318,306);label("转表圈滚动 · 左缘右滑返回",78,425,324,25,18,MUTED,false);
     }
     String flashName(){return flashMode==1?"错词回看":flashMode==2?"今日学过":flashMode==3?"本组错词":flashMode==4?"我的收藏":"全部单词";}
     List<Engine.Word> flashCandidates(int mode){ArrayList<Engine.Word> list=new ArrayList<>();String today=Engine.today(System.currentTimeMillis());Set<String> group=session==null?Collections.emptySet():session.retried;List<Engine.Word> source=mode==3?sessionWords():activeWords();for(Engine.Word w:source){Engine.Progress p=progress.get(w.id);if(mode==0||mode==1&&p!=null&&p.trouble||mode==2&&p!=null&&today.equals(p.lastDay)||mode==3&&group.contains(w.id)||mode==4&&favorites.contains(w.id))list.add(w);}if(mode==1)list.sort(Comparator.<Engine.Word>comparingInt(w->-progress.get(w.id).lapses).thenComparingLong(w->progress.get(w.id).due).thenComparing(w->w.id));return list;}
@@ -261,7 +287,7 @@ public final class MainActivity extends Activity {
         }else if(kind.equals("credit")){
             JSONObject source=media.scene(w.id);String details=source.optBoolean("generated")?source.optString("caption")+"\n\n专属联想插画\n制作："+source.optString("artist")+"\n说明："+source.optString("license")+"\n\n这张图按当前单词的核心义单独设计并人工检查，只用于帮助记忆，不是词源解释。图片离线保存在 APK 内。":source.optString("caption")+"\n\n作者："+source.optString("artist")+"\n许可："+source.optString("license")+"\n"+source.optString("licenseUrl")+"\n\n来源："+source.optString("source")+"\n\n已缩小并转换为 WebP；按原图比例显示。";scroll=new ScrollView(this);TextView credit=text(details,22,INK,false);credit.setGravity(Gravity.START);credit.setMaxLines(1000);credit.setEllipsize(null);credit.setLineSpacing(px(5),1);credit.setPadding(px(8),px(8),px(8),px(30));scroll.addView(credit);put(scroll,80,155,320,247);
         }else{meaning(w,196,INK);label("这个词暂未配专属联想\n可点星星，留待多看几遍",75,290,330,80,24,MUTED,false);}
-        label(scroll!=null?"转圈滚动 · 右滑返回":total>1?"转圈翻页 · 右滑返回":"右滑返回",90,419,300,28,20,MUTED,false);
+        label(scroll!=null?"转圈滚动 · 左缘右滑":total>1?"转圈翻页 · 左缘右滑":"左缘右滑返回",90,419,300,28,20,MUTED,false);
     }
     void showMnemonics(){top("近音助记 · 不代替发音");scroll=new ScrollView(this);scroll.setVerticalScrollBarEnabled(false);LinearLayout list=new LinearLayout(this);list.setOrientation(LinearLayout.VERTICAL);for(Engine.Word w:activeWords())if(!media.mnemonic(w.id).isEmpty())setting(list,w.id+" · "+w.meaning,()->openMemory(w.id));scroll.addView(list);put(scroll,77,103,326,307);label("转圈滚动 · 点词查看",90,424,300,25,20,MUTED,false);}
     int validFlashMode(int mode){return mode==1||mode==2||mode==4?mode:0;}
@@ -296,7 +322,7 @@ public final class MainActivity extends Activity {
             List<Engine.Progress> tracked=activeProgress();int due=dueCount(),nextDay=MemoryCurve.dueWithin(tracked,now,now+Engine.DAY),nextThree=MemoryCurve.dueWithin(tracked,now,now+3*Engine.DAY);long next=Long.MAX_VALUE;for(Engine.Progress p:tracked)if(p.due>now)next=Math.min(next,p.due);
             label("复习安排",100,91,280,42,31,INK,true);meter("现在待复习",due,Math.max(1,Math.max(due,nextThree)),142,MINT);meter("未来24h新增",nextDay,Math.max(1,Math.max(due,nextThree)),211,0xffe4c487);meter("未来3天新增",nextThree,Math.max(1,Math.max(due,nextThree)),280,0xff679b83);String when=next==Long.MAX_VALUE?"完成一组后开始预测":due>0?"先清到期词，再学新词":"下一词 · "+new java.text.SimpleDateFormat("M月d日 HH:mm",Locale.CHINA).format(new Date(next));label(when+" · 今日新词 "+activeNewToday(now),75,350,330,58,20,MUTED,false);
         }
-        label("转圈翻页 · 右滑返回",100,430,280,25,18,MUTED,false);
+        label("转圈翻页 · 左缘右滑",100,430,280,25,18,MUTED,false);
     }
     void renderTurn(int direction){turnTransition=true;turnDirection=direction;render();}
     void renderSwap(){turnTransition=true;turnDirection=0;render();}
@@ -312,7 +338,7 @@ public final class MainActivity extends Activity {
         if(screen.equals("review")){reviewFocus=reviewFocus<0?(direction>0?0:1):Math.floorMod(reviewFocus+direction,2);focusView(reviewViews.get(reviewFocus),true);haptics.select();return;}
         if(scroll!=null){if(screen.equals("memory")&&direction<0&&scroll.getScrollY()==0&&scrollMotion==null&&memoryPage>0){memoryPage--;haptics.reveal();renderTurn(-1);return;}scrollByRotary(direction);return;}
         if(screen.equals("sound")){soundFocus=soundFocus==1?2:1;accent=soundFocus;refreshSoundRows();focusView(soundViews.get(soundFocus-1),true);haptics.select();return;}
-        if(screen.equals("home")){homeFocus=homeFocus<0?(direction>0?0:2):Math.floorMod(homeFocus+direction,3);focusView(homeViews.get(homeFocus),true);haptics.select();return;}
+        if(screen.equals("home")){int count=homeViews.size();if(count==0)return;homeFocus=homeFocus<0?(direction>0?0:count-1):Math.floorMod(homeFocus+direction,count);focusView(homeViews.get(homeFocus),true);haptics.select();return;}
         if(screen.equals("haptics")){hapticAt=Math.floorMod(hapticAt+direction,6);renderTurn(direction);sampleHaptic();return;}
         if(screen.equals("memory")){int next=Math.max(0,Math.min(memoryPages()-1,memoryPage+direction));if(next==memoryPage){haptics.boundary();return;}memoryPage=next;haptics.reveal();renderTurn(direction);return;}
         if(screen.equals("flash")){moveFlash(direction);return;}
@@ -320,15 +346,15 @@ public final class MainActivity extends Activity {
             if(session.studying()){int next=Math.max(0,Math.min(session.learn.size()-1,session.learning+direction));if(next==session.learning){haptics.boundary();return;}session.learning=next;haptics.reveal();persist(null);renderTurn(direction);return;}
             if(session.complete()){haptics.boundary();return;}
             if(session.feedback){if(direction>0)nextAnswer();else openMemory(session.current());return;}
-            if(session.recall){if(!session.revealed){haptics.boundary();return;}session.focus=session.focus<0?(direction>0?0:1):Math.floorMod(session.focus+direction,2);updateRecallFocus();haptics.tick();ui.removeCallbacks(focusSave);ui.postDelayed(focusSave,350);return;}
+            if(session.recall){if(!session.revealed){if(session.quiet)revealQuiet();else haptics.boundary();return;}session.focus=session.focus<0?(direction>0?0:1):Math.floorMod(session.focus+direction,2);updateRecallFocus();haptics.tick();ui.removeCallbacks(focusSave);ui.postDelayed(focusSave,350);return;}
             session.focus=session.focus<0?(direction>0?0:session.options.size()-1):Math.floorMod(session.focus+direction,session.options.size());updateFocus();haptics.tick();ui.removeCallbacks(focusSave);ui.postDelayed(focusSave,350);
         }
     }
     private long lastRotary=0;
     @Override public boolean dispatchGenericMotionEvent(MotionEvent e){if(e.getAction()==MotionEvent.ACTION_SCROLL){float delta=e.getAxisValue(MotionEvent.AXIS_SCROLL);if(delta==0)delta=e.getAxisValue(MotionEvent.AXIS_VSCROLL);if(delta!=0){long now=SystemClock.elapsedRealtime();if(now-lastRotary>=75){lastRotary=now;rotate(delta<0?1:-1);}return true;}}return super.dispatchGenericMotionEvent(e);}
-    @Override public boolean onKeyDown(int code,KeyEvent e){if(code==KeyEvent.KEYCODE_DPAD_DOWN||code==KeyEvent.KEYCODE_DPAD_UP){rotate(code==KeyEvent.KEYCODE_DPAD_DOWN?1:-1);return true;}if(code==KeyEvent.KEYCODE_DPAD_CENTER&&screen.equals("studysettings")&&studyFocus>=0){studyViews.get(studyFocus).performClick();return true;}if(code==KeyEvent.KEYCODE_DPAD_CENTER&&screen.equals("review")&&reviewFocus>=0){reviewViews.get(reviewFocus).performClick();return true;}if(code==KeyEvent.KEYCODE_DPAD_CENTER&&screen.equals("sound")){soundViews.get(soundFocus-1).performClick();return true;}if(code==KeyEvent.KEYCODE_DPAD_CENTER&&screen.equals("home")&&homeFocus>=0){homeViews.get(homeFocus).performClick();return true;}if(code==KeyEvent.KEYCODE_DPAD_CENTER&&screen.equals("session")&&session!=null&&session.focus>=0&&!session.feedback){if(session.recall){if(session.revealed&&tap())gradeRecall(session.focus==1);}else if(tap())answer(session.focus);return true;}return super.onKeyDown(code,e);}
+    @Override public boolean onKeyDown(int code,KeyEvent e){if(code==KeyEvent.KEYCODE_DPAD_DOWN||code==KeyEvent.KEYCODE_DPAD_UP){rotate(code==KeyEvent.KEYCODE_DPAD_DOWN?1:-1);return true;}if(code==KeyEvent.KEYCODE_DPAD_CENTER&&screen.equals("studysettings")&&studyFocus>=0){studyViews.get(studyFocus).performClick();return true;}if(code==KeyEvent.KEYCODE_DPAD_CENTER&&screen.equals("review")&&reviewFocus>=0){reviewViews.get(reviewFocus).performClick();return true;}if(code==KeyEvent.KEYCODE_DPAD_CENTER&&screen.equals("sound")){soundViews.get(soundFocus-1).performClick();return true;}if(code==KeyEvent.KEYCODE_DPAD_CENTER&&screen.equals("home")&&homeFocus>=0&&homeFocus<homeViews.size()){homeViews.get(homeFocus).performClick();return true;}if(code==KeyEvent.KEYCODE_DPAD_CENTER&&screen.equals("session")&&session!=null&&!session.feedback){if(session.quiet&&!session.revealed){revealQuiet();return true;}if(session.focus>=0){if(session.recall){if(session.revealed&&tap()){if(session.quiet)gradeQuiet(session.focus==1);else gradeRecall(session.focus==1);}}else if(tap())answer(session.focus);return true;}}return super.onKeyDown(code,e);}
 
-    float progressPortion(){if(!ready)return 0;if(screen.equals("session")&&session!=null)return session.studying()?(float)session.learning/Math.max(1,session.learn.size()):(float)session.at/Math.max(1,session.queue.size());if(screen.equals("flash")&&!flashWords.isEmpty())return (float)(flashAt+1)/flashWords.size();return Math.min(1f,activeNewToday(System.currentTimeMillis())/(float)limit);}
+    float progressPortion(){if(!ready)return 0;if(screen.equals("session")&&session!=null){if(session.quiet)return (float)session.answered.size()/Math.max(1,session.queue.size()-session.retried.size());return session.studying()?(float)session.learning/Math.max(1,session.learn.size()):(float)session.at/Math.max(1,session.queue.size());}if(screen.equals("flash")&&!flashWords.isEmpty())return (float)(flashAt+1)/flashWords.size();return Math.min(1f,activeNewToday(System.currentTimeMillis())/(float)limit);}
     final class SceneTransition {
         final SceneLayer outgoing,incoming;final int direction;final boolean turn;
         SceneTransition(SceneLayer outgoing,SceneLayer incoming,int direction,boolean turn){this.outgoing=outgoing;this.incoming=incoming;this.direction=direction;this.turn=turn;}
@@ -339,17 +365,23 @@ public final class MainActivity extends Activity {
         @Override public boolean dispatchTouchEvent(MotionEvent event){return blocked||super.dispatchTouchEvent(event);}
     }
     final class Dial extends FrameLayout {
-        Paint p=new Paint(3);float downX,downY,bezelAngle,bezelAccum,displayedProgress=-1;boolean consumed,bezel;ValueAnimator progressMotion;
+        Paint p=new Paint(3);float downX,downY,bezelAngle,bezelAccum,displayedProgress=-1;boolean consumed,bezel,edgeCandidate,backDragging;long downAt;ValueAnimator progressMotion,backMotion;
         Dial(){super(MainActivity.this);setBackgroundColor(BG);setWillNotDraw(false);}
         @Override protected void onSizeChanged(int w,int h,int oldw,int oldh){super.onSizeChanged(w,h,oldw,oldh);post(()->render());}
         void animateProgress(boolean animate){float target=progressPortion();if(displayedProgress<0||!animate){stopProgress();displayedProgress=target;invalidate();return;}if(Math.abs(target-displayedProgress)<.001f)return;stopProgress();progressMotion=ValueAnimator.ofFloat(displayedProgress,target);progressMotion.setDuration(420);progressMotion.setInterpolator(ENTER_EASE);progressMotion.addUpdateListener(v->{displayedProgress=(float)v.getAnimatedValue();invalidate();});progressMotion.addListener(new AnimatorListenerAdapter(){@Override public void onAnimationEnd(Animator animation){if(progressMotion==animation)progressMotion=null;}});progressMotion.start();}
         void stopProgress(){if(progressMotion!=null){progressMotion.cancel();progressMotion=null;}}
-        @Override protected void onDetachedFromWindow(){stopProgress();super.onDetachedFromWindow();}
+        void normalizeBack(SceneLayer target){if(target==null)return;target.setTranslationX(0);target.setAlpha(1);target.setScaleX(1);target.setScaleY(1);}
+        void stopBackMotion(){if(backMotion!=null){ValueAnimator running=backMotion;backMotion=null;running.removeAllUpdateListeners();running.removeAllListeners();running.cancel();}normalizeBack(scene);backDragging=false;edgeCandidate=false;}
+        void pullBack(float distance){float pull=Math.max(0,Math.min(getWidth()*.65f,distance)),portion=pull/(getWidth()*.65f);scene.setTranslationX(pull*.46f);scene.setAlpha(1-.28f*portion);scene.setScaleX(1-.015f*portion);scene.setScaleY(1-.015f*portion);}
+        void returnBack(){SceneLayer target=scene;float sx=target.getTranslationX(),sa=target.getAlpha(),ss=target.getScaleX();if(!animationsAllowed()){normalizeBack(target);backDragging=false;return;}ValueAnimator animator=ValueAnimator.ofFloat(0,1);backMotion=animator;animator.setDuration(190);animator.setInterpolator(ENTER_EASE);animator.addUpdateListener(v->{float f=(float)v.getAnimatedValue();target.setTranslationX(sx*(1-f));target.setAlpha(sa+(1-sa)*f);float scale=ss+(1-ss)*f;target.setScaleX(scale);target.setScaleY(scale);});animator.addListener(new AnimatorListenerAdapter(){@Override public void onAnimationEnd(Animator a){if(backMotion==a){backMotion=null;normalizeBack(target);backDragging=false;}}});animator.start();}
+        @Override protected void onDetachedFromWindow(){stopProgress();stopBackMotion();super.onDetachedFromWindow();}
         @Override protected void onDraw(Canvas c){super.onDraw(c);float cx=getWidth()/2f,cy=getHeight()/2f,r=Math.min(cx,cy)-px(10);p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(px(3));p.setStrokeCap(Paint.Cap.ROUND);p.setColor(0xff1c2923);c.drawArc(cx-r,cy-r,cx+r,cy+r,145,250,false,p);float portion=displayedProgress<0?progressPortion():displayedProgress;p.setColor(MINT);c.drawArc(cx-r,cy-r,cx+r,cy+r,145,250*portion,false,p);}
-        @Override public boolean dispatchTouchEvent(MotionEvent e){float x=e.getX(),y=e.getY();float radius=(float)Math.hypot(x-getWidth()/2f,y-getHeight()/2f);float angle=(float)Math.toDegrees(Math.atan2(y-getHeight()/2f,x-getWidth()/2f));if(e.getActionMasked()==MotionEvent.ACTION_DOWN){stopScroll();downX=x;downY=y;consumed=false;bezel=radius>px(214);bezelAngle=angle;bezelAccum=0;}
+        @Override public boolean dispatchTouchEvent(MotionEvent e){float x=e.getX(),y=e.getY();float radius=(float)Math.hypot(x-getWidth()/2f,y-getHeight()/2f);float angle=(float)Math.toDegrees(Math.atan2(y-getHeight()/2f,x-getWidth()/2f));if(e.getActionMasked()==MotionEvent.ACTION_DOWN){stopScroll();stopBackMotion();downX=x;downY=y;downAt=e.getEventTime();consumed=false;bezel=radius>px(214);edgeCandidate=!screen.equals("home")&&sceneMotion==null&&x<=getWidth()*.20f;backDragging=false;bezelAngle=angle;bezelAccum=0;}
+            if(e.getActionMasked()==MotionEvent.ACTION_MOVE&&edgeCandidate&&!backDragging){float dx=x-downX,dy=y-downY;if(Math.abs(dy)>px(16)&&Math.abs(dy)>Math.abs(dx)*1.1f)edgeCandidate=false;else if(dx>px(12)&&dx>Math.abs(dy)*1.15f){MotionEvent cancel=MotionEvent.obtain(e);cancel.setAction(MotionEvent.ACTION_CANCEL);super.dispatchTouchEvent(cancel);cancel.recycle();consumed=true;backDragging=true;bezel=false;}}
+            if(backDragging&&e.getActionMasked()==MotionEvent.ACTION_MOVE){pullBack(x-downX);return true;}
+            if(backDragging&&(e.getActionMasked()==MotionEvent.ACTION_UP||e.getActionMasked()==MotionEvent.ACTION_CANCEL)){float dx=x-downX,velocity=dx/Math.max(1,e.getEventTime()-downAt);boolean commit=e.getActionMasked()==MotionEvent.ACTION_UP&&(dx>getWidth()*.42f||velocity>1.05f);consumed=true;if(commit){stopBackMotion();back();}else returnBack();return true;}
             if(bezel&&e.getActionMasked()==MotionEvent.ACTION_MOVE&&radius<px(185))bezel=false;
             if(bezel&&e.getActionMasked()==MotionEvent.ACTION_MOVE){float d=angle-bezelAngle;if(d>180)d-=360;if(d< -180)d+=360;bezelAngle=angle;bezelAccum+=d;if(Math.abs(bezelAccum)>=13){if(!consumed){MotionEvent cancel=MotionEvent.obtain(e);cancel.setAction(MotionEvent.ACTION_CANCEL);super.dispatchTouchEvent(cancel);cancel.recycle();}consumed=true;rotate(bezelAccum>0?1:-1);bezelAccum=0;}if(consumed)return true;}
-            if(e.getActionMasked()==MotionEvent.ACTION_MOVE&&!consumed&&x-downX>px(100)&&Math.abs(y-downY)<px(70)){consumed=true;MotionEvent cancel=MotionEvent.obtain(e);cancel.setAction(MotionEvent.ACTION_CANCEL);super.dispatchTouchEvent(cancel);cancel.recycle();back();return true;}
             if(e.getActionMasked()==MotionEvent.ACTION_UP&&screen.equals("flash")&&!consumed&&Math.abs(y-downY)>px(70)&&Math.abs(x-downX)<px(70)){consumed=true;MotionEvent cancel=MotionEvent.obtain(e);cancel.setAction(MotionEvent.ACTION_CANCEL);super.dispatchTouchEvent(cancel);cancel.recycle();moveFlash(y<downY?1:-1);return true;}
             if(consumed)return true;return super.dispatchTouchEvent(e);
         }

@@ -262,7 +262,7 @@ public class DeviceFlowTest {
     @Test public void largerSystemTextDoesNotClipPrimaryActions()throws Exception{
         android.content.res.Configuration config=new android.content.res.Configuration(a.getResources().getConfiguration());config.fontScale=1.3f;a.getResources().updateConfiguration(config,a.getResources().getDisplayMetrics());
         a.screen="home";layout();assertButtonsFit();a.start(false);a.session.learning=a.session.learn.size();a.render();a.toggleFavorite(a.session.current());a.openWordTools(a.session.current());layout();assertButtonsFit();shot("34-large-text-tools");
-        a.screen="studysettings";layout();assertButtonsFit();a.screen="touch";layout();assertButtonsFit();a.screen="session";a.session.recall=true;a.session.revealed=true;a.render();layout();assertButtonsFit();
+        a.screen="studysettings";layout();assertButtonsFit();a.screen="touch";layout();assertButtonsFit();a.screen="session";a.session.recall=true;a.session.revealed=true;a.render();layout();assertButtonsFit();a.session=null;a.startQuiet();layout();assertButtonsFit();a.revealQuiet();layout();assertButtonsFit();
     }
     void assertButtonsFit(){for(View view:views()){if(view instanceof TextView&&view.isClickable()){TextView t=(TextView)view;android.text.Layout l=t.getLayout();assertNotNull(l);assertTrue("Action height fits: "+t.getText(),l.getHeight()<=t.getHeight()-t.getPaddingTop()-t.getPaddingBottom());for(int row=0;row<l.getLineCount();row++)assertEquals("Action text visible: "+t.getText(),0,l.getEllipsisCount(row));}}}
     @Test public void booksStaySeparateAndSwitchWithoutResettingProgressOrCurrentGroup()throws Exception{
@@ -275,6 +275,20 @@ public class DeviceFlowTest {
         Engine.Progress kept=fixture(0,false,0,Engine.today(System.currentTimeMillis()));a.start(false);assertTrue(a.validSession(a.session));
         a.session.queue.set(0,"removed-from-new-dataset");assertFalse(a.validSession(a.session));assertSame(kept,a.progress.get(kept.id));
         a.session.queue.set(0,a.activeWords().get(1).id);a.session.at=a.session.queue.size()+1;assertFalse(a.validSession(a.session));
+    }
+    @Test public void silentQuickStudyIsFiveCardsOfflineAndRestores()throws Exception{
+        java.util.concurrent.atomic.AtomicInteger opens=new java.util.concurrent.atomic.AtomicInteger();a.media.connections=url->{opens.incrementAndGet();throw new IOException("Silent study must stay offline");};
+        assertEquals(4,a.homeViews.size());a.startQuiet();assertTrue(a.session.quiet);assertTrue(a.session.recall);assertFalse(a.session.studying());assertEquals(5,a.session.queue.size());assertFalse(a.session.revealed);shot("40-silent-hidden");
+        String first=a.session.current();a.rotate(1);assertTrue(a.session.revealed);assertEquals(2,a.recallViews.size());assertEquals(0,opens.get());shot("41-silent-revealed");
+        a.rotate(1);assertEquals(0,a.session.focus);a.rotate(1);assertEquals(1,a.session.focus);a.gradeQuiet(true);assertFalse(a.session.feedback);assertFalse(a.session.revealed);assertNotEquals(first,a.session.current());assertEquals(1,a.session.correct);assertEquals(0,opens.get());
+        Engine.Session saved=a.store.session();assertTrue(saved.quiet);assertFalse(saved.revealed);assertEquals(a.session.current(),saved.current());
+        android.os.Bundle state=new android.os.Bundle();controller.pause().saveInstanceState(state).stop().destroy();controller=null;controller=Robolectric.buildActivity(MainActivity.class).setup(state);a=controller.get();for(int i=0;i<100&&!a.ready;i++){Thread.sleep(20);shadowOf(Looper.getMainLooper()).idle();}assertTrue(a.ready);a.media.connections=url->{throw new IOException("Silent study must stay offline");};layout();assertEquals("session",a.screen);assertTrue(a.session.quiet);assertEquals(saved.current(),a.session.current());
+    }
+    @Test public void backGestureStartsAtLeftEdgeAndReturnsWithTheFinger(){
+        a.screen="settings";layout();a.settleSceneMotion();
+        MotionEvent down=MotionEvent.obtain(0,0,MotionEvent.ACTION_DOWN,210,240,0),move=MotionEvent.obtain(0,80,MotionEvent.ACTION_MOVE,420,240,0),up=MotionEvent.obtain(0,100,MotionEvent.ACTION_UP,420,240,0);a.root.dispatchTouchEvent(down);a.root.dispatchTouchEvent(move);a.root.dispatchTouchEvent(up);down.recycle();move.recycle();up.recycle();assertEquals("settings",a.screen);
+        down=MotionEvent.obtain(0,200,MotionEvent.ACTION_DOWN,45,240,0);move=MotionEvent.obtain(0,280,MotionEvent.ACTION_MOVE,145,242,0);a.root.dispatchTouchEvent(down);a.root.dispatchTouchEvent(move);assertTrue("Page follows a left-edge drag",a.scene.getTranslationX()>0);up=MotionEvent.obtain(0,560,MotionEvent.ACTION_UP,155,242,0);a.root.dispatchTouchEvent(up);down.recycle();move.recycle();up.recycle();shadowOf(Looper.getMainLooper()).idleFor(java.time.Duration.ofMillis(220));assertEquals("settings",a.screen);assertEquals(0f,a.scene.getTranslationX(),0f);
+        a.motion=false;down=MotionEvent.obtain(0,700,MotionEvent.ACTION_DOWN,45,240,0);move=MotionEvent.obtain(0,800,MotionEvent.ACTION_MOVE,310,242,0);up=MotionEvent.obtain(0,820,MotionEvent.ACTION_UP,310,242,0);a.root.dispatchTouchEvent(down);a.root.dispatchTouchEvent(move);a.root.dispatchTouchEvent(up);down.recycle();move.recycle();up.recycle();assertEquals("home",a.screen);
     }
     @Test public void settingsRotarySelectsWithoutChangingPreferences(){
         a.screen="studysettings";layout();int size=a.batchSize;boolean mode=a.recallMode;a.rotate(1);assertEquals(0,a.studyFocus);assertEquals(mode,a.recallMode);a.rotate(1);assertEquals(1,a.studyFocus);assertEquals(size,a.batchSize);a.lastAction=-1000;a.onKeyDown(KeyEvent.KEYCODE_DPAD_CENTER,new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_DPAD_CENTER));assertNotEquals(size,a.batchSize);

@@ -31,7 +31,7 @@ public final class Engine {
         public HashSet<String> answered=new HashSet<>(), retried=new HashSet<>();
         public int at=0, learning=0, correct=0, bank=6, focus=-1;
         public long books=BookCatalog.defaultMask();
-        public boolean feedback=false, lastCorrect=false, mistakesOnly=false, recall=false, revealed=false;
+        public boolean feedback=false, lastCorrect=false, mistakesOnly=false, recall=false, revealed=false, quiet=false;
         public String chosen="";
         public long seed;
         public boolean studying(){return learning<learn.size();}
@@ -67,6 +67,14 @@ public final class Engine {
         int allowance=Math.max(0,newLimit-newToday(progress,now));
         if(!wrong)for(Word w:fresh){if(s.queue.size()>=batchSize||s.learn.size()>=allowance)break;s.queue.add(w.id);s.learn.add(w.id);}
         Collections.shuffle(s.queue,new Random(s.seed));
+        return s;
+    }
+    /** Five-card, self-rated session designed for silent, seconds-long watch interactions. */
+    public static Session startQuiet(List<Word> words,Map<String,Progress> progress,long books,int newLimit,long now) {
+        Session s=start(words,progress,books,newLimit,false,now,5,true);
+        s.quiet=true;
+        // The reveal itself is the first exposure for fresh words in this compact flow.
+        s.learning=s.learn.size();
         return s;
     }
     public static List<String> choices(Word target,List<Word> words,long seed) {

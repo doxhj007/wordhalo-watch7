@@ -1,27 +1,57 @@
 {
-  "apk": "WordHalo-Watch7-v0.25.apk",
+  "apk": "WordHalo-Watch7-v0.26.apk",
   "bytes": 4993011,
-  "sha256": "8f4d77a102c7ae9672abd33dc97e8f1e2291d8cd510a499f53f48860de479d3c",
+  "sha256": "70bfabecbbceb750480b24c818920bc7ce7b5f13756625fcbe9806c895312c39",
   "compileSdk": 36,
   "targetSdk": 36,
   "minSdk": 30,
-  "versionName": "0.25.0",
-  "versionCode": 10,
+  "versionName": "0.26.0",
+  "versionCode": 11,
   "package": "cn.wordhalo.watch",
   "certificate_sha256": "5db65304282edf2a77766c8ac2bf77ec13c101df0d55fe90ac86c49cc3269a5f",
   "same_signature_as_previous_releases": true,
-  "engine_assertions": 63830,
-  "native_api36_tests": 37,
+  "engine_assertions": 63834,
+  "native_api36_tests": 39,
   "dataset_union_headwords": 7981,
   "books_are_independent": true,
   "single_active_book": true,
   "books": [
-    {"level": 4, "brand": "星火", "title": "四级词汇必背乱序版", "headwords": 2261},
-    {"level": 4, "brand": "新东方", "title": "四级词汇正序版", "headwords": 4447},
-    {"level": 4, "brand": "闪过", "title": "四级词汇闪过", "headwords": 5821},
-    {"level": 6, "brand": "星火", "title": "六级巧记速记乱序版", "headwords": 2999},
-    {"level": 6, "brand": "新东方", "title": "六级词汇正序版（红宝书）", "headwords": 2744},
-    {"level": 6, "brand": "闪过", "title": "六级词汇闪过乱序版", "headwords": 5325}
+    {
+      "level": 4,
+      "brand": "星火",
+      "title": "四级词汇必背乱序版",
+      "headwords": 2261
+    },
+    {
+      "level": 4,
+      "brand": "新东方",
+      "title": "四级词汇正序版",
+      "headwords": 4447
+    },
+    {
+      "level": 4,
+      "brand": "闪过",
+      "title": "四级词汇闪过",
+      "headwords": 5821
+    },
+    {
+      "level": 6,
+      "brand": "星火",
+      "title": "六级巧记速记乱序版",
+      "headwords": 2999
+    },
+    {
+      "level": 6,
+      "brand": "新东方",
+      "title": "六级词汇正序版（红宝书）",
+      "headwords": 2744
+    },
+    {
+      "level": 6,
+      "brand": "闪过",
+      "title": "六级词汇闪过乱序版",
+      "headwords": 5325
+    }
   ],
   "book_membership_and_order_verified": true,
   "baicizhan_core_2551_included": false,
@@ -49,7 +79,13 @@
   "automatic_study_network_requests": false,
   "background_network_shutdown_tested": true,
   "legacy_audio_cleanup": true,
-  "review_scopes": ["all", "wrong", "today", "favorites", "completed-group-mistakes"],
+  "review_scopes": [
+    "all",
+    "wrong",
+    "today",
+    "favorites",
+    "completed-group-mistakes"
+  ],
   "flash_shuffle_bookmarks": true,
   "nested_activity_restore": true,
   "composited_scene_transitions": true,
@@ -60,7 +96,11 @@
   "legacy_database_migration_tested": true,
   "invalid_legacy_session_recovery_tested": true,
   "self_rated_recall": true,
-  "batch_sizes": [5, 10, 20],
+  "batch_sizes": [
+    5,
+    10,
+    20
+  ],
   "favorites": true,
   "independent_haptic_strengths": true,
   "large_font_tested": true,
@@ -68,5 +108,13 @@
   "personal_forgetting_curve": true,
   "review_retention_threshold": 0.85,
   "daily_due_forecast": true,
-  "lowest_retention_due_first": true
+  "lowest_retention_due_first": true,
+  "quiet_study": true,
+  "quiet_study_batch_size": 5,
+  "quiet_study_automatic_network_requests": false,
+  "quiet_session_restore_tested": true,
+  "left_edge_back_gesture": true,
+  "left_edge_start_fraction": 0.2,
+  "edge_back_follow_and_rejection_tested": true,
+  "v026_physical_watch_validation_pending": true
 }
