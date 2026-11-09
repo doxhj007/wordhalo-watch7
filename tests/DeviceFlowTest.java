@@ -25,10 +25,13 @@ public class DeviceFlowTest {
         for(int i=0;i<100&&!a.ready;i++){Thread.sleep(20);shadowOf(Looper.getMainLooper()).idle();}
         assertTrue("Vocabulary loads from APK assets",a.ready);a.media.connections=url->{throw new IOException("Real networking disabled in tests");};layout();
     }
-    void layout(){a.root.measure(View.MeasureSpec.makeMeasureSpec(480,View.MeasureSpec.EXACTLY),View.MeasureSpec.makeMeasureSpec(480,View.MeasureSpec.EXACTLY));a.root.layout(0,0,480,480);shadowOf(Looper.getMainLooper()).idle();a.render();a.root.measure(View.MeasureSpec.makeMeasureSpec(480,View.MeasureSpec.EXACTLY),View.MeasureSpec.makeMeasureSpec(480,View.MeasureSpec.EXACTLY));a.root.layout(0,0,480,480);}
+    void layout(){layoutAt(480,480);}
+    void layoutAt(int width,int height){a.root.measure(View.MeasureSpec.makeMeasureSpec(width,View.MeasureSpec.EXACTLY),View.MeasureSpec.makeMeasureSpec(height,View.MeasureSpec.EXACTLY));a.root.layout(0,0,width,height);shadowOf(Looper.getMainLooper()).idle();a.render();a.root.measure(View.MeasureSpec.makeMeasureSpec(width,View.MeasureSpec.EXACTLY),View.MeasureSpec.makeMeasureSpec(height,View.MeasureSpec.EXACTLY));a.root.layout(0,0,width,height);}
     void collect(View view,List<View> result){if(view!=a.root)result.add(view);if(view instanceof ViewGroup){ViewGroup group=(ViewGroup)view;for(int i=0;i<group.getChildCount();i++)collect(group.getChildAt(i),result);}}
     List<View> views(){List<View> result=new ArrayList<>();collect(a.scene,result);return result;}
-    void shot(String name)throws Exception{layout();Bitmap b=Bitmap.createBitmap(480,480,Bitmap.Config.ARGB_8888);a.root.draw(new Canvas(b));File f=new File(System.getProperty("shots"),name+".png");f.getParentFile().mkdirs();try(FileOutputStream out=new FileOutputStream(f)){b.compress(Bitmap.CompressFormat.PNG,100,out);}}
+    void shot(String name)throws Exception{shotAt(name,480,480);}
+    void shotAt(String name,int width,int height)throws Exception{layoutAt(width,height);Bitmap b=Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888);a.root.draw(new Canvas(b));File f=new File(System.getProperty("shots"),name+".png");f.getParentFile().mkdirs();try(FileOutputStream out=new FileOutputStream(f)){b.compress(Bitmap.CompressFormat.PNG,100,out);}}
+    void assertSceneInside(int width,int height){for(int i=0;i<a.scene.getChildCount();i++){View v=a.scene.getChildAt(i);if(v instanceof FocusHalo)continue;assertTrue("Left edge: "+v.getClass(),v.getLeft()>=0);assertTrue("Top edge: "+v.getClass(),v.getTop()>=0);assertTrue("Right edge: "+v.getClass(),v.getRight()<=width);assertTrue("Bottom edge: "+v.getClass(),v.getBottom()<=height);}}
     @Test public void learnAnswerResumeAndFinish()throws Exception{
         shot("01-home");a.start(false);assertNotNull(a.session);assertTrue(a.session.studying());shot("02-study");
         a.session.learning=a.session.learn.size();a.render();assertEquals(3,a.answerViews.size());shot("03-quiz");
@@ -293,6 +296,17 @@ public class DeviceFlowTest {
     @Test public void settingsRotarySelectsWithoutChangingPreferences(){
         a.screen="studysettings";layout();int size=a.batchSize;boolean mode=a.recallMode;a.rotate(1);assertEquals(0,a.studyFocus);assertEquals(mode,a.recallMode);a.rotate(1);assertEquals(1,a.studyFocus);assertEquals(size,a.batchSize);a.lastAction=-1000;a.onKeyDown(KeyEvent.KEYCODE_DPAD_CENTER,new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_DPAD_CENTER));assertNotEquals(size,a.batchSize);
         a.screen="touch";layout();for(View v:views()){if(v instanceof TextView&&((TextView)v).getText().toString().equals("体验全部节奏")){click((TextView)v);break;}}assertEquals("haptics",a.screen);a.back();assertEquals("touch",a.screen);a.statsReturn="settings";a.screen="stats";a.render();a.back();assertEquals("settings",a.screen);
+    }
+    @Test @Config(sdk=36,qualifiers="w240dp-h240dp-xhdpi") public void largeSquareUsesExtraWidthAndSquareEdgeBezel()throws Exception{
+        layoutAt(480,480);assertFalse(a.roundDisplay);assertTrue(a.largeDisplay);assertEquals(1.16f,a.widthStretch,.001f);assertSceneInside(480,480);assertButtonsFit();FrameLayout.LayoutParams main=(FrameLayout.LayoutParams)a.homeViews.get(0).getLayoutParams();assertTrue("Square primary action expands",main.leftMargin<a.px(76)&&main.width>a.px(328));shotAt("42-square-home",480,480);
+        a.startQuiet();a.revealQuiet();layoutAt(480,480);assertSceneInside(480,480);assertButtonsFit();shotAt("43-square-quiet",480,480);
+        a.screen="settings";layoutAt(480,480);a.settleSceneMotion();MotionEvent down=MotionEvent.obtain(0,0,MotionEvent.ACTION_DOWN,240,12,0),move=MotionEvent.obtain(0,30,MotionEvent.ACTION_MOVE,300,12,0),up=MotionEvent.obtain(0,50,MotionEvent.ACTION_UP,300,12,0);a.root.dispatchTouchEvent(down);a.root.dispatchTouchEvent(move);a.root.dispatchTouchEvent(up);down.recycle();move.recycle();up.recycle();assertTrue("Square edge drives rotary selection or scrolling",a.scrollTarget>0||a.settingsY>0);
+    }
+    @Test @Config(sdk=36,qualifiers="w192dp-h192dp-round-xhdpi") public void smallRoundScalesWithoutClipping()throws Exception{
+        layoutAt(384,384);assertTrue(a.roundDisplay);assertFalse(a.largeDisplay);assertEquals(1f,a.widthStretch,0f);assertSceneInside(384,384);assertButtonsFit();shotAt("44-small-round",384,384);a.startQuiet();a.revealQuiet();layoutAt(384,384);assertSceneInside(384,384);assertButtonsFit();
+    }
+    @Test @Config(sdk=36,qualifiers="w200dp-h240dp-xhdpi") public void tallSquareCentersShortEdgeLayout()throws Exception{
+        layoutAt(400,480);assertFalse(a.roundDisplay);assertFalse(a.largeDisplay);assertEquals(1.10f,a.widthStretch,.001f);assertTrue(a.layoutTop()>0);assertSceneInside(400,480);assertButtonsFit();shotAt("45-tall-square",400,480);a.screen="books";layoutAt(400,480);assertSceneInside(400,480);assertButtonsFit();
     }
     @After public void close(){if(controller!=null)controller.pause().stop().destroy();}
 }

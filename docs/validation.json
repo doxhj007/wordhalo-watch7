@@ -1,17 +1,17 @@
 {
-  "apk": "WordHalo-Watch7-v0.26.apk",
-  "bytes": 4993011,
-  "sha256": "70bfabecbbceb750480b24c818920bc7ce7b5f13756625fcbe9806c895312c39",
+  "apk": "WordHalo-WearOS-v0.27.apk",
+  "bytes": 4997107,
+  "sha256": "95da1f6a95d04b781fc41b014965b252e9f3285f1619ba6c9e6c2e58525cd6f5",
   "compileSdk": 36,
   "targetSdk": 36,
   "minSdk": 30,
-  "versionName": "0.26.0",
-  "versionCode": 11,
+  "versionName": "0.27.0",
+  "versionCode": 12,
   "package": "cn.wordhalo.watch",
   "certificate_sha256": "5db65304282edf2a77766c8ac2bf77ec13c101df0d55fe90ac86c49cc3269a5f",
   "same_signature_as_previous_releases": true,
   "engine_assertions": 63834,
-  "native_api36_tests": 39,
+  "native_api36_tests": 42,
   "dataset_union_headwords": 7981,
   "books_are_independent": true,
   "single_active_book": true,
@@ -116,5 +116,39 @@
   "left_edge_back_gesture": true,
   "left_edge_start_fraction": 0.2,
   "edge_back_follow_and_rejection_tested": true,
-  "v026_physical_watch_validation_pending": true
+  "v026_physical_watch_validation_pending": true,
+  "adaptive_display_layout": true,
+  "round_displays_supported": true,
+  "square_displays_supported": true,
+  "rectangular_displays_supported": true,
+  "large_display_breakpoint_dp": 225,
+  "uniform_short_edge_scaling": true,
+  "shape_aware_touch_bezel": true,
+  "automated_display_profiles": [
+    {
+      "width_px": 480,
+      "height_px": 480,
+      "shape": "round",
+      "scope": "existing reference profile"
+    },
+    {
+      "width_px": 384,
+      "height_px": 384,
+      "shape": "round",
+      "scope": "small-screen bounds and text fit"
+    },
+    {
+      "width_px": 480,
+      "height_px": 480,
+      "shape": "square",
+      "scope": "large breakpoint, expanded layout, quiet study and edge bezel"
+    },
+    {
+      "width_px": 400,
+      "height_px": 480,
+      "shape": "rectangular",
+      "scope": "short-edge scaling, centering and bounds"
+    }
+  ],
+  "non_watch7_physical_validation_pending": true
 }

@@ -1,6 +1,6 @@
-# Word Halo / 词间 0.26.0
+# Word Halo / 词间 0.27.0
 
-Personal native Wear OS vocabulary app for Samsung Galaxy Watch7 44mm, 480×480, One UI Watch 8 / Wear OS 6 / API 36. Java 11, platform Views, SQLite. No runtime libraries, ads or account system. Permissions: VIBRATE and INTERNET. Package `cn.wordhalo.watch`, versionCode 11. The project owner/user has exercised the core install, learning, haptic, touch-bezel, network and background-exit flows on a physical Watch7 44mm; automated tests remain separately identified below.
+Native Wear OS vocabulary app for round, square and rectangular watches, with Samsung Galaxy Watch7 44mm as the physical reference device. Wear OS 6 / API 36, Java 11, platform Views and SQLite. No runtime libraries, ads or account system. Permissions: VIBRATE and INTERNET. Package `cn.wordhalo.watch`, versionCode 12. The project owner/user has exercised the core install, learning, haptic, touch-bezel, network and background-exit flows on a physical Watch7 44mm; other display profiles are automated native-render scopes.
 
 Version 0.22 contains six concrete, separate CET4/CET6 books: Star, New Oriental and Flash for each level. The active book is always one exact book bit, never a combined mask. The requested 百词斩六级核心（过考版）2551-word edition remains excluded until its exact list and order can be verified.
 
@@ -92,6 +92,12 @@ The home screen exposes a five-card silent quick-study path that uses the existi
 
 Back navigation begins at the left edge and visually follows the finger. Vertical intent is rejected, short drags return with the shared easing and committed drags enter the existing composited back transition. The gesture, quiet layouts and enlarged system text are covered by the API 36 native suite.
 
+## Version 0.27
+
+The coordinate system now separates uniform short-edge scale from a shape-aware horizontal transform. Round displays retain the Watch7 composition exactly. Non-round displays map the original circular safe band outward by 10%, or 16% at the official 225dp large-display breakpoint, while text and image height remain uniformly scaled. Rectangular displays center the resulting 480-unit canvas on the long axis instead of stretching it.
+
+`Dial` renders the existing arc on round displays and a rounded-square perimeter with a top progress segment on non-round displays. Touch-bezel hit testing likewise switches from radial bands to distance from the four physical edges. Crown events, DPAD input, direct touch and left-edge back remain device-independent platform paths.
+
 ## Version 0.20
 
 Session configuration supports 5/10/20-word groups and an optional recall mode. Recall state and reveal state are persisted with backward-compatible JSON defaults. Grading before reveal is rejected in both the activity and engine. Immediate retries still cannot inflate first-attempt results. Changes to preferences only affect the next group.
@@ -109,7 +115,7 @@ javac -encoding UTF-8 -d test-classes app/src/main/java/cn/wordhalo/watch/BookCa
 java -cp test-classes cn.wordhalo.watch.EngineTest app/src/main/assets/words.tsv app/src/main/assets/book-orders.tsv
 ```
 
-EngineTest checks 63,834 assertions across the exact membership/order of all six books, vocabulary choices, quiet-session invariants and 80 complete randomized sessions. DeviceFlowTest uses Robolectric 4.16.1, JUnit 4.13.2 and native Android 16 graphics. Its 39 tests cover quiet-study offline behavior and restoration, edge-back following and rejection, composed page/turn transitions, reduced motion, independent book selection, next-group switching, invalid legacy-session recovery, zero automatic study traffic, full background shutdown, local-voice UI, controlled streaming fallback, 72 unique dedicated images, zero-network generated cards and a three-word maximum for fallback photo reuse, plus retention forecasting, database migration, native image decoding, large-text layout, haptics and scoped review. Transport/player tests use controlled fakes and make no live network requests.
+EngineTest checks 63,834 assertions across the exact membership/order of all six books, vocabulary choices, quiet-session invariants and 80 complete randomized sessions. DeviceFlowTest uses Robolectric 4.16.1, JUnit 4.13.2 and native Android 16 graphics. Its 42 tests add 480px square, 384px round and 400×480px rectangular profiles, checking scene bounds, text fit, large-display expansion, quiet-study layout and square-edge bezel input. Existing coverage includes offline restoration, composed motion, books, memory scheduling, database migration, all media, haptics, audio fallback and complete background shutdown. Transport/player tests use controlled fakes and make no live network requests.
 
 The supplied screenshots are actual native View renders in the desktop Android test runtime. Physical Watch7 coverage is user verification, recorded separately in validation.json; the automated suite does not pretend to measure motor strength, Samsung bezel delivery, TTS voice quality or Bluetooth-proxy latency. See 使用说明.md and validation.json for the exact scopes.
 
